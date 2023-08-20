@@ -1,0 +1,7 @@
+	RN1: notaFinal será a média das avaliações;
+	RN2: não poderá haver mais de 1 banca cadastrada para o mesmo horario;
+	RN3: a duração maxima de cada banca considerada pelo sistema deverá ser de X minutos;
+	RN4: o sistema deve considerar o intervalo entre as bancas para registrar o cadastro de uma nova banca, de modo a não permitir que uma banca seja cadastrada enquanto outra ainda estiver ocorrendo;
+	RN5: o sistema devera levar em conta a disponibilidade de horarios de cada professor para sugerir a composição das bancas;
+	RN6: o sistema deve considerar a quantidade maxima de participações do professor em uma determinada data como 3;
+
