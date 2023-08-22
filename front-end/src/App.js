@@ -1,12 +1,10 @@
 import React from "react";
-import  SInButton   from "./components/SInButton";
-import  SOutButton  from "./components/SOutButton";
+import Login from "./components/Login";
 
 const App = () => {
     return (
         <div className="justify-content-center align-items-center">
-         <SInButton />
-         <SOutButton />    
+         <Login />  
         </div>
     );
 };
