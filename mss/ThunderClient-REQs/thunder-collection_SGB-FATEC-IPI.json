@@ -1,0 +1,97 @@
+{
+    "client": "Thunder Client",
+    "collectionName": "SGB-FATEC-IPI",
+    "dateExported": "2023-08-26T22:36:17.926Z",
+    "version": "1.1",
+    "folders": [
+        {
+            "_id": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "ALUNOS",
+            "containerId": "",
+            "created": "2023-08-26T22:33:19.472Z",
+            "sortNum": 10000
+        }
+    ],
+    "requests": [
+        {
+            "_id": "6123abd9-bb55-45d2-8593-439ca4ee262c",
+            "colId": "1afcf44f-3cfc-407a-a508-cc76c8f35157",
+            "containerId": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "POST aluno",
+            "url": "localhost:4000/alunos",
+            "method": "POST",
+            "sortNum": 10000,
+            "created": "2023-08-26T22:13:51.159Z",
+            "modified": "2023-08-26T22:26:19.235Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"ra\": \"204012345123\",\n  \"nome\": \"Alice\",\n  \"email\": \"alice@sp.fatec.gov.br\",\n  \"curso\": \"Tecnologia em Análise e Desenvolvimento de Sistemas\",\n  \"periodo\": \"Tarde\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "e409d303-b878-465d-a9a5-b37c0d742260",
+            "colId": "1afcf44f-3cfc-407a-a508-cc76c8f35157",
+            "containerId": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "PUT aluno ",
+            "url": "localhost:4000/alunos/4",
+            "method": "PUT",
+            "sortNum": 20000,
+            "created": "2023-08-26T22:26:47.724Z",
+            "modified": "2023-08-26T22:30:41.897Z",
+            "headers": [],
+            "params": [],
+            "body": {
+                "type": "json",
+                "raw": "{\n  \"ra\": \"204012345123\",\n  \"nome\": \"Alice\",\n  \"email\": \"alice@sp.fatec.gov.br\",\n  \"curso\": \"Tecnologia em Análise e Desenvolvimento de Sistemas\",\n  \"periodo\": \"Tarde\"\n}",
+                "form": []
+            },
+            "tests": []
+        },
+        {
+            "_id": "27d51929-0794-4049-af40-6dab082369d7",
+            "colId": "1afcf44f-3cfc-407a-a508-cc76c8f35157",
+            "containerId": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "GET alunos",
+            "url": "localhost:4000/alunos",
+            "method": "GET",
+            "sortNum": 30000,
+            "created": "2023-08-26T22:17:08.617Z",
+            "modified": "2023-08-26T22:17:08.617Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "ff620989-6cef-4faa-a893-9fc354e022c1",
+            "colId": "1afcf44f-3cfc-407a-a508-cc76c8f35157",
+            "containerId": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "GET aluno/idAluno",
+            "url": "localhost:4000/alunos/4",
+            "method": "GET",
+            "sortNum": 40000,
+            "created": "2023-08-26T22:23:45.356Z",
+            "modified": "2023-08-26T22:31:12.503Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        },
+        {
+            "_id": "c1bab513-02b7-4c86-b1f2-4309576daa1f",
+            "colId": "1afcf44f-3cfc-407a-a508-cc76c8f35157",
+            "containerId": "75fae526-616b-418f-a827-260c2a77bfd3",
+            "name": "DELETE aluno/idAluno",
+            "url": "localhost:4000/alunos/4",
+            "method": "DELETE",
+            "sortNum": 50000,
+            "created": "2023-08-26T22:31:39.921Z",
+            "modified": "2023-08-26T22:32:16.437Z",
+            "headers": [],
+            "params": [],
+            "tests": []
+        }
+    ]
+}
