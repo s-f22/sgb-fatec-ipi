@@ -5,3 +5,6 @@
 	RN5: o sistema devera levar em conta a disponibilidade de horarios de cada professor para sugerir a composição das bancas;
 	RN6: o sistema deve considerar a quantidade maxima de participações do professor em uma determinada data como 3;
 
+
+DEFINIR ARQUITETURA:
+	- 

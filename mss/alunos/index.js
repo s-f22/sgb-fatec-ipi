@@ -1,43 +1,57 @@
-const bodyParser = require('body-parser');
 const express = require('express');
-require('dotenv').config({ path: '../../.env' });
-var pg = require('pg');
+const bodyParser = require('body-parser');
+var { Client } = require('pg');
 const app = express();
+require('dotenv').config({ path: '../../.env' });
 app.use(bodyParser.json());
+
+const db = new Client({
+  user: process.env.DB_USER,
+  host: process.env.DB_SERVER,
+  database: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  port: 5432
+})
+
+db.connect()
+  .then(() => {
+    console.log('Conexão com o banco de dados estabelecida');
+  })
+  .catch((err) => {
+    console.error('Erro ao conectar ao banco de dados', err)
+  })
+
 
 const aluno = {}
 let idAluno = 0;
 
-const url = process.env.DB_URL
 
 app.get('/alunos', (req, res) => {
   res.send(aluno)
 });
 
-app.put('/alunos', (req, res) => {
-  idAluno++;
-  const { ra, nome, email, curso } = req.body;
-  aluno[idAluno] = {
-    ra, nome, email, curso
+app.post('/alunos', async (req, res) => {
+  try {
+    const { ra, nome, email, curso, periodo } = req.body;
+    await db.query('INSERT INTO ALUNO (ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5)', [ra, nome, email, curso, periodo]);
+
+    res.status(201).json({ message: 'Aluno cadastrado com sucesso!' });
+  } catch (error) {
+    console.error('Erro ao cadastrar o aluno:', error);
+    res.status(500).json({error: 'Erro interno do servidor'})
   }
-  res.status(201).send(aluno[idAluno]);
 });
 
-var conString = url 
-var client = new pg.Client(conString);
-client.connect(function(err) {
-  if(err) {
-    return console.error('could not connect to postgres', err);
-  }
-  client.query("INSERT INTO ALUNO (ra, nome, email, curso, periodo) VALUES ('1234567890123', 'João Silva', 'joao.silva@example.com', 'Engenharia de Computação','manhã')", function(err, result) {
-    if(err) {
-      return console.error('error running query', err);
-    }
-    console.log(result.rows[0]);
-    
-    client.end();
-  });
-});
+// app.put('/alunos', (req, res) => {
+//   idAluno++;
+//   const { ra, nome, email, curso } = req.body;
+//   aluno[idAluno] = {
+//     ra, nome, email, curso
+//   }
+//   res.status(201).send(aluno[idAluno]);
+// });
+
+
 
 app.listen(4000, () => {
   console.log('alunos: porta 4000');
