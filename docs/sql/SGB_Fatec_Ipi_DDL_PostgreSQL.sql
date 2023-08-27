@@ -5,7 +5,9 @@ CREATE TABLE ALUNO (
     nome VARCHAR(255),
     email VARCHAR(255),
     curso VARCHAR(255),
-    periodo VARCHAR(20)
+    periodo VARCHAR(20),
+    senha VARCHAR(200),
+    tipoUsuario INT
 );
 
 -- Tabela PROFESSOR

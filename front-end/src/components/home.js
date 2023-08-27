@@ -1,6 +1,6 @@
 import React from 'react'
 import { Image } from 'primereact/image';
-import  Profile  from './profile.js';
+import  Profile  from './Profile.js';
 import SOutButton  from './SOutButton.js';
 
 

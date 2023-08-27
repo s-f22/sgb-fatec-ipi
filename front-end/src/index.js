@@ -5,7 +5,7 @@ import "./index.css";
 import { BrowserRouter as Router, Route, Routes, useNavigate, } from "react-router-dom";
 import { Auth0Provider, useAuth0 } from "@auth0/auth0-react";
 import ReactDOM from "react-dom/client";
-import Home from "./components/home";
+import Home from "./components/Home";
 import React from "react";
 import App from "./App";
 
