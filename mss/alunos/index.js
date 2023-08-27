@@ -9,7 +9,8 @@ const jwt = require('jsonwebtoken');
 
 // Middleware para verificar o token JWT
 function verificarToken(req, res, next) {
-  const token = req.headers.authorization;
+  // const token = req.headers.authorization;
+  const token = req.headers.authorization.split(' ')[1];
 
   if (!token) {
     console.error('Token não fornecido');
@@ -19,6 +20,7 @@ function verificarToken(req, res, next) {
   jwt.verify(token, process.env.JWT_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       console.error('Erro na verificação do token:', err);
+      console.log(`TOKEN: ${token} | secret: ${process.env.JWT_TOKEN_SECRET}`)
       return res.status(401).json({ error: 'Falha na verificação do token' });
     }
 
@@ -105,7 +107,7 @@ app.get('/alunos', async (req, res) => {
 
 
 app.get('/alunos/:idAluno', verificarToken, async (req, res) => {
-  res.json({message: 'Funcionalidade protegida'})
+  //res.json({message: 'Funcionalidade protegida'})
   const idAluno = req.params.idAluno;
 
   try {
