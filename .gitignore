@@ -8,4 +8,7 @@ mss/login/node_modules/
 front-end/node_modules/
 front-end/.env
 
+front_end/node_modules/
+front_end/.env
+
 .env
