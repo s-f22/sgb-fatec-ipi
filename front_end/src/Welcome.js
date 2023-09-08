@@ -1,6 +1,6 @@
 import { Container } from "react-bootstrap";
-import Login from "./pages/LogIn"
-import SignUp from "./pages/SignUp";
+import Login from "./components/LogIn"
+import SignUp from "./components/SignUp";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';

@@ -1,5 +1,5 @@
 import React from 'react'
-import dashboard from '../Assets/img/dashboard.png'
+import dashboard from '../assets/img/dashboard.png'
 
 const Painel = () => {
   return (

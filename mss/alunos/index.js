@@ -48,7 +48,7 @@ app.put('/alunos/:idAluno', async (req, res) => {
   const { ra, nome, email, curso, periodo, senha, tipoUsuario } = req.body;
 
   try {
-    await db.query('UPDATE ALUNO SET ra = $1, nome = $2, email = $3, curso = $4, periodo = $5, senha = $6, tipoUsuario = $7 WHERE idAluno = $8', [ra, nome, email, curso, periodo, idAluno, senha, tipoUsuario]);
+    await db.query('UPDATE ALUNO SET ra = $1, nome = $2, email = $3, curso = $4, periodo = $5, senha = $6, tipoUsuario = $7 WHERE idAluno = $8', [ra, nome, email, curso, periodo, senha, tipoUsuario, idAluno]);
     res.status(200).json({ message: `Aluno com ID ${idAluno} atualizado com sucesso!` });
   } catch (error) {
     console.error(`Erro ao atualizar aluno com ID ${idAluno}:`, error);
