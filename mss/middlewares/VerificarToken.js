@@ -1,5 +1,5 @@
 const jwt = require('../alunos/node_modules/jsonwebtoken');
-require('../alunos/node_modules/dotenv').config({ path: '../../.env' });
+require('../alunos/node_modules/dotenv/lib/main').config({ path: '../../.env' });
 
 // Middleware para verificar o token JWT
 
@@ -17,7 +17,7 @@ VerificarToken = (req, res, next) => {
   jwt.verify(token, process.env.JWT_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       console.error('Erro na verificação do token:', err);
-      console.log(`TOKEN: ${token} | secret: ${process.env.JWT_TOKEN_SECRET}`)
+      // console.log(`TOKEN: ${token} | secret: ${process.env.JWT_TOKEN_SECRET}`)
       return res.status(401).json({ error: 'Falha na verificação do token' });
     }
 

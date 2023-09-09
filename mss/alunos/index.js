@@ -7,7 +7,10 @@ app.use(bodyParser.json());
 
 const jwt = require('jsonwebtoken');
 
-const VerificarToken = require('../functions/VerificarToken.js');
+
+ const VerificarToken = require('../middlewares/VerificarToken.js');
+//const AuthCheck = require('../middlewares/AuthCheck.js');
+
 
 
 const db = new Client({
@@ -30,59 +33,82 @@ db.connect()
 
 app.post('/alunos', async (req, res) => {
   try {
-    const { ra, nome, email, curso, periodo, senha, tipoUsuario } = req.body;
-    await db.query('INSERT INTO ALUNO (ra, nome, email, curso, periodo, senha, tipoUsuario) VALUES ($1, $2, $3, $4, $5, $6, $7)', [ra, nome, email, curso, periodo, senha, tipoUsuario]);
+    const { userId, ra, nome, email, curso, periodo, emailInstVerif } = req.body;
+    const query = 'INSERT INTO ALUNO (userId, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
+    const values = [userId, ra, nome, email, curso, periodo];
 
-    const aluno = {nome, email}
-    const token = jwt.sign({aluno}, process.env.JWT_TOKEN_SECRET, {expiresIn: '1h'});
+    const result = await db.query(query, values);
+
+    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    
+    // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
+    const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
+
     res.status(201).json({ message: 'Aluno cadastrado com sucesso!', token });
   } catch (error) {
     console.error('Erro ao cadastrar o aluno:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' })
+    res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 
 app.put('/alunos/:idAluno', async (req, res) => {
-  const idAluno = req.params.idAluno;
-  const { ra, nome, email, curso, periodo, senha, tipoUsuario } = req.body;
-
   try {
-    await db.query('UPDATE ALUNO SET ra = $1, nome = $2, email = $3, curso = $4, periodo = $5, senha = $6, tipoUsuario = $7 WHERE idAluno = $8', [ra, nome, email, curso, periodo, senha, tipoUsuario, idAluno]);
-    res.status(200).json({ message: `Aluno com ID ${idAluno} atualizado com sucesso!` });
+    const idAluno = req.params.idAluno;
+    const { userId, ra, nome, email, curso, periodo, emailInstVerif } = req.body;
+    const query = 'UPDATE ALUNO SET userId = $1, ra = $2, nome = $3, email = $4, curso = $5, periodo = $6, emailInstVerif = $7 WHERE idAluno = $8 RETURNING *';
+    const values = [userId, ra, nome, email, curso, periodo, emailInstVerif, idAluno];
+
+    const result = await db.query(query, values);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Aluno não encontrado' });
+    }
+
+    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    res.json({ message: 'Aluno atualizado com sucesso!', aluno });
   } catch (error) {
-    console.error(`Erro ao atualizar aluno com ID ${idAluno}:`, error);
+    console.error('Erro ao atualizar o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 
 app.delete('/alunos/:idAluno', async (req, res) => {
-  const idAluno = req.params.idAluno;
-
   try {
-    await db.query('DELETE FROM ALUNO WHERE idAluno = $1', [idAluno]);
-    res.status(200).json({ message: `Aluno com ID ${idAluno} deletado com sucesso!` });
+    const idAluno = req.params.idAluno;
+    const result = await db.query('DELETE FROM ALUNO WHERE idAluno = $1 RETURNING *', [idAluno]);
+
+    if (result.rows.length === 0) {
+      return res.status(404).json({ error: 'Aluno não encontrado' });
+    }
+
+    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    res.json({ message: 'Aluno removido com sucesso!', aluno });
   } catch (error) {
-    console.error(`Erro ao deletar aluno com ID ${idAluno}:`, error);
+    console.error('Erro ao remover o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 
 app.get('/alunos', async (req, res) => {
   try {
     const result = await db.query('SELECT * FROM ALUNO');
-    res.status(200).json(result.rows);
+    res.json(result.rows);
   } catch (error) {
-    console.error('Erro ao buscar alunos:', error);
+    console.error('Erro ao obter os alunos:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
 
+
 app.get('/alunos/:idAluno', VerificarToken, async (req, res) => {
-  //res.json({message: 'Funcionalidade protegida'})
+  
   const idAluno = req.params.idAluno;
 
   try {
