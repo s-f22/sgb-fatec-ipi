@@ -33,7 +33,7 @@ db.connect()
 
 app.post('/alunos', async (req, res) => {
   try {
-    const { userId, ra, nome, email, curso, periodo, emailInstVerif } = req.body;
+    const { userId, ra, nome, email, curso, periodo} = req.body;
     const query = 'INSERT INTO ALUNO (userId, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     const values = [userId, ra, nome, email, curso, periodo];
 

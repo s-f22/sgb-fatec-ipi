@@ -13,12 +13,17 @@ import axios from 'axios';
 const Home = () => {
 
   const [alunos, setAlunos] = useState([]);
+  const { user } = useAuth0();
 
   useEffect(() => {
-    axios.get('http://localhost:4000/alunos')
-      .then(response => setAlunos(response.data))
-      .catch(error => console.error('Erro ao buscar alunos:', error));
-  }, []);
+    if(user)
+    console.log(`ID DO USUARIO AUTH0: ${user.sub}`)
+    console.log(user.sub.split('|')[1])
+  
+    return () => {
+      
+    }
+  }, [])
 
   // const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
@@ -36,7 +41,7 @@ const Home = () => {
       {console.log(`Usuario logado: ${isAuthenticated}`)}
       <Header />
       <Outlet />
-      <div className="card-container">
+      {/* <div className="card-container">
         {alunos.map(aluno => (
           <Card key={aluno.idaluno}>
             <Card.Body>
@@ -47,7 +52,7 @@ const Home = () => {
             </Card.Body>
           </Card>
         ))}
-      </div>
+      </div> */}
       <Footer />
     </Container>
   )
