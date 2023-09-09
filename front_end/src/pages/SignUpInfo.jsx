@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Form, InputGroup, Button, Row, Col, Card } from 'react-bootstrap';
+import { Form, InputGroup, Button, Row, Col, Card, Modal } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
@@ -67,7 +67,7 @@ const HorarioSelecaoProfs = () => {
     <Form style={{ display: 'flex', flexDirection: 'column' }}>
       <h3>Horários de trabalho:</h3>
       <p>Selecione abaixo os dias e horários que você trabalha na FATEC Ipiranga.</p>
-      <div style={{ display: 'grid', gridTemplateColumns: 'auto auto auto' }}>
+      <div className='SignUpInfo_Cards_grid'>
         {diasSemana.map(dia => (
           <Card key={dia} style={{ marginBottom: '10px', padding: '10px', width: 300 }}>
             <div>
@@ -91,26 +91,26 @@ const HorarioSelecaoProfs = () => {
                         <Row>
                           <Col>
                             <Form.Group controlId={`${dia}-${periodo}-entrada`}>
-                              <Form.Label>Entrada</Form.Label>
-                              <input
+                              <Form.Label>Entrada:</Form.Label>
+                              <Form.Control
                                 type="time"
+                                style={{ width: 'fit-content' }}
                                 onChange={e =>
                                   handleHorarioChange(dia, periodo, 'entrada', e.target.value)
                                 }
-                                value={horarios[dia]?.[periodo]?.entrada || ''}
-                              />
+                                value={horarios[dia]?.[periodo]?.entrada || ''} />
                             </Form.Group>
                           </Col>
                           <Col>
                             <Form.Group controlId={`${dia}-${periodo}-saida`}>
-                              <Form.Label>Saída</Form.Label>
-                              <input
+                              <Form.Label>Saída:</Form.Label>
+                              <Form.Control
                                 type="time"
+                                style={{ width: 'fit-content' }}
                                 onChange={e =>
                                   handleHorarioChange(dia, periodo, 'saida', e.target.value)
                                 }
-                                value={horarios[dia]?.[periodo]?.saida || ''}
-                              />
+                                value={horarios[dia]?.[periodo]?.saida || ''} />
                             </Form.Group>
                           </Col>
                         </Row>
@@ -128,24 +128,31 @@ const HorarioSelecaoProfs = () => {
 };
 
 
-
 const SignUpInfo = () => {
 
   const { user } = useAuth0();
+
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [userId, setUserId] = useState('64f9dc232f6f2f94869eab0d');
+  const [email, setEmail] = useState('');
+  const [ra, setRA] = useState('');
+  const [nome, setNome] = useState('');
+  const [curso, setCurso] = useState('');
+  const [periodo, setPeriodo] = useState('');
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+
+
 
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+    setShowConfirmationModal(true);
+  }
 
-    // Obtendo os valores dos campos
-    const email = document.getElementById('email').value;
-    const ra = document.getElementById('ra').value;
-    const nome = document.getElementById('nomeCompleto').value;
-    const curso = document.getElementById('curso').value;
-    const periodo = document.getElementById('periodo').value;
-
+  const handleConfirm = async () => {
+    setShowConfirmationModal(false);
     // Enviando os dados para a API
     try {
       const response = await axios.post('http://localhost:4000/alunos', {
@@ -172,6 +179,8 @@ const SignUpInfo = () => {
   const handleSelectProfile = (profile) => {
     setSelectedProfile(profile);
   }
+
+
 
   return (
     <div style={{ display: 'block', padding: 30 }}>
@@ -208,6 +217,8 @@ const SignUpInfo = () => {
                 placeholder="digite"
                 aria-label="digite"
                 aria-describedby="basic-addon2"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <InputGroup.Text id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
@@ -220,6 +231,8 @@ const SignUpInfo = () => {
                   placeholder=""
                   aria-label=""
                   aria-describedby="basic-addon1"
+                  value={ra}
+                  onChange={(e) => setRA(e.target.value)}
                 />
               </InputGroup>
               <InputGroup.Text id="basic-addon1">Nome completo:</InputGroup.Text>
@@ -229,26 +242,33 @@ const SignUpInfo = () => {
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px' }} id="basic-addon1">Curso:<Form.Select id="curso" aria-label="Selecione o curso">
-              <option value="ads">Análise e Desenvolvimento de Sistemas</option>
-              <option value="bigdata">Big Data</option>
-              <option value="rh">Recursos Humanos</option>
-              <option value="eventos">Eventos</option>
-            </Form.Select></InputGroup.Text>
-            <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10 }} id="basic-addon1">Período:<Form.Select id="periodo" aria-label="Selecione o curso">
-              <option value="manha">Manhã</option>
-              <option value="tarde">Tarde</option>
-              <option value="noite">Noite</option>
-            </Form.Select></InputGroup.Text>
+            <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px' }} id="basic-addon1">
+              Curso:<Form.Select id="curso" aria-label="Selecione o curso" value={curso} onChange={(e) => setCurso(e.target.value)}>
+                <option value="ads">Análise e Desenvolvimento de Sistemas</option>
+                <option value="bigdata">Big Data</option>
+                <option value="rh">Recursos Humanos</option>
+                <option value="eventos">Eventos</option>
+              </Form.Select>
+            </InputGroup.Text>
+
+            <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10 }} id="basic-addon1">
+              Período:<Form.Select id="periodo" aria-label="Selecione o curso" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
+                <option value="manha">Manhã</option>
+                <option value="tarde">Tarde</option>
+                <option value="noite">Noite</option>
+              </Form.Select>
+            </InputGroup.Text>
           </Form.Group>
+
           <Button style={{ marginTop: '5px' }} variant="primary" type="submit">
             Enviar
           </Button>
         </Form>
       )}
-
 
       {selectedProfile === 'professor' && (
         <Form>
@@ -272,13 +292,32 @@ const SignUpInfo = () => {
             </InputGroup>
             <HorarioSelecaoProfs />
           </Form.Group>
-          <Link to={'/sgb'}>
-            <Button style={{ marginTop: '5px' }} variant="primary" type="submit">
-              Enviar
-            </Button>
-          </Link>
+
+          <Button style={{ marginTop: '5px' }} variant="primary" type="submit">
+            Enviar
+          </Button>
         </Form>
       )}
+
+      {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+      <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmação de Cadastro</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Um email de validação será enviado para o endereço de email que você forneceu, a fim de confirmar sua identidade e validar seu cadastro.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmationModal(false)}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleConfirm}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+
     </div>
   )
 }
