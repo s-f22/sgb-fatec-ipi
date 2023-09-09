@@ -8,28 +8,23 @@ const Profile = () => {
     return <div>Loading...</div>;
   }
 
+  if (!isAuthenticated) {
+    return <div>Você não está logado.</div>;
+  }
+
+  const firstName = user.name.split(' ')[0];
+
   return (
     isAuthenticated && (
-      <div style={{backgroundColor: 'blueviolet'}}>
-        <img src={user.picture} alt={user?.name} />
-        <h2>{user.name}</h2>
-        <p>{user.email}</p>
+      <div style={{ textAlign: 'right', marginRight: '10px', color: '#555', display: 'flex', alignItems: 'center' }}>
+        <div style={{ marginRight: '10px' }}>
+          <h4 style={{ margin: '0', fontSize: '1em' }}>{firstName}</h4>
+          <p style={{ margin: '0', fontSize: '0.8em' }}>{user.email}</p>
+        </div>
+        <img src={user.picture} alt={user?.name} style={{ borderRadius: '50%', width: '50px', height: '50px' }} />
       </div>
     )
   );
 };
-
-const styles = {
-  userName: {
-    color: '#335259',
-    fontSize: 13,
-    marginTop: -25,
-    marginLeft: 30,
-  }
-
-}
-
-
-
 
 export default Profile;

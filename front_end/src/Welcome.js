@@ -1,4 +1,4 @@
-import { Container } from "react-bootstrap";
+import { Container, Button, Row, Col } from "react-bootstrap";
 import Login from "./components/LogIn"
 import SignUp from "./components/SignUp";
 import { useEffect } from 'react';
@@ -6,8 +6,6 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function Welcome() {
-
-  // ---------------------------- GERENCIAR VIA CONTEXT
   const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
   
@@ -15,18 +13,21 @@ function Welcome() {
     if (isAuthenticated) {
       navigate("/sgb");
     }
-    console.log(`Usuario logado: ${isAuthenticated}`)
   }, [isAuthenticated, navigate]);
-  // ---------------------------- GERENCIAR VIA CONTEXT
   
   return (
-    <Container>
-      <img style={{ display: 'flex', width: 200, marginTop: 20, marginLeft: 'auto', marginRight: 'auto', borderRadius: 5 }} src={"https://i.ibb.co/Y3mM4wk/fatec-logo.png"} alt="" />
-      <div style={{ display: 'flex', justifyContent: 'center', gap: 10, marginTop: 25 }}>
-        <Login />
-        {/* {console.log(`URL referencia: ${window.location.origin}`)} */}
-        <SignUp />
-      </div>
+    <Container className="text-center">
+      <Row className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
+        <Col md={6}>
+          <img style={{borderRadius: 30}} src="https://i.ibb.co/Y3mM4wk/fatec-logo.png" alt="FATEC Logo" className="img-fluid mb-4" />
+          <h1 className="mb-3">Bem-vindo ao Sistema de Gerenciamento de Bancas</h1>
+          <p className="lead text-muted mb-4">FATEC Ipiranga</p>
+          <div style={{ gap: 10 }} className="d-flex justify-content-center mb-4">
+            <Login />
+            <SignUp />
+          </div>
+        </Col>
+      </Row>
     </Container>
   );
 }

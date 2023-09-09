@@ -8,7 +8,7 @@ const SignUp = () => {
 
   return (
     !isAuthenticated && (
-      <Button onClick={() => loginWithRedirect({
+      <Button variant='info' onClick={() => loginWithRedirect({
         authorizationParams: {
           screen_hint: "signup",
           redirect_uri: 'http://localhost:3000/SignUpInfo'

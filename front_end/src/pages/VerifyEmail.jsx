@@ -6,7 +6,7 @@ const VerifyEmail = () => {
   const { idUsuario } = useParams();
 
   useEffect(() => {
-    axios.put(`http://localhost:4000/alunos/${idUsuario}`, { emailInstVerif: true })
+    axios.patch(`http://localhost:4000/alunos/${idUsuario}`, { emailInstVerif: true })
       .then(response => {
         console.log('Resposta do servidor:', response.data);
       })

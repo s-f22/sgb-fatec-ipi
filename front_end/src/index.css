@@ -18,3 +18,28 @@ code {
   grid-gap: 1em;
 }
 
+.App_Sidebar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 200px;
+  height: 100%;
+  background-color: #333;
+  color: #fff;
+}
+
+.App_Sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.App_Sidebar li {
+  margin: 10px 0;
+}
+
+.App_Sidebar a {
+  text-decoration: none;
+  color: #fff;
+}
+
+

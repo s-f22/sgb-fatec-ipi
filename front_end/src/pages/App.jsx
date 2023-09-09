@@ -8,6 +8,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
 import { Container, Card } from 'react-bootstrap';
 import axios from 'axios';
+import Sidebar from '../components/SideBar';
 
 
 const Home = () => {
@@ -15,15 +16,7 @@ const Home = () => {
   const [alunos, setAlunos] = useState([]);
   const { user } = useAuth0();
 
-  useEffect(() => {
-    if(user)
-    console.log(`ID DO USUARIO AUTH0: ${user.sub}`)
-    console.log(user.sub.split('|')[1])
   
-    return () => {
-      
-    }
-  }, [])
 
   // const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
@@ -37,22 +30,15 @@ const Home = () => {
 
 
   return (
-    <Container>
+    <Container >
       {console.log(`Usuario logado: ${isAuthenticated}`)}
       <Header />
-      <Outlet />
-      {/* <div className="card-container">
-        {alunos.map(aluno => (
-          <Card key={aluno.idaluno}>
-            <Card.Body>
-              <Card.Title>{aluno.nome}</Card.Title>
-              <Card.Text>{aluno.email}</Card.Text>
-              <Card.Text>{aluno.curso}</Card.Text>
-              <Card.Text>{aluno.periodo}</Card.Text>
-            </Card.Body>
-          </Card>
-        ))}
-      </div> */}
+      <div style={{ display: 'flex' }}>
+        <Sidebar />
+        <div style={{ flex: 1 }}>
+          <Outlet />
+        </div>
+      </div>
       <Footer />
     </Container>
   )
