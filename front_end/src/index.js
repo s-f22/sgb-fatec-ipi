@@ -14,6 +14,7 @@ import ErrorPage from '../src/pages/ErrorPage';
 import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
+import VerifyEmail from './pages/VerifyEmail';
 
 
 
@@ -31,6 +32,10 @@ const AppRoutes = () => {
     {
       path: '/SignUpInfo',
       element: <SignUpInfo />,
+    },
+    {
+      path: '/VerifyEmail/:idUsuario',
+      element: <VerifyEmail />,
     },
     {
       path: '/sgb',

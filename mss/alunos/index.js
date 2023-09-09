@@ -6,9 +6,10 @@ require('dotenv').config({ path: '../../.env' });
 app.use(bodyParser.json());
 
 const jwt = require('jsonwebtoken');
+const nodemailer = require('nodemailer');
 
 
- const VerificarToken = require('../middlewares/VerificarToken.js');
+const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
 
 
@@ -32,19 +33,61 @@ db.connect()
 
 
 app.post('/alunos', async (req, res) => {
+
   try {
-    const { userId, ra, nome, email, curso, periodo} = req.body;
+
+    const { userId, ra, nome, email, curso, periodo } = req.body;
+
     const query = 'INSERT INTO ALUNO (userId, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING *';
     const values = [userId, ra, nome, email, curso, periodo];
 
     const result = await db.query(query, values);
 
     const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
-    
+
     // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
     const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
 
     res.status(201).json({ message: 'Aluno cadastrado com sucesso!', token });
+
+    if (res.status(201)) {
+
+      // Envio de email ao usuário com link de validação
+
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: process.env.REACT_APP_EMAIL_USER,
+          pass: process.env.REACT_APP_EMAIL_PWD
+        },
+        tls: {
+          rejectUnauthorized: false
+        }
+      });
+
+      const mailOptions = {
+        from: process.env.REACT_APP_EMAIL_USER,
+        to: email,
+        subject: "Bem vindo ao SGB - FATEC Ipiranga",
+        
+        text: `Olá ${nome.split(' ')[0]}, bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga! \n
+        Para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:\n
+        \n<a href="http://localhost:3000/VerifyEmail/${aluno.idAluno}">Clique aqui para validar o cadastro</a>\n
+
+        \nAtenciosamente,
+        \nEquipe SGB
+        `
+      }
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error)
+        } else {
+          console.log("Email enviado:", info.response)
+        }
+      })
+    }
+
   } catch (error) {
     console.error('Erro ao cadastrar o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -108,7 +151,7 @@ app.get('/alunos', async (req, res) => {
 
 
 app.get('/alunos/:idAluno', VerificarToken, async (req, res) => {
-  
+
   const idAluno = req.params.idAluno;
 
   try {
