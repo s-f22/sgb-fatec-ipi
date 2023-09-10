@@ -53,7 +53,6 @@ app.post('/alunos', async (req, res) => {
     if (res.status(201)) {
 
       // Envio de email ao usuário com link de validação
-
       const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
@@ -73,12 +72,11 @@ app.post('/alunos', async (req, res) => {
             <p>Olá, ${nome.split(' ')[0]}</p>
             <p>Bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga!</p>
             <p>Para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
-            <p><a href="http://localhost:3000/VerifyEmail/${aluno.idAluno}">Clique aqui para validar o cadastro</a></p>
+            <p><a href="http://localhost:3000/VerifyEmailAluno/${aluno.idAluno}">Clique aqui para validar o cadastro</a></p>
             <p>Atenciosamente,</p>
             <p>Equipe SGB</p>
         `
-    };
-    
+      };
 
       transporter.sendMail(mailOptions, (error, info) => {
         if (error) {
@@ -123,8 +121,8 @@ app.put('/alunos/:idAluno', async (req, res) => {
 app.patch('/alunos/:idAluno', async (req, res) => {
   try {
     const idAluno = req.params.idAluno;
-    const { emailInstVerif } = req.body; 
-    
+    const { emailInstVerif } = req.body;
+
     if (emailInstVerif !== true) {
       return res.status(400).json({ error: 'O atributo emailInstVerif deve ser true para a atualização.' });
     }

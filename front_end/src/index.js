@@ -5,6 +5,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import "primeicons/primeicons.css";
 import "primeflex/primeflex.css";
 import "primereact/resources/themes/saga-blue/theme.css";
+import 'react-toastify/dist/ReactToastify.css';
 
 import { Auth0Provider } from '@auth0/auth0-react';
 import { createBrowserRouter, RouterProvider } from 'react-router-dom';
@@ -14,7 +15,9 @@ import ErrorPage from '../src/pages/ErrorPage';
 import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
-import VerifyEmail from './pages/VerifyEmail';
+import VerifyEmailAluno from './pages/VerifyEmailAluno';
+import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
+import CustomToastContainer from '../src/components/ToastContainer';
 
 
 
@@ -34,8 +37,12 @@ const AppRoutes = () => {
       element: <SignUpInfo />,
     },
     {
-      path: '/VerifyEmail/:idUsuario',
-      element: <VerifyEmail />,
+      path: '/VerifyEmailAluno/:idAluno',
+      element: <VerifyEmailAluno />,
+    },
+    {
+      path: '/VerifyEmailProfessor/:idProfessor',
+      element: <VerifyEmailProfessor />,
     },
     {
       path: '/sgb',
@@ -63,6 +70,7 @@ root.render(
     }}
   >
     <RouterProvider router={AppRoutes()} /> {/* Chame AppRoutes como uma função */}
+    <CustomToastContainer />
   </Auth0Provider>,
 );
 

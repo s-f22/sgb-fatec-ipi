@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Form, InputGroup, Button, Row, Col, Card, Modal } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { toast, ToastContainer } from 'react-toastify';
+// import 'react-toastify/dist/ReactToastify.css';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
+import { useNavigate } from 'react-router-dom';
 // import HorarioSelecaoProfs from '../components/HorarioSelecaoProfs'
 
 
@@ -131,7 +133,7 @@ const HorarioSelecaoProfs = () => {
 const SignUpInfo = () => {
 
   const { user } = useAuth0();
-
+  const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
   const [userId, setUserId] = useState('64f9dc232f6f2f94869eab0d');
   const [email, setEmail] = useState('');
@@ -143,16 +145,18 @@ const SignUpInfo = () => {
 
 
 
-
-
   const handleSubmit = async (e) => {
-
     e.preventDefault();
     setShowConfirmationModal(true);
   }
 
+
+
   const handleConfirm = async () => {
+
+    // setEmail(email + '@fatec.sp.gov.br')
     setShowConfirmationModal(false);
+
     // Enviando os dados para a API
     try {
       const response = await axios.post('http://localhost:4000/alunos', {
@@ -162,15 +166,35 @@ const SignUpInfo = () => {
         email,
         curso,
         periodo
-      });
+      })
 
-      console.log('Dados enviados com sucesso:', response.data);
+      // Se o cadastro for bem-sucedido, exibe o toast
+      toast.success('Aluno cadastrado com sucesso!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
 
-      // Aqui você pode adicionar código para lidar com a resposta da API, se necessário
+      console.log('Dados enviados com sucesso:', response.data)
+
+      navigate("/sgb");
 
     } catch (error) {
+
+      // Exibe o toast de erro
+      toast.error('Erro ao cadastrar aluno. Tente novamente mais tarde.', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
       console.error('Erro ao enviar os dados:', error);
-      // Aqui você pode adicionar código para lidar com o erro
     }
   };
 
@@ -210,12 +234,12 @@ const SignUpInfo = () => {
         <Form onSubmit={handleSubmit}>
           <Form.Group>
             <Form.Label htmlFor="email"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup className="mb-3">
+            <InputGroup style={{ width: 400 }} className="mb-3">
               <Form.Control
                 id="email"
                 type="email"
-                placeholder="digite"
-                aria-label="digite"
+                placeholder="seu email"
+                aria-label="seu email"
                 aria-describedby="basic-addon2"
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
@@ -248,6 +272,7 @@ const SignUpInfo = () => {
             </InputGroup>
             <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px' }} id="basic-addon1">
               Curso:<Form.Select id="curso" aria-label="Selecione o curso" value={curso} onChange={(e) => setCurso(e.target.value)}>
+                <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="ads">Análise e Desenvolvimento de Sistemas</option>
                 <option value="bigdata">Big Data</option>
                 <option value="rh">Recursos Humanos</option>
@@ -257,6 +282,7 @@ const SignUpInfo = () => {
 
             <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10 }} id="basic-addon1">
               Período:<Form.Select id="periodo" aria-label="Selecione o curso" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
+                <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="manha">Manhã</option>
                 <option value="tarde">Tarde</option>
                 <option value="noite">Noite</option>
@@ -317,6 +343,8 @@ const SignUpInfo = () => {
         </Modal.Footer>
       </Modal>
       {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+
+      {/* <ToastContainer /> */}
 
     </div>
   )
