@@ -3,6 +3,8 @@ mss/barramento_de_eventos/node_modules/
 mss/cargo_professor/node_modules/
 mss/consulta/node_modules/
 mss/professores/node_modules/
+mss/dia_aula/node_modules/
+mss/horario_aula/node_modules/
 mss/login/node_modules/
 
 front-end/node_modules/

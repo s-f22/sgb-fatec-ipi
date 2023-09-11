@@ -136,7 +136,7 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [userId, setUserId] = useState('6439dc232f6f28u4899eab0d');
+  const [userId, setUserId] = useState('6439dc23556f28u4899eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
