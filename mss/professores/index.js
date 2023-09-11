@@ -28,10 +28,10 @@ const pool = new Pool({
 
 app.post('/professores', async (req, res) => {
   try {
-    const { userId, nome, email, dispOrient, emailInstVerif } = req.body;
+    const { userId, nome, email } = req.body;
 
-    const query = 'INSERT INTO professor (userId, nome, email, dispOrient, emailInstVerif) VALUES ($1, $2, $3, $4, $5) RETURNING idProfessor, userId, nome, email, dispOrient, emailInstVerif';
-    const values = [userId, nome, email, dispOrient, emailInstVerif];
+    const query = 'INSERT INTO professor (userId, nome, email) VALUES ($1, $2, $3) RETURNING idProfessor, userId, nome, email, dispOrient, emailInstVerif';
+    const values = [userId, nome, email];
 
     const result = await pool.query(query, values);
 

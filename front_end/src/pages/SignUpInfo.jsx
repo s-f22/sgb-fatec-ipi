@@ -1,7 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { Form, InputGroup, Button, Row, Col, Card, Modal } from 'react-bootstrap';
-import { toast, ToastContainer } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
+import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
@@ -13,6 +12,8 @@ const HorarioSelecaoProfs = () => {
   const periodos = ['Manhã', 'Tarde', 'Noite'];
   const [diasSelecionados, setDiasSelecionados] = useState([]);
   const [horarios, setHorarios] = useState({});
+  const [horariosTrabalho, setHorariosTrabalho] = useState([]);
+
 
   const handleDiaChange = (dia, isChecked) => {
     setDiasSelecionados(prevState => {
@@ -135,13 +136,17 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [userId, setUserId] = useState('64f9dc232f6f2f94869eab0d');
+  const [userId, setUserId] = useState('6439dc232f6f28u4899eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
   const [curso, setCurso] = useState('');
   const [periodo, setPeriodo] = useState('');
+  const [dispOrient, setDispOrient] = useState(true);
   const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+  const [showConfirmationModalProf, setShowConfirmationModalProf] = useState(false);
+
+  
 
 
 
@@ -149,12 +154,59 @@ const SignUpInfo = () => {
     e.preventDefault();
     setShowConfirmationModal(true);
   }
+  const handleSubmitProfessor = async (e) => {
+    e.preventDefault();
+    setShowConfirmationModalProf(true);
+  }
+
+
+  const handleConfirmProfessor = async () => {
+    setShowConfirmationModalProf(false);
+
+    // Enviando os dados do professor para a API
+    try {
+      const response = await axios.post('http://localhost:4001/professores', {
+        userId,
+        nome,
+        email,
+        dispOrient
+      })
+
+      // Se o cadastro for bem-sucedido, exibe o toast
+      toast.success('Professor cadastrado com sucesso!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+
+      console.log('Dados do professor enviados com sucesso:', response.data)
+
+      // Navega para a próxima página após o cadastro
+      navigate("/sgb");
+
+    } catch (error) {
+
+      // Exibe o toast de erro
+      toast.error('Erro ao cadastrar professor. Tente novamente mais tarde.', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      console.error('Erro ao enviar os dados do professor:', error);
+    }
+  };
 
 
 
   const handleConfirm = async () => {
 
-    // setEmail(email + '@fatec.sp.gov.br')
     setShowConfirmationModal(false);
 
     // Enviando os dados para a API
@@ -237,7 +289,7 @@ const SignUpInfo = () => {
             <InputGroup style={{ width: 400 }} className="mb-3">
               <Form.Control
                 id="email"
-                type="email"
+                type="text"
                 placeholder="seu email"
                 aria-label="seu email"
                 aria-describedby="basic-addon2"
@@ -297,7 +349,7 @@ const SignUpInfo = () => {
       )}
 
       {selectedProfile === 'professor' && (
-        <Form>
+        <Form onSubmit={handleSubmitProfessor}>
           <Form.Group>
             <Form.Label htmlFor="basic-url"><b>E-mail Institucional:</b></Form.Label>
             <InputGroup className="mb-3">
@@ -305,6 +357,8 @@ const SignUpInfo = () => {
                 placeholder="digite"
                 aria-label="digite"
                 aria-describedby="basic-addon2"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
               <InputGroup.Text id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
@@ -314,14 +368,19 @@ const SignUpInfo = () => {
                 placeholder=""
                 aria-label=""
                 aria-describedby="basic-addon1"
+                value={nome}
+                onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <HorarioSelecaoProfs />
+            <HorarioSelecaoProfs /> {/* Mantém a seleção de horários */}
+            <Button
+              style={{ marginTop: '5px' }}
+              variant="primary"
+              onClick={() => setShowConfirmationModalProf(true)}
+            >
+              Enviar
+            </Button>
           </Form.Group>
-
-          <Button style={{ marginTop: '5px' }} variant="primary" type="submit">
-            Enviar
-          </Button>
         </Form>
       )}
 
@@ -338,6 +397,25 @@ const SignUpInfo = () => {
             Cancelar
           </Button>
           <Button variant="primary" onClick={handleConfirm}>
+            Confirmar
+          </Button>
+        </Modal.Footer>
+      </Modal>
+      {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+
+      {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+      <Modal show={showConfirmationModalProf} onHide={() => setShowConfirmationModalProf(false)}>
+        <Modal.Header closeButton>
+          <Modal.Title>Confirmação de Cadastro Professor</Modal.Title>
+        </Modal.Header>
+        <Modal.Body>
+          Um email de validação será enviado para o endereço de email que você forneceu, a fim de confirmar sua identidade e validar seu cadastro.
+        </Modal.Body>
+        <Modal.Footer>
+          <Button variant="secondary" onClick={() => setShowConfirmationModalProf(false)}>
+            Cancelar
+          </Button>
+          <Button variant="primary" onClick={handleConfirmProfessor}>
             Confirmar
           </Button>
         </Modal.Footer>
