@@ -23,17 +23,17 @@ const pool = new Pool({
 
 app.post('/dia_aula', async (req, res) => {
   try {
-    const { idProfessor, diaSemana } = req.body;
+    const { id_professor, dia_semana } = req.body;
 
-    const query = 'INSERT INTO dia_aula (idProfessor, diaSemana) VALUES ($1, $2) RETURNING idDiaAula, idProfessor, diaSemana';
-    const values = [idProfessor, diaSemana];
+    const query = 'INSERT INTO dia_aula (id_professor, dia_semana) VALUES ($1, $2) RETURNING id_dia_aula, id_professor, dia_semana';
+    const values = [id_professor, dia_semana];
 
     const result = await pool.query(query, values);
 
     const diaAula = {
-      idDiaAula: result.rows[0].iddiaaula,
-      idProfessor: result.rows[0].idprofessor,
-      diaSemana: result.rows[0].diasemana
+      id_dia_aula: result.rows[0].id_dia_aula,
+      id_professor: result.rows[0].id_professor,
+      dia_semana: result.rows[0].dia_semana
     };
 
     res.status(201).json({ message: 'Dia de aula cadastrado com sucesso!', diaAula });
@@ -52,34 +52,34 @@ app.get('/dia_aula', async (req, res) => {
   }
 });
 
-app.get('/dia_aula/:idDiaAula', async (req, res) => {
-  const idDiaAula = req.params.idDiaAula;
+app.get('/dia_aula/:id_dia_aula', async (req, res) => {
+  const id_dia_aula = req.params.id_dia_aula;
 
   try {
-    const result = await pool.query('SELECT * FROM dia_aula WHERE idDiaAula = $1', [idDiaAula]);
+    const result = await pool.query('SELECT * FROM dia_aula WHERE id_dia_aula = $1', [id_dia_aula]);
     if (result.rows.length === 0) {
-      res.status(404).json({ error: `Dia de aula com ID ${idDiaAula} não encontrado.` });
+      res.status(404).json({ error: `Dia de aula com ID ${id_dia_aula} não encontrado.` });
     } else {
       const diaAula = {
-        idDiaAula: result.rows[0].iddiaaula,
-        idProfessor: result.rows[0].idprofessor,
-        diaSemana: result.rows[0].diasemana
+        id_dia_aula: result.rows[0].id_dia_aula,
+        id_professor: result.rows[0].id_professor,
+        dia_semana: result.rows[0].diasemana
       };
       res.status(200).json(diaAula);
     }
   } catch (error) {
-    console.error(`Erro ao buscar dia de aula com ID ${idDiaAula}:`, error);
+    console.error(`Erro ao buscar dia de aula com ID ${id_dia_aula}:`, error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
-app.put('/dia_aula/:idDiaAula', async (req, res) => {
+app.put('/dia_aula/:id_dia_aula', async (req, res) => {
   try {
-    const idDiaAula = req.params.idDiaAula;
-    const { idProfessor, diaSemana } = req.body;
+    const id_dia_aula = req.params.id_dia_aula;
+    const { id_professor, dia_semana } = req.body;
     const result = await pool.query(
-      'UPDATE dia_aula SET idProfessor=$1, diaSemana=$2 WHERE idDiaAula=$3 RETURNING *',
-      [idProfessor, diaSemana, idDiaAula]
+      'UPDATE dia_aula SET id_professor=$1, dia_semana=$2 WHERE id_dia_aula=$3 RETURNING *',
+      [id_professor, dia_semana, id_dia_aula]
     );
     res.json(result.rows[0]);
   } catch (error) {
@@ -87,15 +87,22 @@ app.put('/dia_aula/:idDiaAula', async (req, res) => {
   }
 });
 
-app.delete('/dia_aula/:idDiaAula', async (req, res) => {
+app.delete('/dia_aula/:id_dia_aula', async (req, res) => {
   try {
-    const idDiaAula = req.params.idDiaAula;
-    const result = await pool.query('DELETE FROM dia_aula WHERE idDiaAula=$1', [idDiaAula]);
-    res.json({ message: 'Dia de aula deletado com sucesso' });
+    const id_dia_aula = req.params.id_dia_aula;
+    const result = await pool.query('DELETE FROM dia_aula WHERE id_dia_aula = $1', [id_dia_aula]);
+
+    if (result.rowCount === 1) {
+      res.json({ message: 'Dia de aula deletado com sucesso' });
+    } else {
+      res.status(404).json({ error: 'Dia de aula não encontrado' });
+    }
   } catch (error) {
+    console.error('Erro ao deletar dia de aula:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

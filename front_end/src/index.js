@@ -19,6 +19,7 @@ import VerifyEmailAluno from './pages/VerifyEmailAluno';
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
 
+// require('dotenv').config({ path: '../../.env' });
 
 
 const domain = process.env.REACT_APP_AUTH0_DOMAIN;

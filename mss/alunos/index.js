@@ -36,19 +36,19 @@ app.post('/alunos', async (req, res) => {
 
   try {
 
-    const { userId, ra, nome, email, curso, periodo } = req.body;
+    const { user_id, ra, nome, email, curso, periodo } = req.body;
 
-    const query = 'INSERT INTO ALUNO (userId, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING idAluno, userId, ra, nome, email, curso, periodo';
-    const values = [userId, ra, nome, email, curso, periodo];
+    const query = 'INSERT INTO aluno (user_id, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_aluno, user_id, ra, nome, email, curso, periodo';
+    const values = [user_id, ra, nome, email, curso, periodo];
 
     const result = await db.query(query, values);
 
-    const aluno = { idAluno: result.rows[0].idaluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
 
     // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
     const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ message: 'Aluno cadastrado com sucesso!', token });
+    res.status(201).json({ message: 'aluno cadastrado com sucesso!', token });
 
     if (res.status(201)) {
 
@@ -72,7 +72,7 @@ app.post('/alunos', async (req, res) => {
             <p>Olá, ${nome.split(' ')[0]}</p>
             <p>Bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga!</p>
             <p>Para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
-            <p><a href="http://localhost:3000/VerifyEmailAluno/${aluno.idAluno}">Clique aqui para validar o cadastro</a></p>
+            <p><a href="http://localhost:3000/VerifyEmailaluno/${aluno.id_aluno}">Clique aqui para validar o cadastro</a></p>
             <p>Atenciosamente,</p>
             <p>Equipe SGB</p>
         `
@@ -95,21 +95,21 @@ app.post('/alunos', async (req, res) => {
 
 
 
-app.put('/alunos/:idAluno', async (req, res) => {
+app.put('/alunos/:id_aluno', async (req, res) => {
   try {
-    const idAluno = req.params.idAluno;
-    const { userId, ra, nome, email, curso, periodo, emailInstVerif } = req.body;
-    const query = 'UPDATE ALUNO SET userId = $1, ra = $2, nome = $3, email = $4, curso = $5, periodo = $6, emailInstVerif = $7 WHERE idAluno = $8 RETURNING *';
-    const values = [userId, ra, nome, email, curso, periodo, emailInstVerif, idAluno];
+    const id_aluno = req.params.id_aluno;
+    const { user_id, ra, nome, email, curso, periodo, email_inst_verif } = req.body;
+    const query = 'UPDATE aluno SET user_id = $1, ra = $2, nome = $3, email = $4, curso = $5, periodo = $6, email_inst_verif = $7 WHERE id_aluno = $8 RETURNING *';
+    const values = [user_id, ra, nome, email, curso, periodo, email_inst_verif, id_aluno];
 
     const result = await db.query(query, values);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado' });
+      return res.status(404).json({ error: 'aluno não encontrado' });
     }
 
-    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
-    res.json({ message: 'Aluno atualizado com sucesso!', aluno });
+    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    res.json({ message: 'aluno atualizado com sucesso!', aluno });
   } catch (error) {
     console.error('Erro ao atualizar o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -118,26 +118,26 @@ app.put('/alunos/:idAluno', async (req, res) => {
 
 
 
-app.patch('/alunos/:idAluno', async (req, res) => {
+app.patch('/alunos/:id_aluno', async (req, res) => {
   try {
-    const idAluno = req.params.idAluno;
-    const { emailInstVerif } = req.body;
+    const id_aluno = req.params.id_aluno;
+    const { email_inst_verif } = req.body;
 
-    if (emailInstVerif !== true) {
-      return res.status(400).json({ error: 'O atributo emailInstVerif deve ser true para a atualização.' });
+    if (email_inst_verif !== true) {
+      return res.status(400).json({ error: 'O atributo email_inst_verif deve ser true para a atualização.' });
     }
 
-    const query = 'UPDATE ALUNO SET emailInstVerif = $1 WHERE idAluno = $2 RETURNING *';
-    const values = [emailInstVerif, idAluno];
+    const query = 'UPDATE aluno SET email_inst_verif = $1 WHERE id_aluno = $2 RETURNING *';
+    const values = [email_inst_verif, id_aluno];
 
     const result = await db.query(query, values);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado' });
+      return res.status(404).json({ error: 'aluno não encontrado' });
     }
 
-    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
-    res.json({ message: 'Aluno atualizado com sucesso!', aluno });
+    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    res.json({ message: 'aluno atualizado com sucesso!', aluno });
   } catch (error) {
     console.error('Erro ao atualizar o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -146,17 +146,17 @@ app.patch('/alunos/:idAluno', async (req, res) => {
 
 
 
-app.delete('/alunos/:idAluno', async (req, res) => {
+app.delete('/alunos/:id_aluno', async (req, res) => {
   try {
-    const idAluno = req.params.idAluno;
-    const result = await db.query('DELETE FROM ALUNO WHERE idAluno = $1 RETURNING *', [idAluno]);
+    const id_aluno = req.params.id_aluno;
+    const result = await db.query('DELETE FROM aluno WHERE id_aluno = $1 RETURNING *', [id_aluno]);
 
     if (result.rows.length === 0) {
-      return res.status(404).json({ error: 'Aluno não encontrado' });
+      return res.status(404).json({ error: 'aluno não encontrado' });
     }
 
-    const aluno = { idAluno: result.rows[0].idAluno, nome: result.rows[0].nome, email: result.rows[0].email };
-    res.json({ message: 'Aluno removido com sucesso!', aluno });
+    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    res.json({ message: 'aluno removido com sucesso!', aluno });
   } catch (error) {
     console.error('Erro ao remover o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -167,7 +167,7 @@ app.delete('/alunos/:idAluno', async (req, res) => {
 
 app.get('/alunos', async (req, res) => {
   try {
-    const result = await db.query('SELECT * FROM ALUNO');
+    const result = await db.query('SELECT * FROM aluno');
     res.json(result.rows);
   } catch (error) {
     console.error('Erro ao obter os alunos:', error);
@@ -177,26 +177,26 @@ app.get('/alunos', async (req, res) => {
 
 
 
-// app.get('/alunos/:idAluno', VerificarToken, async (req, res) => {
-app.get('/alunos/:idAluno', async (req, res) => {
+// app.get('/alunos/:id_aluno', VerificarToken, async (req, res) => {
+app.get('/alunos/:id_aluno', async (req, res) => {
 
-  const idAluno = req.params.idAluno;
+  const id_aluno = req.params.id_aluno;
 
   try {
-    const result = await db.query('SELECT * FROM ALUNO WHERE idAluno = $1', [idAluno]);
+    const result = await db.query('SELECT * FROM aluno WHERE id_aluno = $1', [id_aluno]);
     if (result.rows.length === 0) {
-      res.status(404).json({ error: `Aluno com ID ${idAluno} não encontrado.` });
+      res.status(404).json({ error: `aluno com ID ${id_aluno} não encontrado.` });
     } else {
       res.status(200).json(result.rows[0]);
     }
   } catch (error) {
-    console.error(`Erro ao buscar aluno com ID ${idAluno}:`, error);
+    console.error(`Erro ao buscar aluno com ID ${id_aluno}:`, error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
 
 
-app.listen(process.env.MSS_PORTA_ALUNOS, () => {
-  console.log(`alunos: porta ${process.env.MSS_PORTA_ALUNOS}`);
+app.listen(process.env.MSS_PORTA_alunoS, () => {
+  console.log(`alunos: porta ${process.env.MSS_PORTA_alunoS}`);
 });

@@ -23,17 +23,17 @@ const pool = new Pool({
 
 app.post('/horario_aula', async (req, res) => {
   try {
-    const { idProfessor, idDiaAula, entrada, saida } = req.body;
+    const { id_professor, id_dia_aula, entrada, saida } = req.body;
 
-    const query = 'INSERT INTO horario_aula (idProfessor, idDiaAula, entrada, saida) VALUES ($1, $2, $3, $4) RETURNING idHorarioAula, idProfessor, idDiaAula, entrada, saida';
-    const values = [idProfessor, idDiaAula, entrada, saida];
+    const query = 'INSERT INTO horario_aula (id_professor, id_dia_aula, entrada, saida) VALUES ($1, $2, $3, $4) RETURNING id_horario_aula, id_professor, id_dia_aula, entrada, saida';
+    const values = [id_professor, id_dia_aula, entrada, saida];
 
     const result = await pool.query(query, values);
 
     const horarioAula = {
-      idHorarioAula: result.rows[0].idhorarioaula,
-      idProfessor: result.rows[0].idprofessor,
-      idDiaAula: result.rows[0].iddiaaula,
+      id_horario_aula: result.rows[0].id_horario_aula,
+      id_professor: result.rows[0].id_professor,
+      id_dia_aula: result.rows[0].id_dia_aula,
       entrada: result.rows[0].entrada,
       saida: result.rows[0].saida
     };
@@ -54,36 +54,36 @@ app.get('/horario_aula', async (req, res) => {
   }
 });
 
-app.get('/horario_aula/:idHorarioAula', async (req, res) => {
-  const idHorarioAula = req.params.idHorarioAula;
+app.get('/horario_aula/:id_horario_aula', async (req, res) => {
+  const id_horario_aula = req.params.id_horario_aula;
 
   try {
-    const result = await pool.query('SELECT * FROM horario_aula WHERE idHorarioAula = $1', [idHorarioAula]);
+    const result = await pool.query('SELECT * FROM horario_aula WHERE id_horario_aula = $1', [id_horario_aula]);
     if (result.rows.length === 0) {
-      res.status(404).json({ error: `Horário de aula com ID ${idHorarioAula} não encontrado.` });
+      res.status(404).json({ error: `Horário de aula com ID ${id_horario_aula} não encontrado.` });
     } else {
       const horarioAula = {
-        idHorarioAula: result.rows[0].idhorarioaula,
-        idProfessor: result.rows[0].idprofessor,
-        idDiaAula: result.rows[0].iddiaaula,
+        id_horario_aula: result.rows[0].idhorarioaula,
+        id_professor: result.rows[0].idprofessor,
+        id_dia_aula: result.rows[0].iddiaaula,
         entrada: result.rows[0].entrada,
         saida: result.rows[0].saida
       };
       res.status(200).json(horarioAula);
     }
   } catch (error) {
-    console.error(`Erro ao buscar horário de aula com ID ${idHorarioAula}:`, error);
+    console.error(`Erro ao buscar horário de aula com ID ${id_horario_aula}:`, error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
 
-app.put('/horario_aula/:idHorarioAula', async (req, res) => {
+app.put('/horario_aula/:id_horario_aula', async (req, res) => {
   try {
-    const idHorarioAula = req.params.idHorarioAula;
-    const { idProfessor, idDiaAula, entrada, saida } = req.body;
+    const id_horario_aula = req.params.id_horario_aula;
+    const { id_professor, id_dia_aula, entrada, saida } = req.body;
     const result = await pool.query(
-      'UPDATE horario_aula SET idProfessor=$1, idDiaAula=$2, entrada=$3, saida=$4 WHERE idHorarioAula=$5 RETURNING *',
-      [idProfessor, idDiaAula, entrada, saida, idHorarioAula]
+      'UPDATE horario_aula SET id_professor=$1, id_dia_aula=$2, entrada=$3, saida=$4 WHERE id_horario_aula=$5 RETURNING *',
+      [id_professor, id_dia_aula, entrada, saida, id_horario_aula]
     );
     res.json(result.rows[0]);
   } catch (error) {
@@ -91,15 +91,30 @@ app.put('/horario_aula/:idHorarioAula', async (req, res) => {
   }
 });
 
-app.delete('/horario_aula/:idHorarioAula', async (req, res) => {
+app.delete('/horario_aula/:id_horario_aula', async (req, res) => {
   try {
-    const idHorarioAula = req.params.idHorarioAula;
-    const result = await pool.query('DELETE FROM horario_aula WHERE idHorarioAula=$1', [idHorarioAula]);
+    const id_horario_aula = req.params.id_horario_aula;
+
+    // Validar se id_horario_aula é um número
+    if (isNaN(id_horario_aula)) {
+      return res.status(400).json({ error: 'ID inválido' });
+    }
+
+    const result = await pool.query('DELETE FROM horario_aula WHERE id_horario_aula=$1', [id_horario_aula]);
+
+    // Verificar se algum registro foi excluído
+    if (result.rowCount === 0) {
+      return res.status(404).json({ error: 'ID não encontrado' });
+    }
+
     res.json({ message: 'Horário de aula deletado com sucesso' });
+
   } catch (error) {
+    console.error(error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

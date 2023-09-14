@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+// import HorarioSelecaoProfs from '../components/HorarioSelecaoProfs'
 
 
 const SignUpInfo = () => {
@@ -11,173 +12,58 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [user_id, setUser_id] = useState('*#3[n8=62see+s,4824eab0d');
+  const [user_id, setUser_id] = useState('193,n8=61srf2su4818eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
   const [curso, setCurso] = useState('');
   const [periodo, setPeriodo] = useState('');
-  const [showConfirmationModalAluno, setShowConfirmationModalAluno] = useState(false);
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
   const [showConfirmationModalProf, setShowConfirmationModalProf] = useState(false);
-  const [username, setUsername] = useState('');
 
   const diasSemana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
   const periodos = ['Manhã', 'Tarde', 'Noite'];
   const [diasSelecionados, setDiasSelecionados] = useState([]);
   const [horarios, setHorarios] = useState({});
+  const [horariosTrabalho, setHorariosTrabalho] = useState([]);
 
 
-
-
-  const handleUsernameChange = (e) => {
-    const value = e.target.value;
-    const valorLimpo = value.replace(/@.*$|\.com/g, '');
-    setUsername(valorLimpo);
-  };
-
-
-
-  const handleSelectProfile = (profile) => {
-    setSelectedProfile(profile);
-  }
-
-
-  const handleSubmitAluno = async (e) => {
-    e.preventDefault();
-
-    const fullEmail = `${username}@fatec.sp.gov.br`;
-    if (fullEmail === "@fatec.sp.gov.br") {
-      alert("Digite seu endereço de e-mail institucional")
-    } else {
-      alert(fullEmail);
-      setEmail(fullEmail)
-      setUsername('')
-    }
-
-    setShowConfirmationModalAluno(true);
-  }
-
-
-  const handleConfirmAluno = async () => {
-
-    setShowConfirmationModalAluno(false);
-
-    try {
-      const response = await axios.post('http://localhost:4000/alunos', {
-        user_id,
-        ra,
-        nome,
-        email,
-        curso,
-        periodo
-      })
-
-      // Se o cadastro for bem-sucedido, exibe o toast
-      toast.success('Aluno cadastrado com sucesso!', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      })
-
-      console.log('Dados enviados com sucesso:', response.data)
-
-      navigate("/sgb");
-
-    } catch (error) {
-
-      // Exibe o toast de erro
-      toast.error('Erro ao cadastrar aluno. Tente novamente mais tarde.', {
-        position: "top-center",
-        autoClose: 3000,
-        hideProgressBar: true,
-        closeOnClick: true,
-        pauseOnHover: true,
-        draggable: true,
-      });
-
-      console.error('Erro ao enviar os dados:', error);
-    }
-  };
-
-
-
-  const CadastrarProfessor = async (dadosProfessor) => {
+  const cadastrarProfessor = async (dadosProfessor) => {
     try {
       const response = await axios.post('http://localhost:4001/professores', dadosProfessor);
       console.log('Resposta do servidor:', response.data);
-      const idProfessor = response.data.professor.id_professor;
-      console.log('PROFESSOR:', idProfessor);
-
-      await Cadastrar_Dia_Horario_Aula(idProfessor, diasSelecionados, horarios);
-
-      return idProfessor;
+      return response.data.id_professor;
     } catch (error) {
       throw new Error(`Erro ao cadastrar professor: ${error}`);
     }
   };
+  
+  
 
-
-
-  const Cadastrar_Dia_Horario_Aula = async (idProfessor, diasSemana, horarios) => {
+  const cadastrarDiaAula = async (idProfessor, diaSemana) => {
     try {
-
-      const diaSemanaToInt = (diaSemana) => {
-        const diasSemana = {
-          'Segunda-feira': 1,
-          'Terça-feira': 2,
-          'Quarta-feira': 3,
-          'Quinta-feira': 4,
-          'Sexta-feira': 5,
-          'Sábado': 6
-        };
-        return diasSemana[diaSemana];
-      }
-
-      const diaPromises = [];
-
-      for (const diaSemana of diasSemana) {
-        const diaSemanaInt = diaSemanaToInt(diaSemana);
-
-        const responseDiaAula = await axios.post('http://localhost:4002/dia_aula', {
-          id_professor: idProfessor,
-          dia_semana: diaSemanaInt
-        });
-
-        const idDiaAula = responseDiaAula.data.diaAula.id_dia_aula;
-
-        const horarioPromises = [];
-
-        for (const periodo in horarios[diaSemana]) {
-          const horarioInfo = horarios[diaSemana][periodo];
-          if (horarioInfo && horarioInfo.entrada && horarioInfo.saida) {
-            const entrada = horarioInfo.entrada;
-            const saida = horarioInfo.saida;
-
-            const horarioPromise = axios.post('http://localhost:4003/horario_aula', {
-              id_professor: idProfessor,
-              id_dia_aula: idDiaAula,
-              entrada: entrada,
-              saida: saida
-            });
-
-            horarioPromises.push(horarioPromise);
-          }
-        }
-
-        await Promise.all(horarioPromises);
-        diaPromises.push(`Dia de aula para ${diaSemana} cadastrado com sucesso!`);
-      }
-
-      return diaPromises;
+      const response = await axios.post('http://localhost:4002/dia_aula', {
+        idProfessor,
+        diaSemana,
+      });
+      return response.data.id_dia_aula;
     } catch (error) {
-      console.error('Erro ao criar dia de aula ou horário de aula:', error);
-      throw error;
+      throw new Error(`Erro ao cadastrar dia de aula: ${error}`);
     }
-  }
+  };
 
+  const cadastrarHorarioAula = async (idProfessor, idDiaAula, entrada, saida) => {
+    try {
+      await axios.post('http://localhost:4003/horario_aula', {
+        idProfessor,
+        idDiaAula,
+        entrada,
+        saida,
+      });
+    } catch (error) {
+      throw new Error(`Erro ao cadastrar horário de aula: ${error}`);
+    }
+  };
 
 
   const HorarioSelecaoProfs = () => {
@@ -300,33 +186,36 @@ const SignUpInfo = () => {
 
 
 
-  const handleSubmitProfessor = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-
-    const fullEmail = `${username}@fatec.sp.gov.br`;
-    if (fullEmail === "@fatec.sp.gov.br") {
-      alert("Digite seu endereço de e-mail institucional")
-    } else {
-      alert(fullEmail);
-      console.log(fullEmail)
-      setEmail(fullEmail)
-      setUsername('')
-    }
-
-    setShowConfirmationModalProf(true);
+    setShowConfirmationModal(true);
   }
 
-
+  const handleSubmitProfessor = async (e) => {
+    e.preventDefault();
+    setShowConfirmationModalProf(true);
+  }
 
   const handleConfirmProfessor = async () => {
     setShowConfirmationModalProf(false);
 
     try {
-      const idProfessor = await CadastrarProfessor({
+      const idProfessor = await cadastrarProfessor({
         user_id,
         nome,
         email,
       });
+
+      const diasAulaIds = await Promise.all(diasSelecionados.map(async (dia) => {
+        return await cadastrarDiaAula(idProfessor, dia);
+      }));
+
+      console.log('diasAulaIds:', diasAulaIds);
+
+      await Promise.all(diasAulaIds.map(async (diaAulaId) => {
+        const horario = horarios[diaAulaId];
+        await cadastrarHorarioAula(idProfessor, diaAulaId, horario.entrada, horario.saida);
+      }));
 
       toast.success('Professor cadastrado com sucesso!', {
         position: "top-center",
@@ -355,6 +244,55 @@ const SignUpInfo = () => {
     }
   };
 
+  const handleConfirm = async () => {
+
+    setShowConfirmationModal(false);
+
+    // Enviando os dados para a API
+    try {
+      const response = await axios.post('http://localhost:4000/alunos', {
+        user_id,
+        ra,
+        nome,
+        email,
+        curso,
+        periodo
+      })
+
+      // Se o cadastro for bem-sucedido, exibe o toast
+      toast.success('Aluno cadastrado com sucesso!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      })
+
+      console.log('Dados enviados com sucesso:', response.data)
+
+      navigate("/sgb");
+
+    } catch (error) {
+
+      // Exibe o toast de erro
+      toast.error('Erro ao cadastrar aluno. Tente novamente mais tarde.', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+
+      console.error('Erro ao enviar os dados:', error);
+    }
+  };
+
+  const handleSelectProfile = (profile) => {
+    setSelectedProfile(profile);
+  }
+
 
 
   return (
@@ -382,30 +320,22 @@ const SignUpInfo = () => {
       />
 
       {selectedProfile === 'aluno' && (
-        <Form onSubmit={handleSubmitAluno}>
+        <Form onSubmit={handleSubmit}>
           <Form.Group>
             <Form.Label htmlFor="email"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup style={{ width: 400 }} className="mb-3">
               <Form.Control
                 id="email"
                 type="text"
                 placeholder="seu email"
                 aria-label="seu email"
                 aria-describedby="basic-addon2"
-                value={username}
-                onChange={handleUsernameChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <InputGroup.Text style={{
-                width: 'fit-content',
-                fontStyle: 'italic',
-                color: 'InactiveBorder',
-                paddingLeft: 5,
-                //borderStyle: 'none',
-                marginLeft: 4
-              }}
-                id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
+              <InputGroup.Text id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup className="mb-3">
               <InputGroup className="mb-3">
                 <InputGroup.Text id="basic-addon1">RA:</InputGroup.Text>
                 <Form.Control
@@ -429,7 +359,7 @@ const SignUpInfo = () => {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px', width: '35rem' }} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px' }} id="basic-addon1">
               Curso:<Form.Select id="curso" aria-label="Selecione o curso" value={curso} onChange={(e) => setCurso(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="ads">Análise e Desenvolvimento de Sistemas</option>
@@ -439,7 +369,7 @@ const SignUpInfo = () => {
               </Form.Select>
             </InputGroup.Text>
 
-            <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10, width: '35rem' }} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10 }} id="basic-addon1">
               Período:<Form.Select id="periodo" aria-label="Selecione o curso" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="manha">Manhã</option>
@@ -449,10 +379,7 @@ const SignUpInfo = () => {
             </InputGroup.Text>
           </Form.Group>
 
-          <Button
-            style={{ marginTop: '5px' }}
-            variant="primary"
-            type="submit">
+          <Button style={{ marginTop: '5px' }} variant="primary" type="submit">
             Enviar
           </Button>
         </Form>
@@ -462,24 +389,17 @@ const SignUpInfo = () => {
         <Form onSubmit={handleSubmitProfessor}>
           <Form.Group>
             <Form.Label htmlFor="basic-url"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup className="mb-3">
               <Form.Control
                 placeholder="digite"
                 aria-label="digite"
                 aria-describedby="basic-addon2"
-                value={username}
-                onChange={handleUsernameChange}
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
               />
-              <InputGroup.Text style={{
-                width: 'fit-content',
-                fontStyle: 'italic',
-                color: 'InactiveBorder',
-                paddingLeft: 5,
-                //borderStyle: 'none',
-                marginLeft: 4
-              }} id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
+              <InputGroup.Text id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup className="mb-3">
               <InputGroup.Text id="basic-addon1">Nome completo:</InputGroup.Text>
               <Form.Control
                 placeholder=""
@@ -493,7 +413,7 @@ const SignUpInfo = () => {
             <Button
               style={{ marginTop: '5px' }}
               variant="primary"
-              type="submit"
+              onClick={() => setShowConfirmationModalProf(true)}
             >
               Enviar
             </Button>
@@ -502,7 +422,7 @@ const SignUpInfo = () => {
       )}
 
       {/* MODAL DE CONFIRMAÇÃO ----------------- */}
-      <Modal show={showConfirmationModalAluno} onHide={() => setShowConfirmationModalAluno(false)}>
+      <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)}>
         <Modal.Header closeButton>
           <Modal.Title>Confirmação de Cadastro</Modal.Title>
         </Modal.Header>
@@ -510,10 +430,10 @@ const SignUpInfo = () => {
           Um email de validação será enviado para o endereço de email que você forneceu, a fim de confirmar sua identidade e validar seu cadastro.
         </Modal.Body>
         <Modal.Footer>
-          <Button variant="secondary" onClick={() => setShowConfirmationModalAluno(false)}>
+          <Button variant="secondary" onClick={() => setShowConfirmationModal(false)}>
             Cancelar
           </Button>
-          <Button variant="primary" onClick={handleConfirmAluno}>
+          <Button variant="primary" onClick={handleConfirm}>
             Confirmar
           </Button>
         </Modal.Footer>
@@ -538,6 +458,8 @@ const SignUpInfo = () => {
         </Modal.Footer>
       </Modal>
       {/* MODAL DE CONFIRMAÇÃO ----------------- */}
+
+      {/* <ToastContainer /> */}
 
     </div>
   )
