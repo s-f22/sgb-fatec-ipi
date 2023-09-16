@@ -11,7 +11,7 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [user_id, setUser_id] = useState('*#3[n8=62see+s,4824eab0d');
+  const [user_id, setUser_id] = useState('*#3[n8=62ues+s,4824eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
@@ -489,7 +489,7 @@ const SignUpInfo = () => {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <HorarioSelecaoProfs /> {/* Mantém a seleção de horários */}
+            <HorarioSelecaoProfs />
             <Button
               style={{ marginTop: '5px' }}
               variant="primary"

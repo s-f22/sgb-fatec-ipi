@@ -4,6 +4,7 @@ var { Client } = require('pg');
 const app = express();
 require('dotenv').config({ path: '../../.env' });
 app.use(bodyParser.json());
+const { Pool } = require('pg');
 
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
@@ -14,14 +15,13 @@ const VerificarToken = require('../middlewares/VerificarToken.js');
 
 
 
-const db = new Client({
+const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_SERVER,
   database: process.env.DB_USER,
   password: process.env.DB_PWD,
-  port: process.env.DB_PORT
-})
-
+  port: process.env.DB_PORT,
+});
 db.connect()
   .then(() => {
     console.log('Conexão com o banco de dados estabelecida');

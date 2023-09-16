@@ -1,13 +1,14 @@
-import React from 'react';
+import {React} from 'react';
 import { Link } from 'react-router-dom';
 
 const Sidebar = () => {
   return (
-    <div style={{backgroundColor: 'gray', paddingLeft: 10, marginLeft: 50}} className="App_Sidebar">
+    <div  className="App_Sidebar d-none d-lg-block">
       <ul>
-        <li><Link to="/">Página Inicial</Link></li>
-        <li><Link to="">Outra Rota</Link></li>
-        <li><Link to="">Outra Rota</Link></li>
+        <li><Link to="/">Bem vindo!</Link></li>
+        <li><Link to="/signupinfo">Continuação do cadastro</Link></li>
+        
+        <li><Link to="/sgb/trabalhos">Trabalhos</Link></li>
         <li><Link to="">Outra Rota</Link></li>
         <li><Link to="">Outra Rota</Link></li>
         <li><Link to="">Outra Rota</Link></li>

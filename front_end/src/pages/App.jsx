@@ -16,7 +16,7 @@ const Home = () => {
   const [alunos, setAlunos] = useState([]);
   const { user } = useAuth0();
 
-  
+
 
   // const navigate = useNavigate();
   const { isAuthenticated } = useAuth0();
@@ -30,17 +30,14 @@ const Home = () => {
 
 
   return (
-    <Container >
-      {console.log(`Usuario logado: ${isAuthenticated}`)}
+    <div className="App_Container">
       <Header />
-      <div style={{ display: 'flex' }}>
+      <div className="App_MainContent" >
         <Sidebar />
-        <div style={{ flex: 1 }}>
-          <Outlet />
-        </div>
+        <Outlet/>
       </div>
       <Footer />
-    </Container>
+    </div>
   )
 }
 

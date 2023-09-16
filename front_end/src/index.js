@@ -16,6 +16,7 @@ import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
 import VerifyEmailAluno from './pages/VerifyEmailAluno';
+import Trabalhos from '../src/components/Trabalhos'
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
 
@@ -52,6 +53,10 @@ const AppRoutes = () => {
         {
           path: '/sgb',
           element: <Painel />
+        },
+        {
+          path: '/sgb/trabalhos',
+          element: <Trabalhos />
         }
       ]
     }
