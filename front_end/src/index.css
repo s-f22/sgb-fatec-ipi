@@ -33,11 +33,12 @@ code {
 
 .App_Sidebar {
   /* position: fixed; */
-  width: 30vh;
+  width: 35vh;
   height: 100%;
-  background-color: #333;
+  /* background-color: #333; */
+  /* background-color: 'gray'; */
   color: #fff;
-  padding: 10px;
+  /* padding: 10px; */
 }
 
 .App_Sidebar ul {
@@ -54,22 +55,32 @@ code {
   color: #fff;
 }
 
-
 .Header_Container{
   display: flex;
   width: 100%;
   height: 100px;
   justify-content: space-between;
   padding: 0px 1rem 0px 1rem;
-  /* background-color: aquamarine; */
+  background-color: gray;
 }
 
 .Painel_Container{
-  background-color: blueviolet;
-  flex: 1;
+  /* background-color: blueviolet; */
+  width: 100%;
+  padding-left: 1rem;
+  /* margin-left: 50px; */
 }
 
 .Trabalhos_Container{
-  background-color: cornflowerblue;
-  flex: 1;
+  /* background-color: cornflowerblue; */
+  padding-left: 1rem;
+}
+
+.css-kaez3o{
+  width: 35vh !important;
+  min-width: 35vh !important;
+}
+.css-rqao0h{
+  width: 35vh !important;
+  min-width: 35vh !important;
 }

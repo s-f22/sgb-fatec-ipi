@@ -7,14 +7,14 @@ const Trabalhos = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Aqui você pode adicionar a lógica para enviar os dados para o servidor
-    // por meio de uma requisição (por exemplo, usando Axios)
+    
     console.log({ titulo, descricao });
   };
 
   return (
-    <Form onSubmit={handleSubmit}>
+    <Form className='Trabalhos_Container' onSubmit={handleSubmit}>
       <Form.Group controlId="formTitulo">
+        <h1>Cadastrar Trabalho</h1>
         <Form.Label>Título</Form.Label>
         <Form.Control
           type="text"
