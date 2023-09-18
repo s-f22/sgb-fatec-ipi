@@ -8,7 +8,7 @@ const { Pool } = require('pg');
 
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
-
+const { v4: uuidv4 } = require('uuid')
 
 const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
@@ -35,15 +35,15 @@ db.connect()
 app.post('/alunos', async (req, res) => {
 
   try {
-
+    const codigo = uuidv4();
     const { user_id, ra, nome, email, curso, periodo } = req.body;
 
-    const query = 'INSERT INTO aluno (user_id, ra, nome, email, curso, periodo) VALUES ($1, $2, $3, $4, $5, $6) RETURNING id_aluno, user_id, ra, nome, email, curso, periodo';
-    const values = [user_id, ra, nome, email, curso, periodo];
+    const query = 'INSERT INTO aluno (user_id, ra, nome, email, curso, periodo, codigo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_aluno, user_id, ra, nome, email, curso, periodo';
+    const values = [user_id, ra, nome, email, curso, periodo, codigo];
 
     const result = await db.query(query, values);
 
-    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email, codigo: codigo };
 
     // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
     const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
@@ -72,7 +72,7 @@ app.post('/alunos', async (req, res) => {
             <p>Olá, ${nome.split(' ')[0]}</p>
             <p>Bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga!</p>
             <p>Para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
-            <p><a href="http://localhost:3000/VerifyEmailaluno/${aluno.id_aluno}">Clique aqui para validar o cadastro</a></p>
+            <p><a href="http://localhost:3000/VerifyEmailaluno/${aluno.id_aluno}/${aluno.codigo}">Clique aqui para validar o cadastro</a></p>
             <p>Atenciosamente,</p>
             <p>Equipe SGB</p>
         `
@@ -118,13 +118,18 @@ app.put('/alunos/:id_aluno', async (req, res) => {
 
 
 
-app.patch('/alunos/:id_aluno', async (req, res) => {
+app.patch('/alunos/:id_aluno/:codigo', async (req, res) => {
   try {
     const id_aluno = req.params.id_aluno;
+    const codigo = req.params.codigo;
     const { email_inst_verif } = req.body;
 
-    if (email_inst_verif !== true) {
-      return res.status(400).json({ error: 'O atributo email_inst_verif deve ser true para a atualização.' });
+    const queryCheckCode = 'SELECT id_aluno FROM aluno WHERE id_aluno = $1 AND codigo = $2';
+    const checkCodeValues = [id_aluno, codigo];
+    const codeCheckResult = await db.query(queryCheckCode, checkCodeValues);
+
+    if (codeCheckResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Código inválido' });
     }
 
     const query = 'UPDATE aluno SET email_inst_verif = $1 WHERE id_aluno = $2 RETURNING *';
@@ -143,6 +148,7 @@ app.patch('/alunos/:id_aluno', async (req, res) => {
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 
 
@@ -197,6 +203,6 @@ app.get('/alunos/:id_aluno', async (req, res) => {
 
 
 
-app.listen(process.env.MSS_PORTA_alunoS, () => {
-  console.log(`alunos: porta ${process.env.MSS_PORTA_alunoS}`);
+app.listen(process.env.MSS_PORTA_ALUNOS, () => {
+  console.log(`alunos: porta ${process.env.MSS_PORTA_ALUNOS}`);
 });

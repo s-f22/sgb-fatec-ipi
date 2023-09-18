@@ -15,11 +15,13 @@ const Sidebar = () => {
     <ReactSidebar className='d-none d-lg-block' rootStyles={{
       [`.${sidebarClasses.container}`]: {
         backgroundColor: 'gray',
-        width: '35vh'
+        width: '35vh',
+        display: 'flex',
+        flexDirection: 'column'
       },
     }}
     >
-      <img src={teste} style={{width: 100}} alt="" />
+      <img src={teste} style={{ width: 100, display: 'flex', alignSelf: 'center', backgroundColor: 'lightgray', padding: 10, borderRadius: 10 }} alt="" />
       <Menu
         menuItemStyles={{
           button: ({ level, active, disabled }) => {
@@ -40,6 +42,7 @@ const Sidebar = () => {
         <MenuItem component={<Link to="/sgb" />}>Home</MenuItem>
         <MenuItem component={<Link to="/signupinfo" />}>Continuação do Cadastro</MenuItem>
         <SubMenu label={"Trabalhos"}>
+          <MenuItem component={<Link to="/sgb/trabalhos_listagem" />}>Ver todos</MenuItem>
           <MenuItem component={<Link to="/sgb/trabalhos" />}>Cadastrar Trabalho</MenuItem>
           <MenuItem component={<Link to="/sgb/trabalhos" />}>Meus Trabalhos</MenuItem>
         </SubMenu>

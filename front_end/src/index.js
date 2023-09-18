@@ -19,6 +19,7 @@ import VerifyEmailAluno from './pages/VerifyEmailAluno';
 import Trabalhos from '../src/components/Trabalhos'
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
+import Trabalhos_Listar from './components/Trabalhos_Listar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -39,7 +40,7 @@ const AppRoutes = () => {
       element: <SignUpInfo />,
     },
     {
-      path: '/VerifyEmailAluno/:idAluno',
+      path: '/VerifyEmailAluno/:id_aluno/:codigo',
       element: <VerifyEmailAluno />,
     },
     {
@@ -57,6 +58,10 @@ const AppRoutes = () => {
         {
           path: '/sgb/trabalhos',
           element: <Trabalhos />
+        },
+        {
+          path: '/sgb/trabalhos_listagem',
+          element: <Trabalhos_Listar />
         }
       ]
     }

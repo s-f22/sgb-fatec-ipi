@@ -31,12 +31,12 @@ const Home = () => {
 
   return (
     <div className="App_Container">
-      <Header />
+      <Sidebar />
       <div className="App_MainContent" >
-        <Sidebar />
-        <Outlet/>
+        <Header />
+        <Outlet />
+        <Footer />
       </div>
-      <Footer />
     </div>
   )
 }
