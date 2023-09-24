@@ -11,7 +11,7 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [user_id, setUser_id] = useState('*#3[n8=62ues+s,4824eab0d');
+  const [user_id, setUser_id] = useState('3sn8a62ues+s84824eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
@@ -21,6 +21,7 @@ const SignUpInfo = () => {
   const [showConfirmationModalProf, setShowConfirmationModalProf] = useState(false);
   const [username, setUsername] = useState('');
 
+  const [coordenador, setCoordenador] = useState(false)
   const diasSemana = ['Segunda-feira', 'Terça-feira', 'Quarta-feira', 'Quinta-feira', 'Sexta-feira', 'Sábado'];
   const periodos = ['Manhã', 'Tarde', 'Noite'];
   const [diasSelecionados, setDiasSelecionados] = useState([]);
@@ -236,8 +237,8 @@ const SignUpInfo = () => {
 
     return (
       <Form style={{ display: 'flex', flexDirection: 'column' }}>
-        <h3>Horários de trabalho:</h3>
-        <p>Selecione abaixo os dias e horários que você trabalha na FATEC Ipiranga.</p>
+        <h3 style={{marginTop: 20}}>Seus horários de trabalho:</h3>
+        <p>Informe abaixo os dias e horários nos quais você ministra aulas na FATEC Ipiranga:</p>
         <div className='SignUpInfo_Cards_grid'>
           {diasSemana.map(dia => (
             <Card key={dia} style={{ marginBottom: '10px', padding: '10px', width: 300 }}>
@@ -326,6 +327,7 @@ const SignUpInfo = () => {
         user_id,
         nome,
         email,
+        coordenador
       });
 
       toast.success('Professor cadastrado com sucesso!', {
@@ -464,7 +466,7 @@ const SignUpInfo = () => {
             <Form.Label htmlFor="basic-url"><b>E-mail Institucional:</b></Form.Label>
             <InputGroup style={{ width: '35rem' }} className="mb-3">
               <Form.Control
-                placeholder="digite"
+                placeholder="seu email"
                 aria-label="digite"
                 aria-describedby="basic-addon2"
                 value={username}
@@ -489,6 +491,15 @@ const SignUpInfo = () => {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
+            <Form.Group>
+              <h3>Marque abaixo somente caso você seja um coordenador:</h3>
+              <Form.Check
+                type="checkbox"
+                label="Sim, sou um professor-coordenador"
+                checked={coordenador}
+                onChange={() => setCoordenador(prevCoordenador => !prevCoordenador)}
+              />
+            </Form.Group>
             <HorarioSelecaoProfs />
             <Button
               style={{ marginTop: '5px' }}

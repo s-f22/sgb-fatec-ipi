@@ -28,7 +28,7 @@ const Sidebar = () => {
             // only apply styles on first level elements of the tree
             if (level === 0)
               return {
-                color: disabled ? 'black' : '#black',
+                color: disabled ? 'black' : 'black',
                 backgroundColor: active ? 'green' : 'gray',
               };
             if (level === 1)

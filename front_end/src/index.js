@@ -44,7 +44,7 @@ const AppRoutes = () => {
       element: <VerifyEmailAluno />,
     },
     {
-      path: '/VerifyEmailProfessor/:idProfessor',
+      path: '/VerifyEmailProfessor/:id_professor/:codigo',
       element: <VerifyEmailProfessor />,
     },
     {

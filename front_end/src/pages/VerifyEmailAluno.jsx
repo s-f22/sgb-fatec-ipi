@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, useNavigate } from 'react-router-dom';
 import axios from 'axios';
+import Spinner from 'react-bootstrap/Spinner';
 
 const VerifyEmailAluno = () => {
   const { id_aluno, codigo } = useParams();
@@ -17,7 +18,7 @@ const VerifyEmailAluno = () => {
 
         setTimeout(() => {
           navigate("/sgb");
-        }, 3000); 
+        }, 3000);
       })
       .catch(error => {
         console.error('Erro ao atualizar o atributo:', error);
@@ -27,12 +28,16 @@ const VerifyEmailAluno = () => {
   return (
     <div>
       {validationSuccess ? (
-        <div>
-          <p>Validação do e-mail ocorreu com sucesso!</p>
-          <p>Redirecionando para a rota...</p>
+        <div style={{ display: 'flex', flex: 1, height: '100vh', flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
+          <h3 style={{ alignSelf: 'center' }}>Validação do e-mail efetuada com sucesso!</h3>
+          <p style={{ alignSelf: 'center' }}>Redirecionando...</p>
+          <Spinner style={{ alignSelf: 'center' }} animation="grow" />
         </div>
       ) : (
-        <div>Aguarde, validando o seu cadastro...</div>
+        <div style={{ display: 'flex', flex: 1, height: '100vh', flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
+          <p style={{ alignSelf: 'center' }}>Redirecionando...</p>
+          <Spinner style={{ alignSelf: 'center' }} animation="grow" />
+        </div>
       )}
     </div>
   );

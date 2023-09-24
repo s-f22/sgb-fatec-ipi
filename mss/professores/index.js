@@ -4,12 +4,12 @@ const { Pool } = require('pg');
 require('dotenv').config({ path: '../../.env' });
 const app = express();
 app.use(bodyParser.json());
-
-const port = process.env.MSS_PORTA_PROFESSORES;
-
-
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
+const { v4: uuidv4 } = require('uuid')
+
+
+const port = process.env.MSS_PORTA_PROFESSORES;
 
 
 const VerificarToken = require('../middlewares/VerificarToken.js');
@@ -28,23 +28,27 @@ const pool = new Pool({
 
 app.post('/professores', async (req, res) => {
   try {
-    const { user_id, nome, email } = req.body;
 
-    const query = 'INSERT INTO professor (user_id, nome, email) VALUES ($1, $2, $3) RETURNING id_professor, user_id, nome, email, email_inst_verif';
-    const values = [user_id, nome, email];
+    const codigo = uuidv4();
+
+    const { user_id, nome, email, coordenador } = req.body;
+
+    const query = 'INSERT INTO professor (user_id, nome, email, coordenador, codigo) VALUES ($1, $2, $3, $4, $5) RETURNING id_professor, user_id, nome, email, coordenador';
+    const values = [user_id, nome, email, coordenador, codigo];
 
     const result = await pool.query(query, values);
-    console.log("O que veio no result", result.rows)
+    console.log("RESULT:", result.rows)
 
     const professor = {
       id_professor: result.rows[0].id_professor,
-      user_id: result.rows[0].user_id, // Corrigido
+      // user_id: result.rows[0].user_id, // Corrigido
       nome: result.rows[0].nome,
       email: result.rows[0].email,
-      email_inst_verif: result.rows[0].email_inst_verif // Corrigido
+      codigo: codigo
+      // email_inst_verif: result.rows[0].email_inst_verif // Corrigido
     };
     
-    res.status(201).json({ message: 'Professor cadastrado com sucesso!', professor });
+    res.status(201).json({ message: 'professor cadastrado com sucesso!', professor });
     
 
     if (res.status(201)) {
@@ -67,8 +71,8 @@ app.post('/professores', async (req, res) => {
         html: `
                   <p>Olá, professor ${nome.split(' ')[0]}</p>
                   <p>Bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga!</p>
-                  <p>Para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
-                  <p><a href="http://localhost:3000/VerifyEmailProfessor/${professor.id_professor}">Clique aqui para validar o cadastro</a></p>
+                  <p>Caso tenha solicitado permissão de coordenador, aguarde aprovação do administrador. Enquanto isso, para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
+                  <p><a href="http://localhost:3000/VerifyEmailProfessor/${professor.id_professor}/${professor.codigo}">Clique aqui para validar o cadastro</a></p>
                   <p>Atenciosamente,</p>
                   <p>Equipe SGB</p>
               `
@@ -146,13 +150,18 @@ app.put('/professores/:id', async (req, res) => {
 
 
 
-app.patch('/professores/:id_professor', async (req, res) => {
+app.patch('/professores/:id_professor/:codigo', async (req, res) => {
   try {
     const id_professor = req.params.id_professor;
+    const codigo = req.params.codigo;
     const { email_inst_verif } = req.body;
 
-    if (email_inst_verif !== true) {
-      return res.status(400).json({ error: 'O atributo email_inst_verif deve ser true para a atualização.' });
+    const queryCheckCode = 'SELECT id_professor FROM professor WHERE id_professor = $1 AND codigo = $2';
+    const checkCodeValues = [id_professor, codigo];
+    const codeCheckResult = await pool.query(queryCheckCode, checkCodeValues);
+
+    if (codeCheckResult.rows.length === 0) {
+      return res.status(400).json({ error: 'Código inválido' });
     }
 
     const query = 'UPDATE professor SET email_inst_verif = $1 WHERE id_professor = $2 RETURNING *';
@@ -165,14 +174,14 @@ app.patch('/professores/:id_professor', async (req, res) => {
     }
 
     const professor = {
-      id_professor: result.rows[0].idprofessor,
-      user_id: result.rows[0].userid,
+      id_professor: result.rows[0].id_professor,
+      // user_id: result.rows[0].userid,
       nome: result.rows[0].nome,
       email: result.rows[0].email,
-      email_inst_verif: result.rows[0].emailinstverif
+      // email_inst_verif: result.rows[0].emailinstverif
     };
 
-    res.json({ message: 'Professor atualizado com sucesso!', professor });
+    res.json({ message: 'professor atualizado com sucesso!', professor });
   } catch (error) {
     console.error('Erro ao atualizar o professor:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });

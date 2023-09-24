@@ -22,20 +22,15 @@ const db = new Pool({
   password: process.env.DB_PWD,
   port: process.env.DB_PORT,
 });
-db.connect()
-  .then(() => {
-    console.log('Conexão com o banco de dados estabelecida');
-  })
-  .catch((err) => {
-    console.error('Erro ao conectar ao banco de dados', err)
-  })
 
 
 
 app.post('/alunos', async (req, res) => {
 
   try {
+
     const codigo = uuidv4();
+
     const { user_id, ra, nome, email, curso, periodo } = req.body;
 
     const query = 'INSERT INTO aluno (user_id, ra, nome, email, curso, periodo, codigo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_aluno, user_id, ra, nome, email, curso, periodo';
@@ -43,7 +38,12 @@ app.post('/alunos', async (req, res) => {
 
     const result = await db.query(query, values);
 
-    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email, codigo: codigo };
+    const aluno = {
+      id_aluno: result.rows[0].id_aluno,
+      nome: result.rows[0].nome,
+      email: result.rows[0].email,
+      codigo: codigo
+    };
 
     // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
     const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
@@ -141,8 +141,14 @@ app.patch('/alunos/:id_aluno/:codigo', async (req, res) => {
       return res.status(404).json({ error: 'aluno não encontrado' });
     }
 
-    const aluno = { id_aluno: result.rows[0].id_aluno, nome: result.rows[0].nome, email: result.rows[0].email };
+    const aluno = {
+      id_aluno: result.rows[0].id_aluno,
+      nome: result.rows[0].nome,
+      email: result.rows[0].email
+    };
+
     res.json({ message: 'aluno atualizado com sucesso!', aluno });
+    
   } catch (error) {
     console.error('Erro ao atualizar o aluno:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
