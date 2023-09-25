@@ -6,6 +6,7 @@ mss/professores/node_modules/
 mss/dia_aula/node_modules/
 mss/horario_aula/node_modules/
 mss/login/node_modules/
+mss/temas/node_modules
 
 front-end/node_modules/
 front-end/.env

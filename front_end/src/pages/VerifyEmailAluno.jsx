@@ -2,12 +2,19 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useHistory, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Spinner from 'react-bootstrap/Spinner';
+import { Button, Modal } from 'react-bootstrap';
 
 const VerifyEmailAluno = () => {
   const { id_aluno, codigo } = useParams();
   //const history = useHistory();
   const [validationSuccess, setValidationSuccess] = useState(false);
   const navigate = useNavigate();
+  const [showConfirmationModal, setShowConfirmationModal] = useState(false);
+
+  const failVerifEmail = () => {
+    setShowConfirmationModal(false)
+    navigate("/sgb");
+  }
 
   useEffect(() => {
     console.log(`http://localhost:4000/alunos/${id_aluno}/${codigo}`)
@@ -22,6 +29,10 @@ const VerifyEmailAluno = () => {
       })
       .catch(error => {
         console.error('Erro ao atualizar o atributo:', error);
+        setTimeout(() => {
+          setShowConfirmationModal(true)
+        }, 5000)
+
       });
   }, [id_aluno, codigo, process.env.MSS_PORTA_ALUNOS]);
 
@@ -35,8 +46,21 @@ const VerifyEmailAluno = () => {
         </div>
       ) : (
         <div style={{ display: 'flex', flex: 1, height: '100vh', flexDirection: 'column', alignContent: 'center', justifyContent: 'center' }}>
-          <p style={{ alignSelf: 'center' }}>Redirecionando...</p>
+          <p style={{ alignSelf: 'center' }}>Verificando...</p>
           <Spinner style={{ alignSelf: 'center' }} animation="grow" />
+          <Modal show={showConfirmationModal} onHide={() => setShowConfirmationModal(false)}>
+            <Modal.Header >
+              <Modal.Title>Parece que algo deu errado...</Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              Houve algum erro na validação do seu e-mail. Por favor, entre em contato com o {<a href='mailto:suporte_sgb@fatec.sp.gov.br'>suporte_sgb@fatec.sp.gov.br</a>} para verificar.
+            </Modal.Body>
+            <Modal.Footer>
+              <Button variant="primary" onClick={failVerifEmail}>
+                OK
+              </Button>
+            </Modal.Footer>
+          </Modal>
         </div>
       )}
     </div>

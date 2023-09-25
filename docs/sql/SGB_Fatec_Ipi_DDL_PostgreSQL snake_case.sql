@@ -7,7 +7,8 @@ CREATE TABLE aluno (
     curso VARCHAR(255),
     periodo VARCHAR(20),
     email_inst_verif BOOLEAN DEFAULT FALSE,
-    codigo VARCHAR(40)
+    codigo VARCHAR(40),
+    tipo_usuario INT DEFAULT 1
 );
 
 CREATE TABLE professor (
@@ -17,7 +18,8 @@ CREATE TABLE professor (
     email VARCHAR(255) UNIQUE,
     email_inst_verif BOOLEAN DEFAULT FALSE,
     coordenador BOOLEAN DEFAULT FALSE,
-    codigo VARCHAR(40)
+    codigo VARCHAR(40),
+    tipo_usuario INT DEFAULT 2
 );
 
 CREATE TABLE tema (
@@ -102,3 +104,7 @@ CREATE TABLE convidado (
 -- ADD user_id VARCHAR(30) UNIQUE;
 -- ALTER TABLE aluno
 -- ADD email_inst_verif BOOLEAN DEFAULT FALSE;
+
+-- UPDATE aluno
+-- SET user_id = '65037fd25186049fb2a47aa4'
+-- WHERE id_aluno = 1;

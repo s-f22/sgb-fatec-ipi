@@ -18,7 +18,7 @@ const Profile = () => {
     isAuthenticated && (
       <div style={{ textAlign: 'right', marginRight: '10px', color: '#555', display: 'flex', alignItems: 'center' }}>
         <div style={{ marginRight: '10px' }}>
-          <h4 style={{ margin: '0', fontSize: '1em' }}>{firstName}</h4>
+          <h4 style={{ margin: '0', fontSize: '1em' }}>{firstName.split('@')[0]}</h4>
           <p style={{ margin: '0', fontSize: '0.8em' }}>{user.email}</p>
         </div>
         <img src={user.picture} alt={user?.name} style={{ borderRadius: '50%', width: '50px', height: '50px' }} />

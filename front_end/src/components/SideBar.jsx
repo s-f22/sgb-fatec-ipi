@@ -41,10 +41,10 @@ const Sidebar = () => {
       >
         <MenuItem component={<Link to="/sgb" />}>Home</MenuItem>
         <MenuItem component={<Link to="/signupinfo" />}>Continuação do Cadastro</MenuItem>
-        <SubMenu label={"Trabalhos"}>
+        <SubMenu label={"Temas"}>
           <MenuItem component={<Link to="/sgb/trabalhos_listagem" />}>Ver todos</MenuItem>
-          <MenuItem component={<Link to="/sgb/trabalhos" />}>Cadastrar Trabalho</MenuItem>
-          <MenuItem component={<Link to="/sgb/trabalhos" />}>Meus Trabalhos</MenuItem>
+          <MenuItem component={<Link to="/sgb/trabalhos" />}>Cadastrar Tema</MenuItem>
+          <MenuItem component={<Link to="/sgb/trabalhos" />}>Meus Temas</MenuItem>
         </SubMenu>
         <MenuItem component={<Link to="/e-commerce" />}>E-commerce</MenuItem>
       </Menu>

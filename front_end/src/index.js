@@ -16,10 +16,10 @@ import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
 import VerifyEmailAluno from './pages/VerifyEmailAluno';
-import Trabalhos from '../src/components/Trabalhos'
+import Trabalhos from './components/Temas/Temas_Cadastrar'
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
-import Trabalhos_Listar from './components/Trabalhos_Listar';
+import Trabalhos_Listar from './components/Temas/Temas_Listar';
 
 // require('dotenv').config({ path: '../../.env' });
 

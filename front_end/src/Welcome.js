@@ -7,12 +7,12 @@ import { useAuth0 } from '@auth0/auth0-react';
 
 function Welcome() {
   const navigate = useNavigate();
-  const { isAuthenticated } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   
   useEffect(() => {
-    if (isAuthenticated) {
+    isAuthenticated &&
       navigate("/sgb");
-    }
+      // console.log(user.sub)
   }, [isAuthenticated, navigate]);
   
   return (
