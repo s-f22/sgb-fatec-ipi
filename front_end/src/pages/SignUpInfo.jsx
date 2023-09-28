@@ -11,7 +11,7 @@ const SignUpInfo = () => {
   const { user } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [user_id, setUser_id] = useState('3sn8a62ues+s84824eab0d');
+  const [user_id, setUser_id] = useState('3sn8a72ueers84824eab0d');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');

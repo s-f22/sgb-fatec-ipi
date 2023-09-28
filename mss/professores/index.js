@@ -7,6 +7,8 @@ app.use(bodyParser.json());
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid')
+const cors = require('cors');
+app.use(cors());
 
 
 const port = process.env.MSS_PORTA_PROFESSORES;

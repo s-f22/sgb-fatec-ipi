@@ -55,7 +55,7 @@ const Temas_Cadastrar = () => {
   };
 
   return (
-    <Form className='Trabalhos_Container' onSubmit={handleSubmit}>
+    <Form className='Temas_Container' onSubmit={handleSubmit}>
       <Form.Group controlId="formTitulo">
         <h1>Cadastrar Tema</h1>
         <Form.Label>Título</Form.Label>

@@ -42,11 +42,15 @@ const Sidebar = () => {
         <MenuItem component={<Link to="/sgb" />}>Home</MenuItem>
         <MenuItem component={<Link to="/signupinfo" />}>Continuação do Cadastro</MenuItem>
         <SubMenu label={"Temas"}>
-          <MenuItem component={<Link to="/sgb/trabalhos_listagem" />}>Ver todos</MenuItem>
-          <MenuItem component={<Link to="/sgb/trabalhos" />}>Cadastrar Tema</MenuItem>
-          <MenuItem component={<Link to="/sgb/trabalhos" />}>Meus Temas</MenuItem>
+          <MenuItem component={<Link to="/sgb/temas_listar" />}>Ver todos</MenuItem>
+          <MenuItem component={<Link to="/sgb/temas_cadastrar" />}>Cadastrar Tema</MenuItem>
         </SubMenu>
-        <MenuItem component={<Link to="/e-commerce" />}>E-commerce</MenuItem>
+        <SubMenu label={"Trabalhos"}>
+          <MenuItem component={<Link to="/sgb/trabalhos_listar" />}>Ver todos</MenuItem>
+          <MenuItem component={<Link to="/sgb/trabalhos_cadastrar" />}>Cadastrar Trabalho</MenuItem>
+          <MenuItem component={<Link to="/sgb/trabalhos_cadastrar" />}>Avaliar</MenuItem>
+        </SubMenu>
+        
       </Menu>
     </ReactSidebar>
 

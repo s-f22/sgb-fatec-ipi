@@ -16,10 +16,11 @@ import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
 import VerifyEmailAluno from './pages/VerifyEmailAluno';
-import Trabalhos from './components/Temas/Temas_Cadastrar'
+import Temas_Cadastrar from './components/Temas/Temas_Cadastrar'
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
-import Trabalhos_Listar from './components/Temas/Temas_Listar';
+import Temas_Listar from './components/Temas/Temas_Listar';
+import Trabalho_Cadastrar from './components/Trabalhos/Trabalho_Cadastrar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -56,12 +57,20 @@ const AppRoutes = () => {
           element: <Painel />
         },
         {
-          path: '/sgb/trabalhos',
-          element: <Trabalhos />
+          path: '/sgb/temas_cadastrar',
+          element: <Temas_Cadastrar />
         },
         {
-          path: '/sgb/trabalhos_listagem',
-          element: <Trabalhos_Listar />
+          path: '/sgb/temas_listar',
+          element: <Temas_Listar />
+        },
+        {
+          path: '/sgb/trabalhos_cadastrar',
+          element: <Trabalho_Cadastrar />
+        },
+        {
+          path: '/sgb/trabalhos_listar',
+          element: <Temas_Listar />
         }
       ]
     }
