@@ -9,6 +9,9 @@ const { Pool } = require('pg');
 const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid')
+const cors = require('cors');
+app.use(cors());
+
 
 const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');

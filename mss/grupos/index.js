@@ -1,0 +1,124 @@
+const express = require('express');
+const bodyParser = require('body-parser');
+const app = express();
+require('dotenv').config({ path: '../../.env' });
+app.use(bodyParser.json());
+const { Pool } = require('pg');
+
+const jwt = require('jsonwebtoken');
+const cors = require('cors');
+app.use(cors());
+
+
+const VerificarToken = require('../middlewares/VerificarToken.js');
+//const AuthCheck = require('../middlewares/AuthCheck.js');
+
+
+const db = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_SERVER,
+  database: process.env.DB_USER,
+  password: process.env.DB_PWD,
+  port: process.env.DB_PORT,
+});
+
+
+
+// POST
+app.post('/grupos', (req, res) => {
+  const { id_aluno, id_trabalho } = req.body;
+
+  db.query('INSERT INTO grupo (id_aluno, id_trabalho) VALUES ($1, $2) RETURNING *', [id_aluno, id_trabalho], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao criar um novo grupo' });
+    } else {
+      res.status(201).json(result.rows[0]);
+    }
+  });
+});
+
+
+// GET
+app.get('/grupos', (req, res) => {
+  db.query('SELECT * FROM grupo', (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao obter os grupos' });
+    } else {
+      res.status(200).json(result.rows);
+    }
+  });
+});
+
+
+// GET BY ID
+app.get('/grupos/:id', (req, res) => {
+  const id_grupo = req.params.id;
+
+  db.query('SELECT * FROM grupo WHERE id_grupo = $1', [id_grupo], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao obter o grupo' });
+    } else if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Grupo não encontrado' });
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+  });
+});
+
+
+// PUT
+app.put('/grupos/:id', VerificarToken, (req, res) => {
+  const id_grupo = req.params.id;
+  const { id_aluno, id_trabalho } = req.body;
+
+  db.query('UPDATE grupo SET id_aluno = $1, id_trabalho = $2 WHERE id_grupo = $3 RETURNING *', [id_aluno, id_trabalho, id_grupo], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao atualizar o grupo' });
+    } else if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Grupo não encontrado' });
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+  });
+});
+
+
+// PATCH
+app.patch('/grupos/:id', (req, res) => {
+  const id_grupo = req.params.id;
+  const updates = req.body;
+
+  db.query('UPDATE grupo SET id_aluno = COALESCE($1, id_aluno), id_trabalho = COALESCE($2, id_trabalho) WHERE id_grupo = $3 RETURNING *', [updates.id_aluno, updates.id_trabalho, id_grupo], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao atualizar o grupo' });
+    } else if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Grupo não encontrado' });
+    } else {
+      res.status(200).json(result.rows[0]);
+    }
+  });
+});
+
+
+// DELETE
+app.delete('/grupos/:id', (req, res) => {
+  const id_grupo = req.params.id;
+
+  db.query('DELETE FROM grupo WHERE id_grupo = $1 RETURNING *', [id_grupo], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: 'Erro ao deletar o grupo' });
+    } else if (result.rows.length === 0) {
+      res.status(404).json({ error: 'Grupo não encontrado' });
+    } else {
+      res.status(200).json({ message: 'Grupo deletado com sucesso' });
+    }
+  });
+});
+
+
+
+
+
+app.listen(process.env.MSS_PORTA_GRUPOS, () => {
+  console.log(`grupos: porta ${process.env.MSS_PORTA_GRUPOS}`);
+});
