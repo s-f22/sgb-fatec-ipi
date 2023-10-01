@@ -6,10 +6,6 @@ import teste from '../assets/img/fatec_ipi.png'
 const Sidebar = () => {
 
 
-
-
-
-
   return (
     // <div className="App_Sidebar d-none d-lg-block">
     <ReactSidebar className='d-none d-lg-block' rootStyles={{

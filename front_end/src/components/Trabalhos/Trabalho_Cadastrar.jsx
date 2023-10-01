@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Form, Button, Container, Row, Col } from 'react-bootstrap';
+import { Form, Button, Container, Row, Col, Overlay, Tooltip } from 'react-bootstrap';
 import axios from 'axios';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+
+
 
 const Trabalho_Cadastrar = () => {
   const [orientadores, setOrientadores] = useState([]);
@@ -14,6 +16,10 @@ const Trabalho_Cadastrar = () => {
   });
   const [semestre, setSemestre] = useState("01");
   const [ano, setAno] = useState(new Date().getFullYear().toString());
+  const [alunos, setAlunos] = useState([]);
+  const [alunosSelecionados, setAlunosSelecionados] = useState([]);
+  const [pesquisaAluno, setPesquisaAluno] = useState('');
+  const [showTooltip, setShowTooltip] = useState(false);
 
   const navigate = useNavigate();
 
@@ -29,54 +35,105 @@ const Trabalho_Cadastrar = () => {
     axios.get('http://localhost:4004/temas')
       .then(response => setTemas(response.data))
       .catch(error => console.error(error));
+
+    // Carregar alunos
+    axios.get('http://localhost:4000/alunos')
+      .then(response => setAlunos(response.data))
+      .catch(error => console.error(error));
   }, []);
 
 
 
+  const handleRemoverAluno = (alunoId) => {
+    const updatedAlunosSelecionados = alunosSelecionados.filter(aluno => aluno.id_aluno !== alunoId);
+    setAlunosSelecionados(updatedAlunosSelecionados);
+  };
+
+
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData({ ...formData, [name]: value });
+    if (name === 'pesquisaAluno') {
+      setPesquisaAluno(value);
+      setShowTooltip(value.length > 0);
+    } else {
+      setFormData({ ...formData, [name]: value });
+    }
+  };
+
+
+  const handleInserirAluno = (alunoId) => {
+    const aluno = alunos.find(aluno => aluno.id_aluno === alunoId);
+
+    if (!alunosSelecionados.includes(aluno)) {
+      setAlunosSelecionados([...alunosSelecionados, aluno]);
+      setPesquisaAluno(''); // Limpa a entrada de pesquisa após a inserção
+    }
   };
 
 
   const handleSubmit = async (e) => {
+
     e.preventDefault();
+
+    if (alunosSelecionados.length === 0) {
+      toast.error('Selecione pelo menos um aluno.', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+      return;
+    }
 
     const previsaoDefesa = `${semestre}|${ano}`;
 
-    const dadosCadastro = {
+    const dadosCadastroTrabalho = {
       id_orientador: formData.id_orientador,
       id_tema: formData.id_tema,
       previsao_defesa: previsaoDefesa,
     };
 
-    await axios.post('http://localhost:4005/trabalhos', dadosCadastro)
-      .then(response => {
-        console.log('Trabalho cadastrado com sucesso:', response.data);
+    try {
+      const responseTrabalho = await axios.post('http://localhost:4005/trabalhos', dadosCadastroTrabalho);
 
-        toast.success('Tema cadastrado com sucesso!', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        })
+      console.log('Trabalho cadastrado com sucesso:', responseTrabalho.data);
 
-        navigate('/sgb')
+      const id_trabalho = responseTrabalho.data.id_trabalho;
 
-      })
-      .catch(error => {
-        console.error('Erro ao cadastrar trabalho:', error)
-        toast.error('Erro ao cadastrar o tema. Tente novamente mais tarde.', {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        });
+      // Cadastrando alunos no grupo
+      for (const aluno of alunosSelecionados) {
+        const dadosCadastroGrupo = {
+          id_aluno: aluno.id_aluno,
+          id_trabalho: id_trabalho,
+        };
+
+        await axios.post('http://localhost:4006/grupos', dadosCadastroGrupo);
+      }
+
+      toast.success('Tema cadastrado com sucesso!', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
       });
+
+      navigate('/sgb');
+
+    } catch (error) {
+      console.error('Erro ao cadastrar trabalho ou grupo:', error);
+      toast.error('Erro ao cadastrar o tema ou grupo. Tente novamente mais tarde.', {
+        position: "top-center",
+        autoClose: 3000,
+        hideProgressBar: true,
+        closeOnClick: true,
+        pauseOnHover: true,
+        draggable: true,
+      });
+    }
   };
 
 
@@ -147,6 +204,78 @@ const Trabalho_Cadastrar = () => {
           ))}
         </Form.Control>
       </Form.Group>
+
+      <Form.Group controlId="formAlunos">
+        <h3 style={{marginTop: 10}}>Grupo:</h3>
+        <Form.Label>Insira abaixo os alunos que formam a equipe:</Form.Label>
+        <Form.Control
+          placeholder='Pesquise pelo nome do aluno'
+          type="text"
+          name="pesquisaAluno"
+          value={pesquisaAluno}
+          onChange={handleInputChange}
+          data-tip
+          id="tooltip-target" // Defina o id do elemento alvo
+        />
+
+        <Overlay
+          target={document.getElementById('tooltip-target')}
+          show={showTooltip}
+          placement="top"
+        // style={tooltipPosition}
+
+        >
+          {(props) => (
+            <Tooltip id="tooltip" {...props}>
+              {alunos
+                .filter(aluno => aluno.nome.includes(pesquisaAluno))
+                .map(aluno => (
+                  <span key={aluno.id_aluno}>
+                    {aluno.nome}
+                    <Button
+                    style={{marginLeft: 10}}
+                      variant="success"
+                      size="sm"
+                      onClick={() => {
+                        handleInserirAluno(aluno.id_aluno);
+                        setShowTooltip(false);
+                      }}
+                    >
+                      Inserir
+                    </Button>
+                  </span>
+                ))
+              }
+            </Tooltip>
+          )}
+        </Overlay>
+
+
+
+
+      </Form.Group>
+
+      {alunosSelecionados.length > 0 && (
+        <div>
+          <h4 style={{marginTop: 10}}>Alunos Selecionados:</h4>
+          <ol>
+            {alunosSelecionados.map(aluno => (
+              <li key={aluno.id_aluno}>
+                {aluno.nome} ({aluno.ra})
+                <Button
+                style={{marginLeft: 10}}
+                  variant="danger"
+                  size="sm"
+                  onClick={() => handleRemoverAluno(aluno.id_aluno)}
+                >
+                  Remover
+                </Button>
+              </li>
+            ))}
+          </ol>
+        </div>
+      )}
+
 
       <Button style={{ marginTop: 10 }} variant="primary" type="submit">
         Cadastrar

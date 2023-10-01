@@ -21,6 +21,7 @@ import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
 import Temas_Listar from './components/Temas/Temas_Listar';
 import Trabalho_Cadastrar from './components/Trabalhos/Trabalho_Cadastrar';
+import Trabalho_Listar from './components/Trabalhos/Trabalho_Listar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -70,7 +71,7 @@ const AppRoutes = () => {
         },
         {
           path: '/sgb/trabalhos_listar',
-          element: <Temas_Listar />
+          element: <Trabalho_Listar />
         }
       ]
     }
