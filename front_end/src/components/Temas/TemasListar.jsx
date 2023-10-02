@@ -8,7 +8,7 @@ import 'moment/locale/pt-br'
 import moment from 'moment'
 
 
-function Temas_Listar() {
+function TemasListar() {
   const [trabalhos, setTrabalhos] = useState([]);
 
 
@@ -57,4 +57,4 @@ function Temas_Listar() {
   );
 }
 
-export default Temas_Listar;
+export default TemasListar;

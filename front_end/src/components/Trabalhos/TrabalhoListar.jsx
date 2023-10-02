@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Card, Container, Row, Col } from 'react-bootstrap';
 
-const Trabalho_Listar = () => {
+const TrabalhoListar = () => {
   const [trabalhos, setTrabalhos] = useState([]);
   const [professores, setProfessores] = useState([]);
   const [temas, setTemas] = useState([]);
@@ -90,4 +90,4 @@ const Trabalho_Listar = () => {
   );
 };
 
-export default Trabalho_Listar;
+export default TrabalhoListar;

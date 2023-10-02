@@ -46,6 +46,10 @@ const Sidebar = () => {
           <MenuItem component={<Link to="/sgb/trabalhos_cadastrar" />}>Cadastrar Trabalho</MenuItem>
           <MenuItem component={<Link to="/sgb/trabalhos_cadastrar" />}>Avaliar</MenuItem>
         </SubMenu>
+        <SubMenu label={"Bancas"}>
+          <MenuItem component={<Link to="/sgb/bancas_listar" />}>Ver todas</MenuItem>
+          <MenuItem component={<Link to="/sgb/bancas_cadastrar" />}>Cadastrar Banca</MenuItem>
+        </SubMenu>
         
       </Menu>
     </ReactSidebar>

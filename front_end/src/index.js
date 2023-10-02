@@ -16,12 +16,14 @@ import App from '../src/pages/App';
 import Painel from '../src/components/Painel';
 import SignUpInfo from './pages/SignUpInfo';
 import VerifyEmailAluno from './pages/VerifyEmailAluno';
-import Temas_Cadastrar from './components/Temas/Temas_Cadastrar'
 import VerifyEmailProfessor from './pages/VerifyEmailProfessor';
 import CustomToastContainer from '../src/components/ToastContainer';
-import Temas_Listar from './components/Temas/Temas_Listar';
-import Trabalho_Cadastrar from './components/Trabalhos/Trabalho_Cadastrar';
-import Trabalho_Listar from './components/Trabalhos/Trabalho_Listar';
+import TemasCadastrar from './components/Temas/TemasCadastrar'
+import TemasListar from './components/Temas/TemasListar';
+import TrabalhoCadastrar from './components/Trabalhos/TrabalhoCadastrar';
+import TrabalhoListar from './components/Trabalhos/TrabalhoListar';
+import BancasCadastrar from './components/Bancas/BancasCadastrar';
+import BancasListar from './components/Bancas/BancasListar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -59,19 +61,27 @@ const AppRoutes = () => {
         },
         {
           path: '/sgb/temas_cadastrar',
-          element: <Temas_Cadastrar />
+          element: <TemasCadastrar />
         },
         {
           path: '/sgb/temas_listar',
-          element: <Temas_Listar />
+          element: <TemasListar />
         },
         {
           path: '/sgb/trabalhos_cadastrar',
-          element: <Trabalho_Cadastrar />
+          element: <TrabalhoCadastrar />
         },
         {
           path: '/sgb/trabalhos_listar',
-          element: <Trabalho_Listar />
+          element: <TrabalhoListar />
+        },
+        {
+          path: '/sgb/bancas_cadastrar',
+          element: <BancasCadastrar />
+        },
+        {
+          path: '/sgb/bancas_listar',
+          element: <BancasListar />
         }
       ]
     }

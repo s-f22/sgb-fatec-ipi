@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 
 
 
-const Trabalho_Cadastrar = () => {
+const TrabalhoCadastrar = () => {
   const [orientadores, setOrientadores] = useState([]);
   const [temas, setTemas] = useState([]);
   const [formData, setFormData] = useState({
@@ -141,7 +141,7 @@ const Trabalho_Cadastrar = () => {
     <Form className='Temas_Container' onSubmit={handleSubmit}>
       <Form.Group controlId="formOrientador">
         <h1>Cadastrar Trabalho</h1>
-        <Container fluid>
+        <Container style={{padding: 0}} fluid>
           <Row >
             <h3 >Previsão de entrega e apresentação:</h3>
             <Col md={2}>
@@ -284,4 +284,4 @@ const Trabalho_Cadastrar = () => {
   );
 };
 
-export default Trabalho_Cadastrar;
+export default TrabalhoCadastrar;

@@ -9,6 +9,8 @@ mss/login/node_modules/
 mss/temas/node_modules
 mss/trabalhos/node_modules
 mss/grupos/node_modules
+mss/bancas/node_modules
+mss/convidados/node_modules
 
 front-end/node_modules/
 front-end/.env

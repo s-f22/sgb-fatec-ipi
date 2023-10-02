@@ -4,7 +4,7 @@ import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 
-const Temas_Cadastrar = () => {
+const TemasCadastrar = () => {
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [id_autor, setId_autor] = useState(1)
@@ -83,4 +83,4 @@ const Temas_Cadastrar = () => {
   );
 };
 
-export default Temas_Cadastrar;
+export default TemasCadastrar;

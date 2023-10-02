@@ -4,6 +4,8 @@ const { Pool } = require('pg');
 require('dotenv').config({ path: '../../.env' });
 const app = express();
 app.use(bodyParser.json());
+const cors = require('cors');
+app.use(cors());
 
 const port = process.env.MSS_PORTA_HORARIO_AULA;
 
