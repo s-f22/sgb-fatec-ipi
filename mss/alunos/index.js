@@ -81,13 +81,13 @@ app.post('/alunos', async (req, res) => {
         `
       };
 
-      transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-          console.log(error)
-        } else {
-          console.log("Email enviado:", info.response)
-        }
-      })
+      // transporter.sendMail(mailOptions, (error, info) => {
+      //   if (error) {
+      //     console.log(error)
+      //   } else {
+      //     console.log("Email enviado:", info.response)
+      //   }
+      // })
     }
 
   } catch (error) {

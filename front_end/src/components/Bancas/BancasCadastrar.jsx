@@ -29,7 +29,6 @@ const BancasCadastrar = () => {
   const [horariosAulaOrientador, setHorariosAulaOrientador] = useState([]);
   const [convidados, setConvidados] = useState([]);
   const navigate = useNavigate();
-  
 
   useEffect(() => {
     const fetchData = async () => {
@@ -114,53 +113,129 @@ const BancasCadastrar = () => {
     }
   };
 
+  // const trabalhoSelecionado = (idTema) => {
+  //   // console.log("idTema:", idTema);
+  //   // console.log("Trabalhos:", trabalhos);
+  //   if (trabalhos) {
+  //     const trabalhoSelecionado = trabalhos.find(
+  //       (t) => t.id_tema === parseInt(idTema)
+  //     );
+  //     if (trabalhoSelecionado) {
+  //       return trabalhoSelecionado.id_trabalho;
+  //     } else {
+  //       throw new Error(`Nenhum trabalho encontrado para o idTema ${idTema}`);
+  //     }
+  //   }
+  //   // Se não houver um array de trabalhos, você pode lançar uma exceção ou tomar outra ação apropriada.
+  //   throw new Error("Array de trabalhos não disponível");
+  // };
+
+
   const trabalhoSelecionado = (idTema) => {
-    // Verifique se trabalhos está definido
-    if (trabalhos) {
-      const trabalhoSelecionado = trabalhos.find((t) => t.id_tema === idTema);
-      return trabalhoSelecionado ? trabalhoSelecionado.id_trabalho : null;
-    } else {
-      return null;
+    const trabalho = trabalhos.find((t) => t.id_tema === parseInt(idTema));
+    if (!trabalho) {
+      throw new Error(`Nenhum trabalho encontrado para o idTema ${idTema}`);
     }
+    return trabalho.id_trabalho;
   };
   
 
+
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-
-    
+  
     try {
-      const dataHoraStringToDate = new Date(dataHora);
-      // Enviar dados da banca para o endpoint de bancas
-      const response = await axios.post("http://localhost:4007/bancas", {
-        id_trabalho: trabalhoSelecionado(idTema),
-        // id_trabalho: 4,
-        data_hora: dataHoraStringToDate.toISOString()
-        // data_hora: '2023-10-02T04:02:31.723Z'
-      });
-     
-
-      // Obter o ID da banca recém-cadastrada a partir da resposta
-      const bancaId = response.data.id_banca;
-
-      // Enviar os professores convidados para o endpoint de convidados
-      await Promise.all(
-        convidados.map((professor) =>
-          axios.post("http://localhost:4008/convidados", {
-            id_professor: professor.id_professor,
-            id_banca: bancaId,
-          })
-        )
-      );
-
-      // Limpar os campos após o envio bem-sucedido
-      setIdTema("");
-      setDataHora("");
-      setConvidados([]);
-
-      console.log("Banca cadastrada com sucesso!");
-
-      toast.success("Banca cadastrado com sucesso!", {
+      const idTrabalho = trabalhoSelecionado(idTema);
+  
+      if (idTrabalho !== null) {
+        const dataHoraStringToDate = new Date(dataHora);
+  
+        // Cadastrar a banca
+        const response = await axios.post("http://localhost:4007/bancas", {
+          id_trabalho: idTrabalho,
+          data_hora: dataHoraStringToDate.toISOString(),
+        });
+  
+        if (response.status === 201) {
+          // Obter o ID da banca recém-cadastrada a partir da resposta
+          const bancaId = response.data.id_banca;
+  
+          // Atualizar o atributo "banca_agendada" do trabalho relacionado
+          const responseAtualizacaoTrabalho = await axios.patch(
+            `http://localhost:4005/trabalhos/${idTrabalho}`,
+            {
+              banca_agendada: true,
+            }
+          );
+  
+          if (responseAtualizacaoTrabalho.status === 200) {
+            // Enviar os professores convidados para o endpoint de convidados
+            await Promise.all(
+              convidados.map((professor) =>
+                axios.post("http://localhost:4008/convidados", {
+                  id_professor: professor.id_professor,
+                  id_banca: bancaId,
+                })
+              )
+            );
+  
+            console.log("Banca cadastrada com sucesso!");
+  
+            toast.success("Banca cadastrada com sucesso!", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+  
+            navigate("/sgb");
+  
+            // Limpar os campos após o envio bem-sucedido
+            setIdTema(0);
+            setDataHora("");
+            setConvidados([]);
+          } else {
+            console.error("Erro ao atualizar o trabalho.");
+            toast.error("Erro ao atualizar o trabalho.", {
+              position: "top-center",
+              autoClose: 3000,
+              hideProgressBar: true,
+              closeOnClick: true,
+              pauseOnHover: true,
+              draggable: true,
+            });
+          }
+        } else {
+          console.error("Erro ao cadastrar a banca.");
+          toast.error("Erro ao cadastrar a banca.", {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          });
+        }
+      } else {
+        // Lida com o caso em que não foi encontrado um trabalho correspondente ao idTema
+        console.error("Nenhum trabalho encontrado para o idTema selecionado.");
+        toast.error(
+          "Nenhum trabalho encontrado para o idTema selecionado. Selecione um tema válido.",
+          {
+            position: "top-center",
+            autoClose: 3000,
+            hideProgressBar: true,
+            closeOnClick: true,
+            pauseOnHover: true,
+            draggable: true,
+          }
+        );
+      }
+    } catch (error) {
+      console.error("Erro ao cadastrar banca. Por favor, tente novamente.", error);
+      toast.error("Erro ao cadastrar a Banca. Tente novamente mais tarde.", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -168,29 +243,14 @@ const BancasCadastrar = () => {
         pauseOnHover: true,
         draggable: true,
       });
-
-      navigate("/sgb");
-
-    } catch (error) {
-      console.error("Erro ao cadastrar banca. Por favor, tente novamente.", error);
-      toast.error(
-        "Erro ao cadastrar a Banca. Tente novamente mais tarde.",
-        {
-          position: "top-center",
-          autoClose: 3000,
-          hideProgressBar: true,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-        }
-      );
     }
   };
+  
 
   return (
     <Container className="Temas_Container" fluid>
       <Row>
-        <Col>
+        <Col md={6}>
           <Form onSubmit={handleFormSubmit}>
             <Form.Group controlId="formIdTema">
               <h1>Cadastrar Banca</h1>
@@ -253,7 +313,7 @@ const BancasCadastrar = () => {
           </Form>
         </Col>
 
-        <Col>
+        <Col md={6}>
           {idTema !== 0 && (
             <>
               <h2 style={{ marginTop: "1rem" }}>

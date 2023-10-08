@@ -7,7 +7,7 @@ import { useNavigate } from 'react-router-dom';
 const TemasCadastrar = () => {
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [id_autor, setId_autor] = useState(1)
+  const [id_autor, setId_autor] = useState(12)
   const navigate = useNavigate();
 
 

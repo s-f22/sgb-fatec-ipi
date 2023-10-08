@@ -112,3 +112,5 @@ CREATE TABLE convidado (
 -- UPDATE aluno
 -- SET user_id = '65037fd25186049fb2a47aa4'
 -- WHERE id_aluno = 1;
+
+--DELETE FROM aluno;

@@ -82,20 +82,58 @@ app.put('/trabalhos/:id', (req, res) => {
 });
 
 // ATUALIZAÇÃO PARCIAL
-app.patch('/trabalhos/:id', (req, res) => {
-  const id_trabalho = req.params.id;
-  const updates = req.body;
+// Endpoint PATCH para atualizar um trabalho
+app.patch('/trabalhos/:id', async (req, res) => {
+  const { id } = req.params;
+  const { nota_final, previsao_defesa, banca_agendada } = req.body;
 
-  db.query('UPDATE trabalho SET id_orientador = COALESCE($1, id_orientador), id_tema = COALESCE($2, id_tema), previsao_defesa = COALESCE($3, previsao_defesa) WHERE id_trabalho = $4 RETURNING *', [updates.id_orientador, updates.id_tema, updates.previsao_defesa, id_trabalho], (error, result) => {
-    if (error) {
-      res.status(500).json({ error: 'Erro ao atualizar o trabalho' });
-    } else if (result.rows.length === 0) {
-      res.status(404).json({ error: 'Trabalho não encontrado' });
-    } else {
-      res.status(200).json(result.rows[0]);
+  try {
+    // Consulta para obter o trabalho atual
+    const querySelect = 'SELECT * FROM trabalho WHERE id_trabalho = $1';
+    const resultSelect = await db.query(querySelect, [id]);
+
+    if (resultSelect.rowCount !== 1) {
+      res.status(404).json({ message: 'Trabalho não encontrado.' });
+      return;
     }
-  });
+
+    // Mesclar os valores atuais com os novos
+    const trabalhoAtual = resultSelect.rows[0];
+    const novoTrabalho = {
+      nota_final: nota_final !== undefined ? nota_final : trabalhoAtual.nota_final,
+      previsao_defesa: previsao_defesa !== undefined ? previsao_defesa : trabalhoAtual.previsao_defesa,
+      banca_agendada: banca_agendada !== undefined ? banca_agendada : trabalhoAtual.banca_agendada,
+    };
+
+    // Atualizar o trabalho com os novos valores mesclados
+    const queryUpdate = `
+      UPDATE trabalho
+      SET
+        nota_final = $1,
+        previsao_defesa = $2,
+        banca_agendada = $3
+      WHERE
+        id_trabalho = $4
+    `;
+
+    const resultUpdate = await db.query(queryUpdate, [
+      novoTrabalho.nota_final,
+      novoTrabalho.previsao_defesa,
+      novoTrabalho.banca_agendada,
+      id,
+    ]);
+
+    if (resultUpdate.rowCount === 1) {
+      res.status(200).json({ message: 'Trabalho atualizado com sucesso!' });
+    } else {
+      res.status(500).json({ message: 'Erro ao atualizar o trabalho.' });
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar o trabalho:', error);
+    res.status(500).json({ error: 'Erro interno do servidor' });
+  }
 });
+
 
 
 // DELETE

@@ -1,18 +1,18 @@
-const express = require('express');
-const bodyParser = require('body-parser');
-const { Pool } = require('pg');
-require('dotenv').config({ path: '../../.env' });
+const express = require("express");
+const bodyParser = require("body-parser");
+const { Pool } = require("pg");
+require("dotenv").config({ path: "../../.env" });
 const app = express();
-const cors = require('cors');
+const cors = require("cors");
 app.use(bodyParser.json());
 app.use(cors());
 
 const port = process.env.MSS_PORTA_TEMAS; // Alterado para a porta correta
 
-const jwt = require('jsonwebtoken');
-const nodemailer = require('nodemailer');
+const jwt = require("jsonwebtoken");
+const nodemailer = require("nodemailer");
 
-const VerificarToken = require('../middlewares/VerificarToken.js');
+const VerificarToken = require("../middlewares/VerificarToken.js");
 
 // Configuração do banco de dados
 const pool = new Pool({
@@ -23,12 +23,14 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-app.post('/temas', async (req, res) => { // Alterado para '/tema'
+app.post("/temas", async (req, res) => {
+  // Alterado para '/tema'
   try {
     const { id_autor, titulo, descricao } = req.body; // Alterado para os campos corretos
-    const data_cadastro = new Date().toISOString()
+    const data_cadastro = new Date().toISOString();
 
-    const query = 'INSERT INTO tema (id_autor, titulo, descricao, data_cadastro) VALUES ($1, $2, $3, $4) RETURNING id_tema, id_autor, titulo, descricao, data_cadastro'; // Alterado para inserir na tabela "tema"
+    const query =
+      "INSERT INTO tema (id_autor, titulo, descricao, data_cadastro) VALUES ($1, $2, $3, $4) RETURNING id_tema, id_autor, titulo, descricao, data_cadastro"; // Alterado para inserir na tabela "tema"
     const values = [id_autor, titulo, descricao, data_cadastro]; // Alterado para os campos corretos
 
     const result = await pool.query(query, values);
@@ -38,30 +40,34 @@ app.post('/temas', async (req, res) => { // Alterado para '/tema'
       id_autor: result.rows[0].id_autor,
       titulo: result.rows[0].titulo,
       descricao: result.rows[0].descricao,
-      data_cadastro: result.rows[0].data_cadastro
+      data_cadastro: result.rows[0].data_cadastro,
     };
 
-    res.status(201).json({ message: 'Tema cadastrado com sucesso!', tema });
+    res.status(201).json({ message: "Tema cadastrado com sucesso!", tema });
   } catch (error) {
-    console.error('Erro ao cadastrar o tema:', error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    console.error("Erro ao cadastrar o tema:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-app.get('/temas', async (req, res) => { // Alterado para '/tema'
+app.get("/temas", async (req, res) => {
+  // Alterado para '/tema'
   try {
-    const result = await pool.query('SELECT * FROM tema'); // Alterado para selecionar da tabela "tema"
+    const result = await pool.query("SELECT * FROM tema"); // Alterado para selecionar da tabela "tema"
     res.json(result.rows);
   } catch (error) {
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-app.get('/tema/:id_tema', async (req, res) => { // Alterado para '/tema'
+app.get("/tema/:id_tema", async (req, res) => {
+  // Alterado para '/tema'
   const id_tema = req.params.id_tema;
 
   try {
-    const result = await pool.query('SELECT * FROM tema WHERE id_tema = $1', [id_tema]); // Alterado para buscar na tabela "tema"
+    const result = await pool.query("SELECT * FROM tema WHERE id_tema = $1", [
+      id_tema,
+    ]); // Alterado para buscar na tabela "tema"
     if (result.rows.length === 0) {
       res.status(404).json({ error: `Tema com ID ${id_tema} não encontrado.` });
     } else {
@@ -70,45 +76,102 @@ app.get('/tema/:id_tema', async (req, res) => { // Alterado para '/tema'
         id_autor: result.rows[0].id_autor,
         titulo: result.rows[0].titulo,
         descricao: result.rows[0].descricao,
-        data_cadastro: result.rows[0].data_cadastro
+        data_cadastro: result.rows[0].data_cadastro,
       };
       res.status(200).json(tema);
     }
   } catch (error) {
     console.error(`Erro ao buscar tema com ID ${id_tema}:`, error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-app.put('/tema/:id_tema', async (req, res) => { // Alterado para '/tema'
+app.put("/tema/:id_tema", async (req, res) => {
+  // Alterado para '/tema'
   try {
     const id_tema = req.params.id_tema;
     const { id_autor, titulo, descricao, data_cadastro } = req.body; // Alterado para os campos corretos
     const result = await pool.query(
-      'UPDATE tema SET id_autor=$1, titulo=$2, descricao=$3, data_cadastro=$4 WHERE id_tema=$5 RETURNING *',
+      "UPDATE tema SET id_autor=$1, titulo=$2, descricao=$3, data_cadastro=$4 WHERE id_tema=$5 RETURNING *",
       [id_autor, titulo, descricao, data_cadastro, id_tema] // Alterado para os campos corretos
     );
     res.json(result.rows[0]);
   } catch (error) {
-    res.status(500).json({ error: 'Erro interno do servidor' });
+    res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-app.delete('/tema/:id_tema', async (req, res) => { // Alterado para '/tema'
+app.delete("/tema/:id_tema", async (req, res) => {
+  // Alterado para '/tema'
   try {
     const id_tema = req.params.id_tema;
-    const result = await pool.query('DELETE FROM tema WHERE id_tema = $1', [id_tema]); // Alterado para deletar da tabela "tema"
+    const result = await pool.query("DELETE FROM tema WHERE id_tema = $1", [
+      id_tema,
+    ]); // Alterado para deletar da tabela "tema"
 
     if (result.rowCount === 1) {
-      res.json({ message: 'Tema deletado com sucesso' });
+      res.json({ message: "Tema deletado com sucesso" });
     } else {
-      res.status(404).json({ error: 'Tema não encontrado' });
+      res.status(404).json({ error: "Tema não encontrado" });
     }
   } catch (error) {
-    console.error('Erro ao deletar tema:', error);
+    console.error("Erro ao deletar tema:", error);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+app.patch('/tema/:id', async (req, res) => {
+  const { id } = req.params;
+  const { titulo, descricao, disponivel } = req.body;
+
+  try {
+    // Consulta para obter o tema atual
+    const querySelect = 'SELECT * FROM tema WHERE id_tema = $1';
+    const resultSelect = await pool.query(querySelect, [id]);
+
+    if (resultSelect.rowCount !== 1) {
+      res.status(404).json({ message: 'Tema não encontrado.' });
+      return;
+    }
+
+    // Mesclar os valores atuais com os novos
+    const temaAtual = resultSelect.rows[0];
+    const novoTema = {
+      titulo: titulo !== undefined ? titulo : temaAtual.titulo,
+      descricao: descricao !== undefined ? descricao : temaAtual.descricao,
+      disponivel:
+        disponivel !== undefined ? disponivel : temaAtual.disponivel,
+    };
+
+    // Atualizar o tema com os novos valores mesclados
+    const queryUpdate = `
+      UPDATE tema
+      SET
+        titulo = $1,
+        descricao = $2,
+        disponivel = $3
+      WHERE
+        id_tema = $4
+    `;
+
+    const resultUpdate = await pool.query(queryUpdate, [
+      novoTema.titulo,
+      novoTema.descricao,
+      novoTema.disponivel,
+      id,
+    ]);
+
+    if (resultUpdate.rowCount === 1) {
+      res.status(200).json({ message: 'Tema atualizado com sucesso!' });
+    } else {
+      res.status(500).json({ message: 'Erro ao atualizar o tema.' });
+    }
+  } catch (error) {
+    console.error('Erro ao atualizar o tema:', error);
     res.status(500).json({ error: 'Erro interno do servidor' });
   }
 });
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

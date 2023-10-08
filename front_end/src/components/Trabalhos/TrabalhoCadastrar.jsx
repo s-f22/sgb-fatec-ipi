@@ -93,6 +93,7 @@ const TrabalhoCadastrar = () => {
     };
 
     try {
+      // Cadastrar o trabalho
       const responseTrabalho = await axios.post(
         "http://localhost:4005/trabalhos",
         dadosCadastroTrabalho
@@ -100,19 +101,27 @@ const TrabalhoCadastrar = () => {
 
       console.log("Trabalho cadastrado com sucesso:", responseTrabalho.data);
 
-      const id_trabalho = responseTrabalho.data.id_trabalho;
+      const idTrabalho = responseTrabalho.data.id_trabalho;
 
-      // Cadastrando alunos no grupo
+      // Atualizar o tema do trabalho cadastrado
+      const idTema = formData.id_tema;
+      await axios.patch(`http://localhost:4004/tema/${idTema}`, {
+        disponivel: false,
+      });
+
+      console.log("Tema atualizado com sucesso.");
+
+      // Cadastrar alunos no grupo
       for (const aluno of alunosSelecionados) {
         const dadosCadastroGrupo = {
           id_aluno: aluno.id_aluno,
-          id_trabalho: id_trabalho,
+          id_trabalho: idTrabalho,
         };
 
         await axios.post("http://localhost:4006/grupos", dadosCadastroGrupo);
       }
 
-      toast.success("Tema cadastrado com sucesso!", {
+      toast.success("Trabalho cadastrado com sucesso!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -125,7 +134,7 @@ const TrabalhoCadastrar = () => {
     } catch (error) {
       console.error("Erro ao cadastrar trabalho ou grupo:", error);
       toast.error(
-        "Erro ao cadastrar o tema ou grupo. Tente novamente mais tarde.",
+        "Erro ao cadastrar o tema, trabalho ou grupo. Tente novamente mais tarde.",
         {
           position: "top-center",
           autoClose: 3000,
