@@ -8,7 +8,8 @@ CREATE TABLE aluno (
     periodo VARCHAR(20),
     email_inst_verif BOOLEAN DEFAULT FALSE,
     codigo VARCHAR(40),
-    tipo_usuario INT DEFAULT 1
+    tipo_usuario INT DEFAULT 1,
+    ativo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE professor (
@@ -19,7 +20,8 @@ CREATE TABLE professor (
     email_inst_verif BOOLEAN DEFAULT FALSE,
     coordenador BOOLEAN DEFAULT FALSE,
     codigo VARCHAR(40),
-    tipo_usuario INT DEFAULT 2
+    tipo_usuario INT DEFAULT 2,
+    ativo BOOLEAN DEFAULT TRUE
 );
 
 CREATE TABLE tema (
@@ -27,7 +29,8 @@ CREATE TABLE tema (
     id_autor INT REFERENCES aluno(id_aluno),
     titulo VARCHAR(255),
     descricao TEXT,
-    data_cadastro TIMESTAMP
+    data_cadastro TIMESTAMP,
+    disponivel BOOLEAN DEFAULT TRUE
 )
 
 CREATE TABLE dia_aula (
@@ -49,7 +52,8 @@ CREATE TABLE trabalho (
     id_orientador INT REFERENCES professor(id_professor),
     id_tema INT REFERENCES tema(id_tema),
     nota_final NUMERIC(3, 1),
-    previsao_defesa CHAR(7)
+    previsao_defesa CHAR(7),
+    banca_agendada BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE banca (

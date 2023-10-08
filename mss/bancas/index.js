@@ -34,7 +34,7 @@ app.post('/bancas', (req, res) => {
       res.status(201).json(result.rows[0]);
     })
     .catch(error => {
-      res.status(500).json({ error: 'Erro ao criar a banca.' });
+      res.status(500).json({ error: 'Erro ao criar a banca.', error });
     });
 });
 

@@ -1,25 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import axios from 'axios';
-import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
-import Row from 'react-bootstrap/Row';
-import Col from 'react-bootstrap/Col';
-import 'moment/locale/pt-br'
-import moment from 'moment'
-
+import React, { useEffect, useState } from "react";
+import axios from "axios";
+import Card from "react-bootstrap/Card";
+import Container from "react-bootstrap/Container";
+import Row from "react-bootstrap/Row";
+import Col from "react-bootstrap/Col";
+import "moment/locale/pt-br";
+import moment from "moment";
 
 function TemasListar() {
   const [trabalhos, setTrabalhos] = useState([]);
+  const [alunos, setAlunos] = useState([]);
 
-
+  const procurarAluno = (idAluno) => {
+    const nomeAluno = alunos.find((a) => a.id_aluno === idAluno);
+    return nomeAluno ? nomeAluno.nome : "Aluno não encontrado";
+  };
 
   useEffect(() => {
-    axios.get('http://localhost:4004/temas')
-      .then(response => {
+    axios
+      .get("http://localhost:4004/temas")
+      .then((response) => {
         setTrabalhos(response.data);
       })
-      .catch(error => {
-        console.error('Erro ao buscar os trabalhos:', error);
+      .catch((error) => {
+        console.error("Erro ao buscar os trabalhos:", error);
+      });
+
+    axios
+      .get("http://localhost:4000/alunos")
+      .then((response) => {
+        setAlunos(response.data);
+      })
+      .catch((error) => {
+        console.error("Erro ao buscar os alunos:", error);
       });
   }, []);
   // useEffect(() => {
@@ -40,15 +53,18 @@ function TemasListar() {
   // }, []);
 
   return (
-    <div className='Trabalhos_Listar_Container'>
+    <div className="Trabalhos_Listar_Container">
       <h1>Listagem</h1>
-      {trabalhos.map(tema => (
+      {trabalhos.map((tema) => (
         <Col key={tema.id_tema} xs={12} sm={6} md={4} lg={3}>
           <Card>
             <Card.Body>
               <Card.Title>{tema.titulo}</Card.Title>
               <Card.Text>{tema.descricao}</Card.Text>
-              <Card.Text>Cadastrado em: {moment(tema.data_cadastro).format('LLL')}</Card.Text>
+              <Card.Text>
+                Cadastrado em: {moment(tema.data_cadastro).format("LLL")}
+              </Card.Text>
+              <Card.Text>Autor: {procurarAluno(tema.id_autor)}</Card.Text>
             </Card.Body>
           </Card>
         </Col>
