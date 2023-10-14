@@ -1,7 +1,9 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { Container, Row, Col } from "react-bootstrap";
-import { TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, TablePagination } from '@mui/material';
+import { Button, TableContainer,  Table,  TableHead,  TableBody,  TableRow,  TableCell,  Paper,  TablePagination,} from "@mui/material";
+import TrabalhoEditar from "./TrabalhoEditar";
+import { Link } from "react-router-dom";
 
 const TrabalhoListar = () => {
   const [trabalhos, setTrabalhos] = useState([]);
@@ -13,41 +15,41 @@ const TrabalhoListar = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const fetchData = async () => {
+    try {
+      const [
+        trabalhosResponse,
+        professoresResponse,
+        temasResponse,
+        gruposResponse,
+        alunosResponse,
+      ] = await Promise.all([
+        axios.get("http://localhost:4005/trabalhos"),
+        axios.get("http://localhost:4001/professores"),
+        axios.get("http://localhost:4004/temas"),
+        axios.get("http://localhost:4006/grupos"),
+        axios.get("http://localhost:4000/alunos"),
+      ]);
+
+      setTrabalhos(trabalhosResponse.data);
+      setProfessores(professoresResponse.data);
+      setTemas(temasResponse.data);
+      setGrupos(gruposResponse.data);
+      setAlunos(alunosResponse.data);
+
+      setDadosCarregados(true);
+
+      console.log("Trabalhos:", trabalhosResponse.data);
+      console.log("Professores:", professoresResponse.data);
+      console.log("Temas:", temasResponse.data);
+      console.log("Grupos:", gruposResponse.data);
+      console.log("Alunos:", alunosResponse.data);
+    } catch (error) {
+      console.error("Erro ao obter os dados:", error);
+    }
+  };
+
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const [
-          trabalhosResponse,
-          professoresResponse,
-          temasResponse,
-          gruposResponse,
-          alunosResponse,
-        ] = await Promise.all([
-          axios.get("http://localhost:4005/trabalhos"),
-          axios.get("http://localhost:4001/professores"),
-          axios.get("http://localhost:4004/temas"),
-          axios.get("http://localhost:4006/grupos"),
-          axios.get("http://localhost:4000/alunos"),
-        ]);
-
-        setTrabalhos(trabalhosResponse.data);
-        setProfessores(professoresResponse.data);
-        setTemas(temasResponse.data);
-        setGrupos(gruposResponse.data);
-        setAlunos(alunosResponse.data);
-
-        setDadosCarregados(true);
-
-        console.log("Trabalhos:", trabalhosResponse.data);
-        console.log("Professores:", professoresResponse.data);
-        console.log("Temas:", temasResponse.data);
-        console.log("Grupos:", gruposResponse.data);
-        console.log("Alunos:", alunosResponse.data);
-      } catch (error) {
-        console.error("Erro ao obter os dados:", error);
-      }
-    };
-
     fetchData();
   }, []);
 
@@ -58,6 +60,13 @@ const TrabalhoListar = () => {
   const handleChangeRowsPerPage = (event) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
+  };
+
+  const handleTrabalhoEdit = (message) => {
+    // Handle the edit success message or any other action
+    console.log(message);
+    // You may want to refresh the data after editing
+    fetchData();
   };
 
   const getProfessorNameById = (id) => {
@@ -115,6 +124,11 @@ const TrabalhoListar = () => {
                     {trabalho.nota_final === null
                       ? "ainda não avaliado"
                       : trabalho.nota_final}
+                  </TableCell>
+                  <TableCell>
+                    <Link to={`/sgb/trabalho_editar/${trabalho.id_trabalho}`}>
+                      <Button>Editar</Button>
+                    </Link>
                   </TableCell>
                 </TableRow>
               ))}

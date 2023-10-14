@@ -5,8 +5,10 @@ import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import Autocomplete from "@mui/material/Autocomplete";
 import TextField from "@mui/material/TextField";
+import { useParams } from "react-router-dom";
 
-const TrabalhoCadastrar = () => {
+const TrabalhoEditar = () => {
+  const { id_trabalho } = useParams();
   const [orientadores, setOrientadores] = useState([]);
   const [temas, setTemas] = useState([]);
   const [formData, setFormData] = useState({
@@ -42,6 +44,23 @@ const TrabalhoCadastrar = () => {
       .then((response) => setAlunos(response.data))
       .catch((error) => console.error(error));
   }, []);
+
+
+  useEffect(() => {
+    // Carregar detalhes do trabalho com base em "id_trabalho"
+    axios
+      .get(`http://localhost:4005/trabalhos/${id_trabalho}`)
+      .then((response) => {
+        const trabalhoData = response.data; // Dados do trabalho obtidos da API
+        setFormData(trabalhoData); // Atualize o estado do formulário com os dados do trabalho
+      })
+      .catch((error) => console.error(error));
+
+    // Carregar orientadores, temas e alunos
+    // Restante do código omitido para simplificar
+  }, [id_trabalho]); // Certifique-se de que o efeito seja executado quando id_trabalho mudar
+
+
 
   // const handleRemoverAluno = (alunoId) => {
   //   const updatedAlunosSelecionados = alunosSelecionados.filter(
@@ -250,4 +269,4 @@ const TrabalhoCadastrar = () => {
   );
 };
 
-export default TrabalhoCadastrar;
+export default TrabalhoEditar;

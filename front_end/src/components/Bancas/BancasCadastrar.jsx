@@ -29,6 +29,7 @@ const BancasCadastrar = () => {
   const [horariosAulaOrientador, setHorariosAulaOrientador] = useState([]);
   const [convidados, setConvidados] = useState([]);
   const navigate = useNavigate();
+  const [trabalhosPorTema, setTrabalhosPorTema] = useState({});
 
   useEffect(() => {
     const fetchData = async () => {
@@ -57,6 +58,24 @@ const BancasCadastrar = () => {
         console.log("Professores:", professoresResponse.data);
         console.log("Dias_aula:", diaAulaResponse.data);
         console.log("Horarios_aula:", horarioAulaResponse.data);
+        // Organize os trabalhos por tema
+        const trabalhosAgrupados = trabalhosResponse.data.reduce(
+          (acc, trabalho) => {
+            const temaId = trabalho.id_tema;
+            if (!acc[temaId]) {
+              acc[temaId] = [];
+            }
+            acc[temaId].push(trabalho);
+            return acc;
+          },
+          {}
+        );
+
+        setTrabalhosPorTema(trabalhosAgrupados);
+        setTemas(temasResponse.data);
+
+        console.log("Trabalhos por Tema:", trabalhosAgrupados);
+        console.log("Temas:", temasResponse.data);
       } catch (error) {
         console.error("Erro ao obter dados:", error);
       }
@@ -130,7 +149,6 @@ const BancasCadastrar = () => {
   //   throw new Error("Array de trabalhos não disponível");
   // };
 
-
   const trabalhoSelecionado = (idTema) => {
     const trabalho = trabalhos.find((t) => t.id_tema === parseInt(idTema));
     if (!trabalho) {
@@ -138,28 +156,26 @@ const BancasCadastrar = () => {
     }
     return trabalho.id_trabalho;
   };
-  
-
 
   const handleFormSubmit = async (e) => {
     e.preventDefault();
-  
+
     try {
       const idTrabalho = trabalhoSelecionado(idTema);
-  
+
       if (idTrabalho !== null) {
         const dataHoraStringToDate = new Date(dataHora);
-  
+
         // Cadastrar a banca
         const response = await axios.post("http://localhost:4007/bancas", {
           id_trabalho: idTrabalho,
           data_hora: dataHoraStringToDate.toISOString(),
         });
-  
+
         if (response.status === 201) {
           // Obter o ID da banca recém-cadastrada a partir da resposta
           const bancaId = response.data.id_banca;
-  
+
           // Atualizar o atributo "banca_agendada" do trabalho relacionado
           const responseAtualizacaoTrabalho = await axios.patch(
             `http://localhost:4005/trabalhos/${idTrabalho}`,
@@ -167,7 +183,7 @@ const BancasCadastrar = () => {
               banca_agendada: true,
             }
           );
-  
+
           if (responseAtualizacaoTrabalho.status === 200) {
             // Enviar os professores convidados para o endpoint de convidados
             await Promise.all(
@@ -178,9 +194,9 @@ const BancasCadastrar = () => {
                 })
               )
             );
-  
+
             console.log("Banca cadastrada com sucesso!");
-  
+
             toast.success("Banca cadastrada com sucesso!", {
               position: "top-center",
               autoClose: 3000,
@@ -189,9 +205,9 @@ const BancasCadastrar = () => {
               pauseOnHover: true,
               draggable: true,
             });
-  
+
             navigate("/sgb");
-  
+
             // Limpar os campos após o envio bem-sucedido
             setIdTema(0);
             setDataHora("");
@@ -234,7 +250,10 @@ const BancasCadastrar = () => {
         );
       }
     } catch (error) {
-      console.error("Erro ao cadastrar banca. Por favor, tente novamente.", error);
+      console.error(
+        "Erro ao cadastrar banca. Por favor, tente novamente.",
+        error
+      );
       toast.error("Erro ao cadastrar a Banca. Tente novamente mais tarde.", {
         position: "top-center",
         autoClose: 3000,
@@ -245,7 +264,6 @@ const BancasCadastrar = () => {
       });
     }
   };
-  
 
   return (
     <Container className="Temas_Container" fluid>
@@ -267,9 +285,12 @@ const BancasCadastrar = () => {
                 <option key={0} value={0}>
                   Selecione o tema
                 </option>
-                {temas.map((tema) => (
-                  <option key={tema.id_tema} value={tema.id_tema}>
-                    {tema.titulo}
+                {trabalhos.map((trabalho) => (
+                  <option key={trabalho.id_trabalho} value={trabalho.id_tema}>
+                    {
+                      temas.find((tema) => tema.id_tema === trabalho.id_tema)
+                        ?.titulo
+                    }
                   </option>
                 ))}
               </Form.Control>

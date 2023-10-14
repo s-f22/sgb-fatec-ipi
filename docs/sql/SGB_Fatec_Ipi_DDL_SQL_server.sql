@@ -1,105 +1,131 @@
--- Tabela ALUNO
-CREATE TABLE ALUNO (
-    idAluno INT IDENTITY(1,1) PRIMARY KEY,
-    ra VARCHAR(13) UNIQUE,
-    nome VARCHAR(255),
-    email VARCHAR(255),
-    curso VARCHAR(255),
-    periodo VARCHAR(20)
+--CREATE DATABASE SGB_FATEC_IPI
+--GO
+
+USE SGB_FATEC_IPI
+GO
+
+-- Criar tabela "aluno"
+CREATE TABLE aluno (
+    id_aluno INT IDENTITY(1,1) PRIMARY KEY,
+    user_id NVARCHAR(30) UNIQUE,
+    ra NVARCHAR(13) UNIQUE,
+    nome NVARCHAR(255),
+    email NVARCHAR(255) UNIQUE,
+    curso NVARCHAR(255),
+    periodo NVARCHAR(20),
+    email_inst_verif BIT DEFAULT 0,
+    codigo NVARCHAR(40),
+    tipo_usuario INT DEFAULT 1,
+    ativo BIT DEFAULT 1
 );
 GO
 
--- Tabela PROFESSOR
-CREATE TABLE PROFESSOR (
-    idProfessor INT IDENTITY(1,1) PRIMARY KEY,
-    nome VARCHAR(255),
-    email VARCHAR(255) UNIQUE
+-- Criar tabela "professor"
+CREATE TABLE professor (
+    id_professor INT IDENTITY(1,1) PRIMARY KEY,
+    user_id NVARCHAR(30) UNIQUE,
+    nome NVARCHAR(255),
+    email NVARCHAR(255) UNIQUE,
+    email_inst_verif BIT DEFAULT 0,
+    coordenador BIT DEFAULT 0,
+    codigo NVARCHAR(40),
+    tipo_usuario INT DEFAULT 2,
+    ativo BIT DEFAULT 1
 );
 GO
 
--- Tabela TRABALHO
-CREATE TABLE TRABALHO (
-    idTrabalho INT IDENTITY(1,1) PRIMARY KEY,
-    titulo VARCHAR(255),
-    descricao TEXT,
-    notaFinal DECIMAL(3, 1) CHECK (notaFinal >= 0 AND notaFinal <= 10)
+-- Criar tabela "tema"
+CREATE TABLE tema (
+    id_tema INT IDENTITY(1,1) PRIMARY KEY,
+    id_autor INT REFERENCES aluno(id_aluno),
+    titulo NVARCHAR(255),
+    descricao NVARCHAR(MAX),
+    data_cadastro DATETIME,
+    disponivel BIT DEFAULT 1
 );
 GO
 
--- Tabela BANCA
-CREATE TABLE BANCA (
-    idBanca INT IDENTITY(1,1) PRIMARY KEY,
-    idTrabalho INT REFERENCES TRABALHO(idTrabalho),
-    dataHora DATETIME UNIQUE
+-- Criar tabela "dia_aula"
+CREATE TABLE dia_aula (
+    id_dia_aula INT IDENTITY(1,1) PRIMARY KEY,
+    id_professor INT REFERENCES professor(id_professor),
+    dia_semana INT
 );
 GO
 
--- Tabela CARGO-PROFESSOR
-CREATE TABLE CARGO_PROFESSOR (
-    id_Cargo_Prof INT IDENTITY(1,1) PRIMARY KEY,
-    idProfessor INT REFERENCES PROFESSOR(idProfessor),
-    cargo VARCHAR(255)
-);
-GO
-
--- Tabela DIA-AULA
-CREATE TABLE DIA_AULA (
-    idDiaAula INT IDENTITY(1,1) PRIMARY KEY,
-    idProfessor INT REFERENCES PROFESSOR(idProfessor),
-    diaSemana VARCHAR(20)
-);
-GO
-
--- Tabela TRABALHO-ALUNO
-CREATE TABLE TRABALHO_ALUNO (
-    id_Trab_Aluno INT IDENTITY(1,1) PRIMARY KEY,
-    idAluno INT REFERENCES ALUNO(idAluno),
-    idTrabalho INT REFERENCES TRABALHO(idTrabalho)
-);
-GO
-
--- Tabela HORARIO-AULA
-CREATE TABLE HORARIO_AULA (
-    idHorarioAula INT IDENTITY(1,1) PRIMARY KEY,
-    idProfessor INT REFERENCES PROFESSOR(idProfessor),
-    idDiaAula INT REFERENCES DIA_AULA(idDiaAula),
+-- Criar tabela "horario_aula"
+CREATE TABLE horario_aula (
+    id_horario_aula INT IDENTITY(1,1) PRIMARY KEY,
+    id_professor INT REFERENCES professor(id_professor),
+    id_dia_aula INT REFERENCES dia_aula(id_dia_aula),
     entrada TIME,
     saida TIME
 );
 GO
 
--- Tabela TRABALHO-PROFESSOR
-CREATE TABLE TRABALHO_PROFESSOR (
-    id_Trab_Prof INT IDENTITY(1,1) PRIMARY KEY,
-    id_Cargo_Prof INT REFERENCES CARGO_PROFESSOR(id_Cargo_Prof),
-    idTrabalho INT REFERENCES TRABALHO(idTrabalho)
+-- Criar tabela "trabalho"
+CREATE TABLE trabalho (
+    id_trabalho INT IDENTITY(1,1) PRIMARY KEY,
+    id_orientador INT REFERENCES professor(id_professor),
+    id_tema INT REFERENCES tema(id_tema),
+    nota_final NUMERIC(3, 1),
+    previsao_defesa CHAR(7),
+    banca_agendada BIT DEFAULT 0
 );
 GO
 
--- Tabela AVALIACAO
-CREATE TABLE AVALIACAO (
-    idAvaliacao INT IDENTITY(1,1) PRIMARY KEY,
-    idTrabalho INT REFERENCES TRABALHO(idTrabalho),
-    id_Cargo_Prof INT REFERENCES CARGO_PROFESSOR(id_Cargo_Prof),
-    valor DECIMAL(3, 1) CHECK (valor >= 0 AND valor <= 10),
-    comentario TEXT
+-- Criar tabela "banca"
+CREATE TABLE banca (
+    id_banca INT IDENTITY(1,1) PRIMARY KEY,
+    id_trabalho INT REFERENCES trabalho(id_trabalho),
+    data_hora DATETIME UNIQUE,
+    comentarios NVARCHAR(MAX)
 );
 GO
 
--- Tabela BANCA-PROFESSOR
-CREATE TABLE BANCA_PROFESSOR (
-    id_Banca_Prof INT IDENTITY(1,1) PRIMARY KEY,
-    id_Cargo_Prof INT REFERENCES CARGO_PROFESSOR(id_Cargo_Prof),
-    idBanca INT REFERENCES BANCA(idBanca)
+-- Criar tabela "ata_orientacao"
+CREATE TABLE ata_orientacao (
+    id_ata INT IDENTITY(1,1) PRIMARY KEY,
+    id_trabalho INT REFERENCES trabalho(id_trabalho),
+    data_reuniao DATETIME,
+    presencial BIT,
+    titulo NVARCHAR(255),
+    descricao NVARCHAR(MAX)
 );
 GO
 
--- Tabela CERTIFICADO
-CREATE TABLE CERTIFICADO (
-    idCertificado INT IDENTITY(1,1) PRIMARY KEY,
-    id_Cargo_Prof INT REFERENCES CARGO_PROFESSOR(id_Cargo_Prof),
-    idBanca INT REFERENCES BANCA(idBanca),
-    dataHoraEmissao DATETIME,
-    comentario TEXT
+-- Criar tabela "grupo"
+CREATE TABLE grupo (
+    id_grupo INT IDENTITY(1,1) PRIMARY KEY,
+    id_aluno INT REFERENCES aluno(id_aluno),
+    id_trabalho INT REFERENCES trabalho(id_trabalho)
+);
+GO
+
+-- Criar tabela "avaliacao"
+CREATE TABLE avaliacao (
+    id_avaliacao INT IDENTITY(1,1) PRIMARY KEY,
+    id_trabalho INT REFERENCES trabalho(id_trabalho),
+    id_professor INT REFERENCES professor(id_professor),
+    valor NUMERIC(3, 1),
+    comentario NVARCHAR(MAX)
+);
+GO
+
+-- Criar tabela "certificado"
+CREATE TABLE certificado (
+    id_certificado INT IDENTITY(1,1) PRIMARY KEY,
+    id_prof_emissor INT REFERENCES professor(id_professor),
+    id_banca INT REFERENCES banca(id_banca),
+    data_hora_emissao DATETIME,
+    comentario NVARCHAR(MAX)
+);
+GO
+
+-- Criar tabela "convidado"
+CREATE TABLE convidado (
+    id_convidado INT IDENTITY(1,1) PRIMARY KEY,
+    id_professor INT REFERENCES professor(id_professor),
+    id_banca INT REFERENCES banca(id_banca)
 );
 GO
