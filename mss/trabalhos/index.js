@@ -152,6 +152,75 @@ app.delete('/trabalhos/:id', VerificarToken, (req, res) => {
 });
 
 
+app.get("/trabalhos_navigation/:id", async (req, res) => {
+  try {
+    const trabalhoId = req.params.id;
+
+    // Consultar o trabalho com base no ID do trabalho
+    const trabalhoQuery = "SELECT * FROM trabalho WHERE id_trabalho = $1";
+    const trabalhoResult = await db.query(trabalhoQuery, [trabalhoId]);
+
+    if (trabalhoResult.rows.length === 0) {
+      return res.status(404).json({ error: "Trabalho não encontrado" });
+    }
+
+    const trabalho = trabalhoResult.rows[0];
+
+    // Consultar o professor associado ao trabalho com base no ID do orientador
+    const professorQuery = "SELECT * FROM professor WHERE id_professor = $1";
+    const professorResult = await db.query(professorQuery, [trabalho.id_orientador]);
+
+    if (professorResult.rows.length === 0) {
+      return res.status(404).json({ error: "Professor não encontrado" });
+    }
+
+    const orientador_navigation = professorResult.rows[0];
+
+    // Consultar o tema associado ao trabalho com base no ID do tema
+    const temaQuery = "SELECT * FROM tema WHERE id_tema = $1";
+    const temaResult = await db.query(temaQuery, [trabalho.id_tema]);
+
+    if (temaResult.rows.length === 0) {
+      return res.status(404).json({ error: "Tema não encontrado" });
+    }
+
+    const tema_navigation = temaResult.rows[0];
+
+    // Consultar o aluno associado ao tema com base no ID do autor do tema
+    const alunoQuery = "SELECT * FROM aluno WHERE id_aluno = $1";
+    const alunoResult = await db.query(alunoQuery, [tema_navigation.id_autor]);
+
+    if (alunoResult.rows.length === 0) {
+      return res.status(404).json({ error: "Aluno não encontrado" });
+    }
+
+    const autor_navigation = alunoResult.rows[0];
+
+    // Construir a resposta conforme a estrutura desejada
+    const response = {
+      id_trabalho: trabalho.id_trabalho,
+      orientador_navigation: orientador_navigation,
+      tema_navigation: {
+        id_tema: tema_navigation.id_tema,
+        autor_navigation: autor_navigation,
+        titulo: tema_navigation.titulo,
+        descricao: tema_navigation.descricao,
+        data_cadastro: tema_navigation.data_cadastro,
+      },
+      nota_final: trabalho.nota_final,
+      previsao_defesa: trabalho.previsao_defesa,
+      banca_agendada: trabalho.banca_agendada,
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error("Erro ao buscar trabalho, professor, tema e aluno:", error);
+    res.status(500).json({ error: "Erro ao buscar trabalho, professor, tema e aluno" });
+  }
+});
+
+
+
 app.listen(process.env.MSS_PORTA_TRABALHOS, () => {
   console.log(`trabalhos: porta ${process.env.MSS_PORTA_TRABALHOS}`);
 });

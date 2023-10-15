@@ -60,7 +60,8 @@ CREATE TABLE banca (
     id_banca SERIAL PRIMARY KEY,
     id_trabalho INT REFERENCES trabalho(id_trabalho),
     data_hora TIMESTAMP UNIQUE,
-    comentarios TEXT
+    comentarios TEXT,
+    foi_avaliada BOOLEAN DEFAULT FALSE
 );
 
 CREATE TABLE ata_orientacao (

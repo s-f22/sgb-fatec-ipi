@@ -172,6 +172,47 @@ app.patch('/tema/:id', async (req, res) => {
   }
 });
 
+app.get("/tema_navigation/:id", async (req, res) => {
+  try {
+    const temaId = req.params.id;
+
+    // Consultar o tema com base no ID do tema
+    const temaQuery = "SELECT * FROM tema WHERE id_tema = $1";
+    const temaResult = await pool.query(temaQuery, [temaId]);
+
+    if (temaResult.rows.length === 0) {
+      return res.status(404).json({ error: "Tema não encontrado" });
+    }
+
+    const tema = temaResult.rows[0];
+
+    // Consultar o aluno associado ao tema com base no ID do autor
+    const alunoQuery = "SELECT * FROM aluno WHERE id_aluno = $1";
+    const alunoResult = await pool.query(alunoQuery, [tema.id_autor]);
+
+    if (alunoResult.rows.length === 0) {
+      return res.status(404).json({ error: "Aluno não encontrado" });
+    }
+
+    const autor_navigation = alunoResult.rows[0];
+
+    // Construir a resposta conforme a estrutura desejada
+    const response = {
+      id_tema: tema.id_tema,
+      autor_navigation: autor_navigation,
+      titulo: tema.titulo,
+      descricao: tema.descricao,
+      data_cadastro: tema.data_cadastro,
+    };
+
+    res.json(response);
+  } catch (error) {
+    console.error("Erro ao buscar tema e aluno:", error);
+    res.status(500).json({ error: "Erro ao buscar tema e aluno" });
+  }
+});
+
+
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

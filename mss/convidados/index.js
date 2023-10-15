@@ -132,6 +132,44 @@ app.delete('/convidados/:id', (req, res) => {
 });
 
 
+app.get("/convidados_por_banca/:id_banca", async (req, res) => {
+  const idBanca = req.params.id_banca;
+
+  try {
+    const result = await db.query(
+      "SELECT * FROM convidado WHERE id_banca = $1",
+      [idBanca]
+    );
+
+    const convidados = result.rows;
+
+    const professoresPromises = convidados.map(async (convidado) => {
+      const professorResult = await db.query(
+        "SELECT * FROM professor WHERE id_professor = $1",
+        [convidado.id_professor]
+      );
+      const professor = professorResult.rows[0];
+      return {
+        id_convidado: convidado.id_convidado,
+        professor_navigation: professor,
+        id_banca: convidado.id_banca,
+      };
+    });
+
+    const professoresConvidados = await Promise.all(professoresPromises);
+
+    res.json(professoresConvidados);
+  } catch (error) {
+    console.error("Erro ao buscar professores convidados por banca:", error);
+    res.status(500).json({ error: "Erro ao buscar professores convidados por banca" });
+  } 
+  // finally {
+  //   db.end();
+  // }
+});
+
+
+
 
 app.listen(process.env.MSS_PORTA_CONVIDADOS, () => {
   console.log(`convidados: porta ${process.env.MSS_PORTA_CONVIDADOS}`);

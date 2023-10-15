@@ -1,0 +1,216 @@
+=> ALUNO
+axios.get("http://localhost:4000/alunos/7")
+{
+    "id_aluno": 7,
+    "user_id": "3sn8a72uiers84824eab0d",
+    "ra": "1234567891012",
+    "nome": "Aluno 1",
+    "email": "email_aluno1@fatec.sp.gov.br",
+    "curso": "ads",
+    "periodo": "noite",
+    "email_inst_verif": false,
+    "codigo": "ad77d641-6ae4-49b4-b157-0789638b0af0",
+    "tipo_usuario": 1,
+    "ativo": true
+}
+
+***********************************************************************************************************
+
+=> PROFESSOR
+axios.get("http://localhost:4001/professores/15")
+{
+    "id_professor": 15,
+    "user_id": "3sn8a72uiers84830eab0d",
+    "nome": "Rodrigo Bossini",
+    "email": "professor-bossini@fatec.sp.gov.br",
+    "email_inst_verif": false
+}
+
+***********************************************************************************************************
+
+=> TEMA
+axios.get("http://localhost:4004/tema/6")
+{
+    "id_tema": 6,
+    "id_autor": 11,
+    "titulo": "Sistemas de paramaetrização",
+    "descricao": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+    "data_cadastro": "2023-10-08T21:54:45.381Z"
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4000/alunos/11")
+{
+    "id_tema": 6,
+    "autor_navigation": {
+        "id_aluno": 11,
+        "user_id": "3sn8a72uiers84824eab0d",
+        "ra": "1234567891012",
+        "nome": "Fulano",
+        "email": "email_aluno1@fatec.sp.gov.br",
+        "curso": "ads",
+        "periodo": "noite",
+        "email_inst_verif": false,
+        "codigo": "ad77d641-6ae4-49b4-b157-0789638b0af0",
+        "tipo_usuario": 1,
+        "ativo": true
+    },
+    "titulo": "Sistemas de paramaetrização",
+    "descricao": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English.",
+    "data_cadastro": "2023-10-08T21:54:45.381Z"
+}
+
+***********************************************************************************************************
+
+=> TRABALHO
+axios.get("http://localhost:4005/trabalhos/17")
+{
+    "id_trabalho": 17,
+    "id_orientador": 15,
+    "id_tema": 8,
+    "nota_final": null,
+    "previsao_defesa": "02|2023",
+    "banca_agendada": true
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4001/professores/15")
+axios.get("http://localhost:4004/tema/8")
+axios.get("http://localhost:4000/alunos/7")
+{
+    "id_trabalho": 17,
+    "orientador_navigation": {
+        "id_professor": 15,
+        "user_id": "3sn8a72uiers84830eab0d",
+        "nome": "Rodrigo Bossini",
+        "email": "professor-bossini@fatec.sp.gov.br",
+        "email_inst_verif": false
+    },
+    "tema_navigation":{
+        "id_tema": 8,
+        "autor_navigation": {
+            "id_aluno": 7,
+            "user_id": "3sn8a72uiers84824eab0d",
+            "ra": "1234567891012",
+            "nome": "Fulano",
+            "email": "email_aluno1@fatec.sp.gov.br",
+            "curso": "ads",
+            "periodo": "noite",
+            "email_inst_verif": false,
+            "codigo": "ad77d641-6ae4-49b4-b157-0789638b0af0",
+            "tipo_usuario": 1,
+            "ativo": true
+        },
+        "titulo": "Sistemas de paramaetrização",
+        "descricao": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+        "data_cadastro": "2023-10-08T21:54:45.381Z"
+    },
+    "nota_final": null,
+    "previsao_defesa": "02|2023",
+    "banca_agendada": true
+}
+
+***********************************************************************************************************
+
+=> GRUPO
+axios.get("http://localhost:4006/grupos/15")
+{
+    "id_grupo": 15,
+    "id_aluno": 12,
+    "id_trabalho": 17
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4000/alunos/12")
+{
+    "id_grupo": 15,
+    "aluno_navigation": {
+        "id_aluno": 12,
+        "user_id": "3sn8a72uiers84824eab0d",
+        "ra": "1234567891012",
+        "nome": "Aluno 1",
+        "email": "email_aluno1@fatec.sp.gov.br",
+        "curso": "ads",
+        "periodo": "noite",
+        "email_inst_verif": false,
+        "codigo": "ad77d641-6ae4-49b4-b157-0789638b0af0",
+        "tipo_usuario": 1,
+        "ativo": true
+    },
+    "id_trabalho": 17
+}
+
+***********************************************************************************************************
+
+=> BANCA
+axios.get("http://localhost:4007/bancas/13")
+{
+    "id_banca": 13,
+    "id_trabalho": 17,
+    "data_hora": "2023-10-11T21:00:00.000Z",
+    "comentarios": null,
+    "foi_avaliada": false
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4005/trabalhos/17")
+axios.get("http://localhost:4001/professores/15")
+axios.get("http://localhost:4004/tema/6")
+axios.get("http://localhost:4000/alunos/7")
+{
+    "id_banca": 13,
+    "trabalho_navigation": {
+    "id_trabalho": 17,
+    "orientador_navigation": {
+        "id_professor": 15,
+        "user_id": "3sn8a72uiers84830eab0d",
+        "nome": "Rodrigo Bossini",
+        "email": "professor-bossini@fatec.sp.gov.br",
+        "email_inst_verif": false
+    },
+    "tema_navigation":{
+        "id_tema": 6,
+        "autor_navigation": {
+            "id_aluno": 7,
+            "user_id": "3sn8a72uiers84824eab0d",
+            "ra": "1234567891012",
+            "nome": "Aluno 1",
+            "email": "email_aluno1@fatec.sp.gov.br",
+            "curso": "ads",
+            "periodo": "noite",
+            "email_inst_verif": false,
+            "codigo": "ad77d641-6ae4-49b4-b157-0789638b0af0",
+            "tipo_usuario": 1,
+            "ativo": true
+        },
+        "titulo": "Sistemas de paramaetrização",
+        "descricao": "It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here, content here', making it look like readable English. Many desktop publishing packages and web page editors now use Lorem Ipsum as their default model text, and a search for 'lorem ipsum' will uncover many web sites still in their infancy. Various versions have evolved over the years, sometimes by accident, sometimes on purpose (injected humour and the like).",
+        "data_cadastro": "2023-10-08T21:54:45.381Z"
+    },
+    "nota_final": null,
+    "previsao_defesa": "02|2023",
+    "banca_agendada": true
+},
+    "data_hora": "2023-10-11T21:00:00.000Z",
+    "comentarios": null,
+    "foi_avaliada": false
+}
+
+***********************************************************************************************************
+
+=> CONVIDADOS
+axios.get("http://localhost:4008/convidados/10")
+{
+    "id_convidado": 10,
+    "id_professor": 17,
+    "id_banca": 13
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4001/professores/17")
+{
+    "id_convidado": 10,
+    "id_professor": {
+        "id_professor": 17,
+        "user_id": "3sn8a72uiers84830eab0d",
+        "nome": "Rodrigo Bossini",
+        "email": "professor-bossini@fatec.sp.gov.br",
+        "email_inst_verif": false
+    },
+    "id_banca": 13
+}

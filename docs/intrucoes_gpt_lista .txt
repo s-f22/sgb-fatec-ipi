@@ -1,0 +1,110 @@
+Considere que já possuo uma API em nodejs com os seguintes pacotes:
+
+const express = require("express");
+const bodyParser = require("body-parser");
+const { Pool } = require("pg");
+require("dotenv").config({ path: "../../.env" });
+const app = express();
+const cors = require("cors");
+app.use(bodyParser.json());
+app.use(cors());
+
+Atualmente no endpoint:
+
+http://localhost:4008/convidados
+
+eu obtenho os seguintes dados:
+
+[
+    {
+        "id_convidado": 10,
+        "id_professor": 17,
+        "id_banca": 13
+    },
+    {
+        "id_convidado": 11,
+        "id_professor": 16,
+        "id_banca": 13
+    },
+    {
+        "id_convidado": 12,
+        "id_professor": 17,
+        "id_banca": 14
+    },
+    {
+        "id_convidado": 13,
+        "id_professor": 15,
+        "id_banca": 14
+    },
+    {
+        "id_convidado": 14,
+        "id_professor": 16,
+        "id_banca": 15
+    },
+    {
+        "id_convidado": 15,
+        "id_professor": 17,
+        "id_banca": 15
+    },
+    {
+        "id_convidado": 16,
+        "id_professor": 16,
+        "id_banca": 16
+    },
+    {
+        "id_convidado": 17,
+        "id_professor": 17,
+        "id_banca": 16
+    }
+]
+
+Faça um novo endpoint:
+
+axios.get("http://localhost:4008/convidados_por_banca/14")
+
+que seja capaz de filtrar, dentre todos os registros da tabela convidado, apenas aqueles com o id_banca informado: 
+
+o resultado obtido deve ser:
+
+[   
+    {
+        "id_convidado": 12,
+        "id_professor": 17,
+        "id_banca": 14
+    },
+    {
+        "id_convidado": 13,
+        "id_professor": 15,
+        "id_banca": 14
+    }
+]
+
+Em seguida, por meio do endpoint:
+axios.get("http://localhost:4001/professores/:id_professor")
+
+faça com que seja enviada a lista conforme abaixo:
+
+[   
+    {
+        "id_convidado": 12,
+        "professor_navigation": {
+            "id_professor": 17,
+            "user_id": "3sn8a72uiers84832eab0d",
+            "nome": "Ana Claudia Melo Tiessi",
+            "email": "ana_claudia_rica@fatec.sp.gov.br",
+            "email_inst_verif": false
+        },
+        "id_banca": 14
+    },
+    {
+        "id_convidado": 13,
+        "professor_navigation": {
+            "id_professor": 15,
+            "user_id": "3sn8a72uiers84830eab0d",
+            "nome": "Rodrigo Bossini",
+            "email": "professor-bossini@fatec.sp.gov.br",
+            "email_inst_verif": false
+        },
+        "id_banca": 14
+    }
+]

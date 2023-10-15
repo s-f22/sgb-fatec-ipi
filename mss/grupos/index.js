@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 const { Pool } = require('pg');
 
 const jwt = require('jsonwebtoken');
+
 const cors = require('cors');
 app.use(cors());
 
@@ -67,7 +68,7 @@ app.get('/grupos/:id', (req, res) => {
 
 
 // PUT
-app.put('/grupos/:id', VerificarToken, (req, res) => {
+app.put('/grupos/:id',  (req, res) => {
   const id_grupo = req.params.id;
   const { id_aluno, id_trabalho } = req.body;
 
@@ -115,6 +116,41 @@ app.delete('/grupos/:id', (req, res) => {
   });
 });
 
+
+
+app.get("/grupo_por_trabalho/:id_trabalho", async (req, res) => {
+  
+  const idTrabalho = req.params.id_trabalho;
+
+  try {
+    const result = await db.query(
+      "SELECT * FROM grupo WHERE id_trabalho = $1",
+      [idTrabalho]
+    );
+
+    const grupos = result.rows;
+
+    const alunosPromises = grupos.map(async (grupo) => {
+      const alunoResult = await db.query(
+        "SELECT * FROM aluno WHERE id_aluno = $1",
+        [grupo.id_aluno]
+      );
+      const aluno = alunoResult.rows[0];
+      return {
+        id_grupo: grupo.id_grupo,
+        aluno_navigation: aluno,
+        id_trabalho: grupo.id_trabalho,
+      };
+    });
+
+    const alunosComInformacoes = await Promise.all(alunosPromises);
+
+    res.json(alunosComInformacoes);
+  } catch (error) {
+    console.error("Erro ao buscar grupos por trabalho:", error);
+    res.status(500).json({ error: "Erro ao buscar grupos por trabalho" });
+  } 
+});
 
 
 
