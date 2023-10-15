@@ -13,8 +13,6 @@ const { v4: uuidv4 } = require('uuid')
 const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
 
-
-
 const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_SERVER,
@@ -23,7 +21,12 @@ const db = new Pool({
   port: process.env.DB_PORT,
 });
 
-
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
 
 app.post('/alunos', async (req, res) => {
 

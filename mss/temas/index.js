@@ -23,6 +23,13 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
+app.use((req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', 'http://localhost:3000');
+  res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH');
+  res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  next();
+});
+
 app.post('/temas', async (req, res) => { // Alterado para '/tema'
   try {
     const { id_autor, titulo, descricao } = req.body; // Alterado para os campos corretos
