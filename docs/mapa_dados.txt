@@ -214,3 +214,63 @@ axios.get("http://localhost:4001/professores/17")
     },
     "id_banca": 13
 }
+
+***********************************************************************************************************
+
+=> CERTIFICADOS
+{
+    "id_certificado": 2,
+    "id_prof_emissor": 15,
+    "id_banca": 13,
+    "data_hora_emissao": "2023-10-15T15:26:44.992Z",
+    "comentario": "Trabalho aprovado com louvor"
+}
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
+axios.get("http://localhost:4007/bancas_navigation/13")
+{
+    "id_certificado": 2,
+    "id_prof_emissor": 15,
+    "banca_navigation": {
+        "id_banca": 13,
+        "trabalho_navigation": {
+            "id_trabalho": 17,
+            "orientador_navigation": {
+                "id_professor": 15,
+                "user_id": "3sn8a72uiers84830eab0d",
+                "nome": "Rodrigo Bossini",
+                "email": "professor-bossini@fatec.sp.gov.br",
+                "email_inst_verif": false,
+                "coordenador": true,
+                "codigo": "9c29ee44-9d66-4ddb-9f78-307463b95853",
+                "tipo_usuario": 2,
+                "ativo": true
+            },
+            "tema_navigation": {
+                "id_tema": 8,
+                "autor_navigation": {
+                    "id_aluno": 12,
+                    "user_id": "3sn8a72uiers84829eab0d",
+                    "ra": "2145789652365",
+                    "nome": "Cicero Cristiano Rodrigues da Mota",
+                    "email": "cicero.mota@fatec.sp.gov.br",
+                    "curso": "ads",
+                    "periodo": "noite",
+                    "email_inst_verif": false,
+                    "codigo": "43856991-21fc-48ce-85d0-c9d26e83f717",
+                    "tipo_usuario": 1,
+                    "ativo": true
+                },
+                "titulo": "Sistema Gerenciador de Bancas",
+                "descricao": "There are many variations of passages of Lorem Ipsum available, but the majority have suffered alteration in some form, by injected humour, or randomised words which don't look even slightly believable. If you are going to use a passage of Lorem Ipsum, you need to be sure there isn't anything embarrassing hidden in the middle of text. All the Lorem Ipsum generators on the Internet tend to repeat predefined chunks as necessary, making this the first true generator on the Internet. It uses a dictionary of over 200 Latin words, combined with a handful of model sentence structures, to generate Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is therefore always free from repetition, injected humour, or non-characteristic words etc.",
+                "data_cadastro": "2023-10-08T22:34:29.872Z"
+            },
+            "nota_final": null,
+            "previsao_defesa": "02|2023",
+            "banca_agendada": true
+        },
+        "data_hora": "2023-10-11T21:00:00.000Z",
+        "comentarios": null
+    },
+    "data_hora_emissao": "2023-10-15T15:26:44.992Z",
+    "comentario": "Trabalho aprovado com louvor"
+}

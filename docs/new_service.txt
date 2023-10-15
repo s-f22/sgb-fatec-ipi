@@ -10,5 +10,39 @@ package.json
  "start": "nodemon index.js"
  },
 
+senha: 1@Aj1234
 
- 1@Aj1234
+BASE API
+{
+  const express = require('express');
+  const bodyParser = require('body-parser');
+  const app = express();
+  require('dotenv').config({ path: '../../.env' });
+  app.use(bodyParser.json());
+  const { Pool } = require('pg');
+
+  const jwt = require('jsonwebtoken');
+  const cors = require('cors');
+  app.use(cors());
+
+
+  const VerificarToken = require('../middlewares/VerificarToken.js');
+  //const AuthCheck = require('../middlewares/AuthCheck.js');
+
+
+  const db = new Pool({
+    user: process.env.DB_USER,
+    host: process.env.DB_SERVER,
+    database: process.env.DB_USER,
+    password: process.env.DB_PWD,
+    port: process.env.DB_PORT,
+  });
+
+
+  // * ENDPOINTS *
+
+
+  app.listen(process.env.MSS_PORTA_X, () => {
+    console.log(`nome_entidade: porta ${process.env.MSS_PORTA_X}`);
+  });
+}

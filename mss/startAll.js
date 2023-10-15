@@ -9,7 +9,10 @@ const services = [
     'trabalhos',
     'grupos',
     'bancas',
-    'convidados'
+    'convidados',
+    'avaliacao',
+    'certificado',
+    'ata'
 ];
 
 services.forEach(service => {

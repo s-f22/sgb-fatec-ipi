@@ -24,15 +24,17 @@ function BancasListar() {
     axios.get('http://localhost:4007/bancas_navigation')
       .then((response) => {
         const calendarEvents = response.data.map((banca) => {
+          const convidados = banca.convidados_navigation.map((c) => c.professor_navigation.nome).join(", ");
           return {
             id: banca.id_banca,
             title: banca.trabalho_navigation.tema_navigation.titulo,
             start: new Date(banca.data_hora),
             end: horarioFinalBanca(banca.data_hora),
             orientador: banca.trabalho_navigation.orientador_navigation.nome,
-            convidados: buscarConvidados(banca.id_banca)
+            convidados: convidados,
           };
         });
+        
         setEvents(calendarEvents);
       })
       .catch((error) => {
@@ -56,16 +58,7 @@ function BancasListar() {
     return final;
   };
 
-  const buscarConvidados = async (idBanca) => {
-    try {
-      const convidados = await axios.get(`http://localhost:4008/convidados_por_banca/${idBanca}`);
-      console.log("CONVIDADOS", convidados.data);
-      return convidados.data;
-    } catch (error) {
-      console.error("Erro ao buscar convidados:", error);
-      return [];
-    }
-  };
+
   
   return (
     <Box className="Temas_Container" p={2}>
@@ -98,6 +91,9 @@ function BancasListar() {
               </DialogContentText>
               <DialogContentText>
                 <strong>Orientador:</strong> {selectedEvent.orientador}
+              </DialogContentText>
+              <DialogContentText>
+              <strong>Convidados:</strong> {selectedEvent.convidados}
               </DialogContentText>
               
             </div>
