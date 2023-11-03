@@ -7,50 +7,51 @@ import {
   sidebarClasses,
 } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import teste from "../assets/img/fatec_ipi.png";
+import teste from '../Assets/img/Logo_I.png'
 import { useLocation } from "react-router-dom";
+import { useState } from "react";
 
 const Sidebar = () => {
   const location = useLocation();
-
+  const [selectedSubMenu, setSelectedSubMenu] = useState(null);
   return (
-    // <div className="App_Sidebar d-none d-lg-block">
+  <div className="background">
     <ReactSidebar
       className="d-none d-lg-block"
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
-          backgroundColor: "gray",
-          width: "35vh",
+          backgroundColor: "#345059",
+          width: "256px",
+          height: "100%",
           display: "flex",
+          alignItems: "center", 
           flexDirection: "column",
         },
       }}
     >
       <img
         src={teste}
-        style={{
-          width: 100,
-          display: "flex",
-          alignSelf: "center",
-          backgroundColor: "lightgray",
-          padding: 10,
-          borderRadius: 10,
-        }}
-        alt=""
+        style={{ width: 172, height: 179, flexShrink: 0, }} alt="logo" 
       />
+      <span style={{ width: 208, color: '#EAEAEA', border: '1px solid white', marginTop: '20px', marginBottom: '15px' }}></span>
       <Menu
-        menuItemStyles={{
+         menuItemStyles={{
           button: ({ level, active, disabled }) => {
             // only apply styles on first level elements of the tree
             if (level === 0)
               return {
-                color: disabled ? "black" : "black",
-                backgroundColor: active ? "green" : "gray",
+                width: 208, height: 40,
+                color: disabled ? '#FFFFFF' : '#EAEAEA',
+                backgroundColor: active ? '#EAEAEA' : '#345059',
+                '&:hover': { borderRadius: 8, backgroundColor: '#EAEAEA', color: '#345059', fontWeight: 600 }
               };
             if (level === 1)
               return {
-                color: disabled ? "black" : "black",
-                backgroundColor: active ? "green" : "gray",
+                width: 172, height: 32,
+                color: disabled ? '#EAEAEA' : '#EAEAEA',
+                backgroundColor: active ? '#345059' : '#345059',
+                marginLeft: 24, paddingLeft: 24,
+                '&:hover': { borderRadius: 8, backgroundColor: '#EAEAEA', color: '#345059', fontWeight: 600,}
               };
           },
         }}
@@ -70,6 +71,13 @@ const Sidebar = () => {
         </MenuItem>
 
         <SubMenu label={"Temas"}>
+        {selectedSubMenu === "temas" && (
+            <div className="selected-menu-line">
+              <div className="selected-menu-line_turn_I"></div>
+              <div className="selected-menu-line_turn_II"></div>
+              <div className="selected-menu-line_turn_III"></div>
+            </div>
+          )}
           <MenuItem
             component={<Link to="/sgb/temas_listar" />}
             active={location.pathname === "/sgb/temas_listar"}
@@ -125,7 +133,7 @@ const Sidebar = () => {
       </Menu>
     </ReactSidebar>
 
-    // </div>
+  </div>
   );
 };
 

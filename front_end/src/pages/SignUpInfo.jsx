@@ -4,6 +4,7 @@ import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
+import banca_cad from '../Assets/img/Logo_I.png'
 
 
 const SignUpInfo = () => {
@@ -237,17 +238,18 @@ const SignUpInfo = () => {
 
     return (
       <Form style={{ display: 'flex', flexDirection: 'column' }}>
-        <h3 style={{marginTop: 20}}>Seus horários de trabalho:</h3>
-        <p>Informe abaixo os dias e horários nos quais você ministra aulas na FATEC Ipiranga:</p>
+        <h6 style={{marginTop: 20, fontWeight: 'bold'}}>Seus horários de trabalho:</h6>
+        <p>Informe abaixo os dias e horários nos quais você ministra aulas na FATEC Ipiranga</p>
         <div className='SignUpInfo_Cards_grid'>
           {diasSemana.map(dia => (
-            <Card key={dia} style={{ marginBottom: '10px', padding: '10px', width: 300 }}>
+            <Card key={dia} style={{ marginBottom: '10px', padding: '10px', width: 300, color:'#345059', backgroundColor: '#E6E6E6' }}>
               <div>
-                <Form.Check
+                <Form.Check 
                   type="checkbox"
                   label={dia}
                   checked={diasSelecionados.includes(dia)}
                   onChange={e => handleDiaChange(dia, e.target.checked)}
+                  className='SignUpInfo_Checkbox'
                 />
                 {diasSelecionados.includes(dia) && (
                   <div>
@@ -266,7 +268,7 @@ const SignUpInfo = () => {
                                 <Form.Label>Entrada:</Form.Label>
                                 <Form.Control
                                   type="time"
-                                  style={{ width: 'fit-content' }}
+                                  style={{ width: 'fit-content', backgroundColor: '#fff', color: '#345059' }}
                                   onChange={e =>
                                     handleHorarioChange(dia, periodo, 'entrada', e.target.value)
                                   }
@@ -278,7 +280,7 @@ const SignUpInfo = () => {
                                 <Form.Label>Saída:</Form.Label>
                                 <Form.Control
                                   type="time"
-                                  style={{ width: 'fit-content' }}
+                                  style={{ width: 'fit-content', backgroundColor: '#fff', color: '#345059'  }}
                                   onChange={e =>
                                     handleHorarioChange(dia, periodo, 'saida', e.target.value)
                                   }
@@ -360,11 +362,14 @@ const SignUpInfo = () => {
 
 
   return (
-    <div style={{ display: 'block', padding: 30 }}>
-      <h1>Conclua seu cadastro</h1>
+    <>
+    <div className='sidebar-cadastro'>
+      <img src={banca_cad} alt="Banca montada" />
+      <h3>Finalize seu cadastro!!</h3>
       <p>Para concluir seu acesso à plataforma, por favor, insira seu email institucional. Mas antes...</p>
-      <h2>Você é:</h2>
-
+    </div>
+    <div className='vocee'>
+      <h4>Você é:</h4>
       <Form.Check
         type="radio"
         label="Aluno"
@@ -383,11 +388,13 @@ const SignUpInfo = () => {
         onChange={() => handleSelectProfile('professor')}
       />
 
+    
+
       {selectedProfile === 'aluno' && (
         <Form onSubmit={handleSubmitAluno}>
           <Form.Group>
             <Form.Label htmlFor="email"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup style={{ width: '47.25rem' }} className="mb-3">
               <Form.Control
                 id="email"
                 type="text"
@@ -400,16 +407,18 @@ const SignUpInfo = () => {
               <InputGroup.Text style={{
                 width: 'fit-content',
                 fontStyle: 'italic',
-                color: 'InactiveBorder',
+                color: 'white',
                 paddingLeft: 5,
                 //borderStyle: 'none',
-                marginLeft: 4
+                marginLeft: 4,
+                backgroundColor: '#345059'
               }}
                 id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+
+            <InputGroup style={{ width: '47.25rem' }} className="mb-3">
               <InputGroup className="mb-3">
-                <InputGroup.Text id="basic-addon1">RA:</InputGroup.Text>
+                <InputGroup.Text style={{backgroundColor: '#345059', color: 'white'}} id="basic-addon1">RA:</InputGroup.Text>
                 <Form.Control
                   id="ra"
                   type="text"
@@ -420,7 +429,7 @@ const SignUpInfo = () => {
                   onChange={(e) => setRA(e.target.value)}
                 />
               </InputGroup>
-              <InputGroup.Text id="basic-addon1">Nome completo:</InputGroup.Text>
+              <InputGroup.Text style={{backgroundColor: '#345059', color: 'white', borderRadius:'7px 0 0 7px'}}  id="basic-addon1">Nome completo:</InputGroup.Text>
               <Form.Control
                 id="nomeCompleto"
                 type="text"
@@ -431,7 +440,7 @@ const SignUpInfo = () => {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <InputGroup.Text style={{ gap: 10, marginBottom: '1rem', padding: '10px', width: '35rem' }} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: '1rem', width: '47.25rem'}} id="basic-addon1">
               Curso:<Form.Select id="curso" aria-label="Selecione o curso" value={curso} onChange={(e) => setCurso(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="ads">Análise e Desenvolvimento de Sistemas</option>
@@ -441,7 +450,7 @@ const SignUpInfo = () => {
               </Form.Select>
             </InputGroup.Text>
 
-            <InputGroup.Text style={{ gap: 10, marginBottom: 10, padding: 10, width: '35rem' }} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: 10, padding: 10, width: '47.25rem' }} id="basic-addon1">
               Período:<Form.Select id="periodo" aria-label="Selecione o curso" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="manha">Manhã</option>
@@ -452,10 +461,9 @@ const SignUpInfo = () => {
           </Form.Group>
 
           <Button
-            style={{ marginTop: '5px' }}
-            variant="primary"
+            style={{ marginTop: '53px', width: '47.25rem', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px' }}
             type="submit">
-            Enviar
+            ENVIAR
           </Button>
         </Form>
       )}
@@ -464,7 +472,7 @@ const SignUpInfo = () => {
         <Form onSubmit={handleSubmitProfessor}>
           <Form.Group>
             <Form.Label htmlFor="basic-url"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
+            <InputGroup style={{ width: '46.5rem'}} className="mb-3">
               <Form.Control
                 placeholder="seu email"
                 aria-label="digite"
@@ -475,14 +483,15 @@ const SignUpInfo = () => {
               <InputGroup.Text style={{
                 width: 'fit-content',
                 fontStyle: 'italic',
-                color: 'InactiveBorder',
+                color: 'white',
                 paddingLeft: 5,
                 //borderStyle: 'none',
-                marginLeft: 4
+                marginLeft: 4,
+                backgroundColor: '#345059'
               }} id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
-            <InputGroup style={{ width: '35rem' }} className="mb-3">
-              <InputGroup.Text id="basic-addon1">Nome completo:</InputGroup.Text>
+            <InputGroup style={{ width: '46.5rem' }} className="mb-3">
+              <InputGroup.Text style={{backgroundColor: '#345059', color: 'white'}}  id="basic-addon1">Nome completo:</InputGroup.Text>
               <Form.Control
                 placeholder=""
                 aria-label=""
@@ -492,7 +501,7 @@ const SignUpInfo = () => {
               />
             </InputGroup>
             <Form.Group>
-              <h3>Marque abaixo somente caso você seja um coordenador:</h3>
+              <h6 style={{fontWeight: 'bold'}}>Marque abaixo somente caso você seja um coordenador:</h6>
               <Form.Check
                 type="checkbox"
                 label="Sim, sou um professor-coordenador"
@@ -502,11 +511,11 @@ const SignUpInfo = () => {
             </Form.Group>
             <HorarioSelecaoProfs />
             <Button
-              style={{ marginTop: '5px' }}
+              style={{ marginTop: '53px', width: '47.25rem', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px'}}
               variant="primary"
               type="submit"
             >
-              Enviar
+              ENVIAR
             </Button>
           </Form.Group>
         </Form>
@@ -549,8 +558,9 @@ const SignUpInfo = () => {
         </Modal.Footer>
       </Modal>
       {/* MODAL DE CONFIRMAÇÃO ----------------- */}
-
+      {/* <p className='copyright'>© 2023 SGB Fatec Ipiranga</p> */}
     </div>
+    </>
   )
 }
 

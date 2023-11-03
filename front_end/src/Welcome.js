@@ -4,6 +4,7 @@ import SignUp from "./components/SignUp";
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth0 } from '@auth0/auth0-react';
+import logo from './logo.png';
 
 function Welcome() {
   const navigate = useNavigate();
@@ -17,11 +18,13 @@ function Welcome() {
   
   return (
     <Container className="text-center">
-      <Row className="justify-content-center align-items-center" style={{ minHeight: '100vh' }}>
-        <Col md={6}>
-          <img style={{borderRadius: 30}} src="https://i.ibb.co/Y3mM4wk/fatec-logo.png" alt="FATEC Logo" className="img-fluid mb-4" />
-          <h1 className="mb-3">Bem-vindo ao Sistema de Gerenciamento de Bancas</h1>
-          <p className="lead text-muted mb-4">FATEC Ipiranga</p>
+      <Row className="justify-content-center align-items-center" style={{ minHeight: '100vh'}}>
+        <Col md={6} className="texto">
+          <img style={{width: 260, height:268 }} src={logo} alt="FATEC Logo" className="img-fluid mb-4" />
+          <p className="mb-6" style={{width: 209, height:69, fontSize:15, fontWeight: 'bold', textAlign: 'justify', color: '#345059',}}>
+          Bem vinda ao Sistema de Gerenciamento de Bancas da Fatec Ipiranga!          
+          </p>
+          
           <div style={{ gap: 10 }} className="d-flex justify-content-center mb-4">
             <Login />
             <SignUp />

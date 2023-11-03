@@ -8,7 +8,9 @@ const SignUp = () => {
 
   return (
     !isAuthenticated && (
-      <Button variant='info' onClick={() => loginWithRedirect({
+      <Button className='btnCadastro' 
+      style={{ width: 110, height: 31, fontSize: 12, fontWeight: 'bold', color: 'white', border: 'none'}}
+      onClick={() => loginWithRedirect({
         authorizationParams: {
           screen_hint: "signup",
           redirect_uri: 'http://localhost:3000/SignUpInfo'
