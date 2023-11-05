@@ -192,23 +192,42 @@ app.get('/alunos', async (req, res) => {
 
 
 
-// app.get('/alunos/:id_aluno', VerificarToken, async (req, res) => {
-app.get('/alunos/:id_aluno', async (req, res) => {
+// // app.get('/alunos/:id_aluno', VerificarToken, async (req, res) => {
+// app.get('/alunos/:id_aluno', async (req, res) => {
 
-  const id_aluno = req.params.id_aluno;
+//   const id_aluno = req.params.id_aluno;
 
-  try {
-    const result = await db.query('SELECT * FROM aluno WHERE id_aluno = $1', [id_aluno]);
-    if (result.rows.length === 0) {
-      res.status(404).json({ error: `aluno com ID ${id_aluno} não encontrado.` });
-    } else {
-      res.status(200).json(result.rows[0]);
+//   try {
+//     const result = await db.query('SELECT * FROM aluno WHERE id_aluno = $1', [id_aluno]);
+//     if (result.rows.length === 0) {
+//       res.status(404).json({ error: `aluno com ID ${id_aluno} não encontrado.` });
+//     } else {
+//       res.status(200).json(result.rows[0]);
+//     }
+//   } catch (error) {
+//     console.error(`Erro ao buscar aluno com ID ${id_aluno}:`, error);
+//     res.status(500).json({ error: 'Erro interno do servidor' });
+//   }
+// });
+
+
+// app.get('/alunos/:user_id', VerificarToken, async (req, res) => {
+  app.get('/alunos/:user_id', async (req, res) => {
+
+    const user_id = req.params.user_id;
+  
+    try {
+      const result = await db.query('SELECT * FROM aluno WHERE user_id = $1', [user_id]);
+      if (result.rows.length === 0) {
+        res.status(404).json({ error: `aluno com user_id ${user_id} não encontrado.` });
+      } else {
+        res.status(200).json(result.rows[0]);
+      }
+    } catch (error) {
+      console.error(`Erro ao buscar aluno com user_id ${user_id}:`, error);
+      res.status(500).json({ error: 'Erro interno do servidor' });
     }
-  } catch (error) {
-    console.error(`Erro ao buscar aluno com ID ${id_aluno}:`, error);
-    res.status(500).json({ error: 'Erro interno do servidor' });
-  }
-});
+  });
 
 
 

@@ -1,18 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, InputGroup, Button, Row, Col, Card, Modal } from 'react-bootstrap';
 import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import banca_cad from '../Assets/img/Logo_I.png'
+import banca_cad from '../assets/img/Logo_I.png'
 
 
 const SignUpInfo = () => {
 
-  const { user } = useAuth0();
+  const { user, isAuthenticated, isLoading } = useAuth0();
   const navigate = useNavigate();
   const [selectedProfile, setSelectedProfile] = useState(null);
-  const [user_id, setUser_id] = useState('3sn8a72uiers84832eab0d');
+  const [user_id, setUser_id] = useState('');
   const [email, setEmail] = useState('');
   const [ra, setRA] = useState('');
   const [nome, setNome] = useState('');
@@ -27,6 +27,13 @@ const SignUpInfo = () => {
   const periodos = ['Manhã', 'Tarde', 'Noite'];
   const [diasSelecionados, setDiasSelecionados] = useState([]);
   const [horarios, setHorarios] = useState({});
+
+  useEffect(() => {
+    isAuthenticated &&
+      console.log(user.sub.split('|')[1])
+      setUser_id(user.sub.split('|')[1])
+  }, [isAuthenticated]);
+  
 
 
 

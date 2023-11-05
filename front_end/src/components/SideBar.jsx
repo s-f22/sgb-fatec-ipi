@@ -7,7 +7,7 @@ import {
   sidebarClasses,
 } from "react-pro-sidebar";
 import { Link } from "react-router-dom";
-import teste from '../Assets/img/Logo_I.png'
+import teste from '../assets/img/Logo_I.png'
 import { useLocation } from "react-router-dom";
 import { useState } from "react";
 
