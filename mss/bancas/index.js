@@ -206,6 +206,30 @@ app.get("/bancas_navigation/:id", async (req, res) => {
       convidado.professor_navigation = professorResult.rows[0];
     }
 
+
+           // Consultar o grupo associado ao trabalho com base no ID do trabalho
+           const grupoQuery = "SELECT * FROM grupo WHERE id_trabalho = $1";
+           const grupoResult = await db.query(grupoQuery, [trabalho_navigation.id_trabalho]);
+       
+           if (grupoResult.rows.length === 0) {
+             return res.status(404).json({ error: "Grupo não encontrado" });
+           }
+       
+           const grupo_navigation = grupoResult.rows;
+       
+           // Para cada grupo, consultar os detalhes do aluno
+           for (const grupo of grupo_navigation) {
+             const alunoQuery = "SELECT * FROM aluno WHERE id_aluno = $1";
+             const alunoResult = await db.query(alunoQuery, [grupo.id_aluno]);
+       
+             if (alunoResult.rows.length === 0) {
+               return res.status(404).json({ error: "Aluno não encontrado" });
+             }
+       
+             grupo.aluno_navigation = alunoResult.rows[0];
+           }
+
+
     // Construir a resposta conforme a estrutura
     const response = {
       id_banca: banca.id_banca,
@@ -222,6 +246,7 @@ app.get("/bancas_navigation/:id", async (req, res) => {
         nota_final: trabalho_navigation.nota_final,
         previsao_defesa: trabalho_navigation.previsao_defesa,
         banca_agendada: trabalho_navigation.banca_agendada,
+        grupo_navigation: grupo_navigation,
       },
       data_hora: banca.data_hora,
       comentarios: banca.comentarios,
@@ -325,6 +350,28 @@ app.get("/bancas_navigation", async (req, res) => {
         convidado.professor_navigation = professorResult.rows[0];
       }
 
+        // Consultar o grupo associado ao trabalho com base no ID do trabalho
+    const grupoQuery = "SELECT * FROM grupo WHERE id_trabalho = $1";
+    const grupoResult = await db.query(grupoQuery, [trabalho_navigation.id_trabalho]);
+
+    if (grupoResult.rows.length === 0) {
+      return res.status(404).json({ error: "Grupo não encontrado" });
+    }
+
+    const grupo_navigation = grupoResult.rows;
+
+    // Para cada grupo, consultar os detalhes do aluno
+    for (const grupo of grupo_navigation) {
+      const alunoQuery = "SELECT * FROM aluno WHERE id_aluno = $1";
+      const alunoResult = await db.query(alunoQuery, [grupo.id_aluno]);
+
+      if (alunoResult.rows.length === 0) {
+        return res.status(404).json({ error: "Aluno não encontrado" });
+      }
+
+      grupo.aluno_navigation = alunoResult.rows[0];
+    }
+
       // Construir a resposta conforme a estrutura 
       const response = {
         id_banca: banca.id_banca,
@@ -341,6 +388,7 @@ app.get("/bancas_navigation", async (req, res) => {
           nota_final: trabalho_navigation.nota_final,
           previsao_defesa: trabalho_navigation.previsao_defesa,
           banca_agendada: trabalho_navigation.banca_agendada,
+          grupo_navigation: grupo_navigation,
         },
         data_hora: banca.data_hora,
         comentarios: banca.comentarios,

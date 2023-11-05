@@ -203,6 +203,7 @@ app.get("/tema_navigation/:id", async (req, res) => {
       titulo: tema.titulo,
       descricao: tema.descricao,
       data_cadastro: tema.data_cadastro,
+      disponivel: tema.disponivel
     };
 
     res.json(response);
@@ -213,6 +214,47 @@ app.get("/tema_navigation/:id", async (req, res) => {
 });
 
 
+// Endpoint para buscar a lista de temas com autor_navigation
+app.get('/tema_navigation', async (req, res) => {
+  try {
+    const temas = await pool.query(`
+      SELECT t.id_tema, t.titulo, t.descricao, t.data_cadastro, t.disponivel,
+             a.id_aluno, a.user_id, a.ra, a.nome, a.email, a.curso, a.periodo, a.email_inst_verif, a.codigo, a.tipo_usuario, a.ativo
+      FROM tema t
+      JOIN aluno a ON t.id_autor = a.id_aluno
+    `);
+
+    if (temas.rowCount === 0) {
+      return res.status(404).json({ error: 'Nenhum tema encontrado' });
+    }
+
+    const temasFormatados = temas.rows.map((tema) => ({
+      id_tema: tema.id_tema,
+      titulo: tema.titulo,
+      descricao: tema.descricao,
+      data_cadastro: tema.data_cadastro,
+      disponivel: tema.disponivel,
+      autor_navigation: {
+        id_aluno: tema.id_aluno,
+        user_id: tema.user_id,
+        ra: tema.ra,
+        nome: tema.nome,
+        email: tema.email,
+        curso: tema.curso,
+        periodo: tema.periodo,
+        email_inst_verif: tema.email_inst_verif,
+        codigo: tema.codigo,
+        tipo_usuario: tema.tipo_usuario,
+        ativo: tema.ativo,
+      },
+    }));
+
+    res.json(temasFormatados);
+  } catch (error) {
+    console.error('Erro ao buscar temas:', error);
+    res.status(500).json({ error: 'Erro ao buscar temas' });
+  }
+});
 
 app.listen(port, () => {
   console.log(`Servidor rodando na porta ${port}`);

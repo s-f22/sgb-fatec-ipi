@@ -19,31 +19,18 @@ const TrabalhoListar = () => {
     try {
       const [
         trabalhosResponse,
-        professoresResponse,
-        temasResponse,
-        gruposResponse,
-        alunosResponse,
+        
       ] = await Promise.all([
-        axios.get("http://localhost:4005/trabalhos"),
-        axios.get("http://localhost:4001/professores"),
-        axios.get("http://localhost:4004/temas"),
-        axios.get("http://localhost:4006/grupos"),
-        axios.get("http://localhost:4000/alunos"),
+        axios.get("http://localhost:4005/trabalhos_navigation"),
+        
       ]);
 
       setTrabalhos(trabalhosResponse.data);
-      setProfessores(professoresResponse.data);
-      setTemas(temasResponse.data);
-      setGrupos(gruposResponse.data);
-      setAlunos(alunosResponse.data);
-
+     
       setDadosCarregados(true);
 
       console.log("Trabalhos:", trabalhosResponse.data);
-      console.log("Professores:", professoresResponse.data);
-      console.log("Temas:", temasResponse.data);
-      console.log("Grupos:", gruposResponse.data);
-      console.log("Alunos:", alunosResponse.data);
+    
     } catch (error) {
       console.error("Erro ao obter os dados:", error);
     }
@@ -62,32 +49,7 @@ const TrabalhoListar = () => {
     setPage(0);
   };
 
-  const handleTrabalhoEdit = (message) => {
-    // Handle the edit success message or any other action
-    console.log(message);
-    // You may want to refresh the data after editing
-    fetchData();
-  };
-
-  const getProfessorNameById = (id) => {
-    const professor = professores.find((p) => p.id_professor === id);
-    return professor ? professor.nome : "Professor não encontrado";
-  };
-
-  const getTemaTitleById = (id) => {
-    const tema = temas.find((t) => t.id_tema === id);
-    return tema ? tema.titulo : "Tema não encontrado";
-  };
-
-  const getAlunosByTrabalhoId = (id_trabalho) => {
-    const alunosDoTrabalho = grupos.filter(
-      (grupo) => grupo.id_trabalho === id_trabalho
-    );
-    return alunosDoTrabalho.map((grupo) => {
-      const aluno = alunos.find((a) => a.id_aluno === grupo.id_aluno);
-      return aluno ? aluno.nome : "Aluno não encontrado";
-    });
-  };
+ 
 
   if (!dadosCarregados) {
     return <div>Carregando dados...</div>;
@@ -112,12 +74,12 @@ const TrabalhoListar = () => {
               .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
               .map((trabalho) => (
                 <TableRow key={trabalho.id_trabalho}>
-                  <TableCell>{getTemaTitleById(trabalho.id_tema)}</TableCell>
+                  <TableCell>{trabalho.tema_navigation.titulo}</TableCell>
                   <TableCell>
-                    {getProfessorNameById(trabalho.id_orientador)}
+                    {trabalho.orientador_navigation.nome}
                   </TableCell>
                   <TableCell>
-                    {getAlunosByTrabalhoId(trabalho.id_trabalho).join(", ")}
+                    {trabalho.grupo_navigation.map(g => g.aluno_navigation.nome).join(", ")}
                   </TableCell>
                   <TableCell>{trabalho.previsao_defesa}</TableCell>
                   <TableCell>

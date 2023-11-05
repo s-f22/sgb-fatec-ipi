@@ -26,6 +26,212 @@ axios.get("http://localhost:4001/professores/15")
     "email_inst_verif": false
 }
 
+axios.get("http://localhost:4001/professor_com_horarios/15")
+{
+    "id_professor": 15,
+    "user_id": "3sn8a72uiers84830eab0d",
+    "nome": "Rodrigo Bossini",
+    "email": "professor-bossini@fatec.sp.gov.br",
+    "email_inst_verif": false,
+    "coordenador": true,
+    "codigo": "9c29ee44-9d66-4ddb-9f78-307463b95853",
+    "tipo_usuario": 2,
+    "ativo": true,
+    "dias_horarios_navigation": [
+        {
+            "id_dia_aula": 10,
+            "id_professor": 15,
+            "dia_semana": 3,
+            "lista_horarios": [
+                {
+                    "id_horario_aula": 13,
+                    "id_professor": 15,
+                    "id_dia_aula": 10,
+                    "entrada": "15:00:00",
+                    "saida": "18:40:00"
+                }
+            ]
+        },
+        {
+            "id_dia_aula": 11,
+            "id_professor": 15,
+            "dia_semana": 4,
+            "lista_horarios": [
+                {
+                    "id_horario_aula": 14,
+                    "id_professor": 15,
+                    "id_dia_aula": 11,
+                    "entrada": "13:00:00",
+                    "saida": "18:40:00"
+                }
+            ]
+        },
+        {
+            "id_dia_aula": 12,
+            "id_professor": 15,
+            "dia_semana": 5,
+            "lista_horarios": [
+                {
+                    "id_horario_aula": 15,
+                    "id_professor": 15,
+                    "id_dia_aula": 12,
+                    "entrada": "19:00:00",
+                    "saida": "22:40:00"
+                }
+            ]
+        }
+    ]
+}
+
+***********************************************************************************************************
+
+=> DIA_AULA
+axios.get("http://localhost:4002/dia_aula")
+[
+    {
+        "id_dia_aula": 10,
+        "id_professor": 15,
+        "dia_semana": 3
+    },
+    {
+        "id_dia_aula": 11,
+        "id_professor": 15,
+        "dia_semana": 4
+    },
+    {
+        "id_dia_aula": 12,
+        "id_professor": 15,
+        "dia_semana": 5
+    },
+    {
+        "id_dia_aula": 13,
+        "id_professor": 16,
+        "dia_semana": 2
+    },
+    {
+        "id_dia_aula": 14,
+        "id_professor": 16,
+        "dia_semana": 4
+    },
+    {
+        "id_dia_aula": 15,
+        "id_professor": 16,
+        "dia_semana": 5
+    },
+    {
+        "id_dia_aula": 16,
+        "id_professor": 17,
+        "dia_semana": 2
+    }
+]
+
+axios.get("http://localhost:4002/dia_aula_id_prof/15")
+[
+    {
+        "id_dia_aula": 10,
+        "id_professor": 15,
+        "dia_semana": 3
+    },
+    {
+        "id_dia_aula": 11,
+        "id_professor": 15,
+        "dia_semana": 4
+    },
+    {
+        "id_dia_aula": 12,
+        "id_professor": 15,
+        "dia_semana": 5
+    }
+]
+
+***********************************************************************************************************
+
+=> HORARIO_AULA
+axios.get("http://localhost:4003/horario_aula")
+[
+    {
+        "id_horario_aula": 13,
+        "id_professor": 15,
+        "id_dia_aula": 10,
+        "entrada": "15:00:00",
+        "saida": "18:40:00"
+    },
+    {
+        "id_horario_aula": 14,
+        "id_professor": 15,
+        "id_dia_aula": 11,
+        "entrada": "13:00:00",
+        "saida": "18:40:00"
+    },
+    {
+        "id_horario_aula": 15,
+        "id_professor": 15,
+        "id_dia_aula": 12,
+        "entrada": "19:00:00",
+        "saida": "22:40:00"
+    },
+    {
+        "id_horario_aula": 16,
+        "id_professor": 16,
+        "id_dia_aula": 13,
+        "entrada": "15:00:00",
+        "saida": "18:40:00"
+    },
+    {
+        "id_horario_aula": 17,
+        "id_professor": 16,
+        "id_dia_aula": 13,
+        "entrada": "19:00:00",
+        "saida": "22:40:00"
+    },
+    {
+        "id_horario_aula": 18,
+        "id_professor": 16,
+        "id_dia_aula": 14,
+        "entrada": "19:00:00",
+        "saida": "22:40:00"
+    },
+    {
+        "id_horario_aula": 19,
+        "id_professor": 16,
+        "id_dia_aula": 15,
+        "entrada": "19:00:00",
+        "saida": "20:40:00"
+    },
+    {
+        "id_horario_aula": 20,
+        "id_professor": 17,
+        "id_dia_aula": 16,
+        "entrada": "19:00:00",
+        "saida": "22:40:00"
+    }
+]
+
+axios.get("http://localhost:4003/horario_aula_id_prof/15")
+[
+    {
+        "id_horario_aula": 13,
+        "id_professor": 15,
+        "id_dia_aula": 10,
+        "entrada": "15:00:00",
+        "saida": "18:40:00"
+    },
+    {
+        "id_horario_aula": 14,
+        "id_professor": 15,
+        "id_dia_aula": 11,
+        "entrada": "13:00:00",
+        "saida": "18:40:00"
+    },
+    {
+        "id_horario_aula": 15,
+        "id_professor": 15,
+        "id_dia_aula": 12,
+        "entrada": "19:00:00",
+        "saida": "22:40:00"
+    }
+]
+
 ***********************************************************************************************************
 
 => TEMA

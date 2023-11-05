@@ -117,15 +117,16 @@ app.get('/professores/:id_professor', async (req, res) => {
     if (result.rows.length === 0) {
       res.status(404).json({ error: `Professor com ID ${id_professor} não encontrado.` });
     } else {
-      const professor = {
-        id_professor: result.rows[0].id_professor,
-        user_id: result.rows[0].user_id,
-        nome: result.rows[0].nome,
-        email: result.rows[0].email,
-        email_inst_verif: result.rows[0].email_inst_verif
-      };
+      // const professor = {
+      //   id_professor: result.rows[0].id_professor,
+      //   user_id: result.rows[0].user_id,
+      //   nome: result.rows[0].nome,
+      //   email: result.rows[0].email,
+      //   email_inst_verif: result.rows[0].email_inst_verif
+      // };
 
-      res.status(200).json(professor);
+
+      res.status(200).json(result.rows[0]);
     }
   } catch (error) {
     console.error(`Erro ao buscar professor com ID ${id_professor}:`, error);
