@@ -12,6 +12,8 @@ import DialogContentText from '@mui/material/DialogContentText';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
+import { useAuth0 } from "@auth0/auth0-react";
+
 
 function BancasListar() {
 
@@ -19,6 +21,15 @@ function BancasListar() {
   const [selectedEvent, setSelectedEvent] = useState(null);
   const localizer = momentLocalizer(moment);
   const [open, setOpen] = useState(false);
+
+  const { isAuthenticated, loginWithRedirect } = useAuth0();
+
+  useEffect(() => {
+    if(!isAuthenticated)
+    loginWithRedirect()
+
+  }, [isAuthenticated])
+  
 
   useEffect(() => {
     axios.get('http://localhost:4007/bancas_navigation')

@@ -58,7 +58,7 @@ const SignUpInfo = () => {
     if (fullEmail === "@fatec.sp.gov.br") {
       alert("Digite seu endereço de e-mail institucional")
     } else {
-      alert(fullEmail);
+      // alert(fullEmail);
       setEmail(fullEmail)
       setUsername('')
     }
@@ -317,7 +317,7 @@ const SignUpInfo = () => {
     if (fullEmail === "@fatec.sp.gov.br") {
       alert("Digite seu endereço de e-mail institucional")
     } else {
-      alert(fullEmail);
+      // alert(fullEmail);
       console.log(fullEmail)
       setEmail(fullEmail)
       setUsername('')

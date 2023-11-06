@@ -9,7 +9,7 @@ import { Link } from 'react-router-dom';
 function Header() {
   return (
     <div className='Header_Container'>
-      <Navbar expand="lg" className="bg-body-tertiary">
+      <Navbar expand="lg">
         <div >
           <Navbar.Brand href="#home">
             {/* <img

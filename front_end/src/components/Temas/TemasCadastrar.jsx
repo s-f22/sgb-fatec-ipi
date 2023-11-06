@@ -1,15 +1,25 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Form, Button } from 'react-bootstrap';
 import axios from 'axios'
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
+import { useAuth0 } from "@auth0/auth0-react";
 
 const TemasCadastrar = () => {
+  
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
   const [id_autor, setId_autor] = useState(12)
   const navigate = useNavigate();
-
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+  
+  useEffect(() => {
+    
+    if (!isAuthenticated) {
+      loginWithRedirect()
+    }
+    
+  }, [isAuthenticated]);
 
   const handleSubmit = async (e) => {
     

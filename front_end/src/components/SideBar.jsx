@@ -14,6 +14,7 @@ import { useState } from "react";
 const Sidebar = () => {
   const location = useLocation();
   const [selectedSubMenu, setSelectedSubMenu] = useState(null);
+  
   return (
   <div className="background">
     <ReactSidebar
@@ -21,7 +22,7 @@ const Sidebar = () => {
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
           backgroundColor: "#345059",
-          width: "256px",
+          // width: "256px",
           height: "100%",
           display: "flex",
           alignItems: "center", 
@@ -67,7 +68,7 @@ const Sidebar = () => {
           component={<Link to="/signupinfo" />}
           active={location.pathname === "/signupinfo"}
         >
-          Continuação do Cadastro
+          Continuação do Cadastro 
         </MenuItem>
 
         <SubMenu label={"Temas"}>

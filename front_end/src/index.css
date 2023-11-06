@@ -83,13 +83,14 @@ code {
   display: flex;
   /* flex-direction: column; */
   height: 100vh;
-  
+  width: 100%;
 }
 
 .App_MainContent {
   display: flex;
   flex-direction: column;
   flex: 1;
+  width: 100%;
   /* Ocupa o espaço restante vertical */
   /* background-color: darkorchid; */
 }
@@ -148,23 +149,14 @@ code {
 
 .Trabalhos_Listar_Container {
   /* background-color: cornflowerblue; */
-  padding-left: 1rem;
+  display: flex;
+  flex-direction: column;
+  /* padding-left: 1rem; */
   flex: 1;
 }
 
-.css-kaez3o {
-  width: 35vh !important;
-  min-width: 35vh !important;
-}
-
-.css-rqao0h {
-  width: 35vh !important;
-  min-width: 35vh !important;
-}
-
-.css-xlgw1m {
-  width: 35vh !important;
-  min-width: 35vh !important;
+.css-tzgv49 .ps-sidebar-container{
+  width: auto !important;
 }
 
 .selected-menu-line {
@@ -220,30 +212,28 @@ code {
 
 .background{
   display: flex;
-  width: 256px;
-  height: 100%;
+  /* width: 100% !important; */
+  height: 100vh;
 }
 
 /*footer */
 
-.box {
-  display: flex;
-  /* flex-direction: column; */
-  /* height: 148px; */
-  width: 100%;
-  /* position: absolute; */
-  border: 1px solid red;
-}
 
-.box .footer-comp {
+  
+
+.footer-comp {
   /* height: 148px; */
+  display: flex;
   left: 0; 
-  position: relative; 
+  background-color: #666666;
   top: 100%;
   width: 100%;
+  /* width: 100%; */
+  align-content: center;
 }
 
-.box .section {
+
+.section {
   align-items: center;
   background-color: #90999b;
   display: flex;
@@ -257,7 +247,7 @@ code {
   width: 100%;
 }
 
-.box .footer-text {
+.footer-text {
   color: transparent;
   font-family: "Poppins-Bold", Helvetica;
   font-size: 12px;
@@ -283,12 +273,12 @@ code {
   font-weight: 700;
 } */
 
-.box .span {
+.span {
   color: #ffffff;
   font-family: "Inter-Regular", Helvetica;
 }
 
-.box .div {
+.div {
   color: #ffffff;
   font-family: "Poppins-Regular", Helvetica;
   font-size: 12px;
@@ -301,7 +291,7 @@ code {
   width: 229px;
 }
 
-.box .social-icons {
+.social-icons {
   display: flex;
   align-items: center;
   justify-content: flex-end;
@@ -313,13 +303,13 @@ code {
   
 }
 
-.box .img {
+.img {
   height: 24px;
   position: relative;
   width: 24px;
 }
 
-.box .container-wrapper {
+.container-wrapper {
   display: flex;
   align-items: center;
   background-color: #90999b;
@@ -337,7 +327,7 @@ code {
   width: 100%;
 }
 
-.box .container {
+.container {
   align-items: flex-start;
   display: flex;
   flex-direction: column;
@@ -350,7 +340,7 @@ code {
   width: 285px;
 }
 
-.box .content {
+.content {
   display: flex;
   align-items: center;
   height: 20px;
@@ -360,7 +350,7 @@ code {
   /* border: 1px solid red; */
 }
 
-.box .p {
+.p {
   color: #ffffff;
   font-family: "Poppins-Regular", Helvetica;
   font-size: 12px;
@@ -424,4 +414,20 @@ code {
 .btnCadastro {
   background: #345059 !important;
   
+}
+
+
+.css-hz5yau {
+  position: relative;
+  border-right-width: 1px;
+  border-right-style: solid;
+  border-color: #efefef;
+  -webkit-transition: none !important;
+  transition: none !important;
+  width: 100% !important;
+  min-width: 100% !important;
+}
+
+.ps-menu-button{
+  padding: 5px !important;
 }

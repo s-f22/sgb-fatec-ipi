@@ -6,15 +6,24 @@ import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
 import "moment/locale/pt-br";
 import moment from "moment";
+import { useAuth0 } from "@auth0/auth0-react";
 
 function TemasListar() {
   const [trabalhos, setTrabalhos] = useState([]);
   const [alunos, setAlunos] = useState([]);
 
+  const { loginWithRedirect, isAuthenticated } = useAuth0();
+
   const procurarAluno = (idAluno) => {
     const nomeAluno = alunos.find((a) => a.id_aluno === idAluno);
     return nomeAluno ? nomeAluno.nome : "Aluno não encontrado";
   };
+
+  useEffect(() => {
+    if (!isAuthenticated) {
+      loginWithRedirect();
+    }
+  }, [isAuthenticated]);
 
   useEffect(() => {
     axios
@@ -35,41 +44,29 @@ function TemasListar() {
         console.error("Erro ao buscar os alunos:", error);
       });
   }, []);
-  // useEffect(() => {
-  //   setTrabalhos(
-  //     [
-  //       {
-  //         id_trabalho: 1,
-  //         titulo: "Sistema Gerenciador de Bancas",
-  //         descricao: "Aqui teremos toda a descrição do trabalho com informações diversas"
-  //       },
-  //       {
-  //         id_trabalho: 2,
-  //         titulo: "Sistema Gerenciador de Bancas",
-  //         descricao: "Aqui teremos toda a descrição do trabalho com informações diversas"
-  //       }
-  //     ]
-  //   )
-  // }, []);
 
   return (
-    <div className="Trabalhos_Listar_Container">
+    <Container fluid className="Trabalhos_Listar_Container">
       <h1>Listagem</h1>
-      {trabalhos.map((tema) => (
-        <Col key={tema.id_tema} xs={12} sm={6} md={4} lg={3}>
-          <Card>
-            <Card.Body>
-              <Card.Title>{tema.titulo}</Card.Title>
-              <Card.Text>{tema.descricao}</Card.Text>
-              <Card.Text>
-                Cadastrado em: {moment(tema.data_cadastro).format("LLL")}
-              </Card.Text>
-              <Card.Text>Autor: {procurarAluno(tema.id_autor)}</Card.Text>
-            </Card.Body>
-          </Card>
-        </Col>
-      ))}
-    </div>
+      <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
+        <Row>
+          <Col xs={12} sm={6} md={4} lg={3}>
+            {trabalhos.map((tema) => (
+              <Card key={tema.id_tema}>
+                <Card.Body>
+                  <Card.Title>{tema.titulo}</Card.Title>
+                  <Card.Text>{tema.descricao}</Card.Text>
+                  <Card.Text>
+                    Cadastrado em: {moment(tema.data_cadastro).format("LLL")}
+                  </Card.Text>
+                  <Card.Text>Autor: {procurarAluno(tema.id_autor)}</Card.Text>
+                </Card.Body>
+              </Card>
+            ))}
+          </Col>
+        </Row>
+      </div>
+    </Container>
   );
 }
 
