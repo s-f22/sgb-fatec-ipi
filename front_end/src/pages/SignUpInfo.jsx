@@ -29,11 +29,11 @@ const SignUpInfo = () => {
   const [horarios, setHorarios] = useState({});
 
   useEffect(() => {
-    isAuthenticated &&
+    if(isAuthenticated) {
       console.log(user.sub.split('|')[1])
       setUser_id(user.sub.split('|')[1])
+    }
   }, [isAuthenticated]);
-  
 
 
 

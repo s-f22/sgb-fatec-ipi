@@ -28,6 +28,7 @@ const Painel = () => {
   useEffect(() => {
     if (!isLoading) {
       if (isAuthenticated) {
+        console.log(user.sub.split("|")[1]);
         buscarProfessor(userIdHandler(user.sub.split("|")[1]));
       } else {
         navigate("/");
