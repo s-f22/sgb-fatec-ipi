@@ -55,6 +55,7 @@ app.post('/alunos', async (req, res) => {
 
     if (res.status(201)) {
 
+      
       // Envio de email ao usuário com link de validação
       const transporter = nodemailer.createTransport({
         service: "gmail",

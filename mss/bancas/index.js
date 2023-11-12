@@ -20,6 +20,7 @@ const db = new Pool({
   port: process.env.DB_PORT,
 });
 
+
 // POST
 app.post("/bancas", (req, res) => {
   const { id_trabalho, data_hora, comentarios } = req.body;
@@ -64,6 +65,7 @@ app.get("/bancas/:id", (req, res) => {
       res.status(500).json({ error: "Erro ao obter a banca." });
     });
 });
+
 
 // PUT
 app.put("/bancas/:id", (req, res) => {

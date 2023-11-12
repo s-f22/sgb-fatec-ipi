@@ -5,6 +5,7 @@ import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
 import banca_cad from '../assets/img/Logo_I.png'
+import img_fundo  from '../assets/img/img_fundo.jpg'
 
 
 const SignUpInfo = () => {
@@ -395,7 +396,7 @@ const SignUpInfo = () => {
         onChange={() => handleSelectProfile('professor')}
       />
 
-    
+      <img src={img_fundo} alt="Imagem de fundo" />
 
       {selectedProfile === 'aluno' && (
         <Form onSubmit={handleSubmitAluno}>

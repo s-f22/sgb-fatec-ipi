@@ -10,9 +10,7 @@ const { v4: uuidv4 } = require('uuid')
 const cors = require('cors');
 app.use(cors());
 
-
 const port = process.env.MSS_PORTA_PROFESSORES;
-
 
 const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
