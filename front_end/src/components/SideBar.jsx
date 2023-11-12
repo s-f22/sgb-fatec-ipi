@@ -15,7 +15,8 @@ import { useState } from "react";
 const Sidebar = () => {
   const location = useLocation();
   const [selectedSubMenu, setSelectedSubMenu] = useState(null);
-
+  const [selectedSubMenuW, setSelectedSubMenuW] = useState(null);
+  const [selectedSubMenuB, setSelectedSubMenuB] = useState(null);
   return (
     <div className="background">
       <ReactSidebar
@@ -44,7 +45,7 @@ const Sidebar = () => {
                 return {
                   width: 208, height: 40,
                   color: disabled ? '#FFFFFF' : '#EAEAEA',
-                  backgroundColor: active ? '#EAEAEA' : '#345059',
+                  backgroundColor: active ? '#345059' : '#345059',
                   '&:hover': { borderRadius: 8, backgroundColor: '#EAEAEA', color: '#345059', fontWeight: 600 }
                 };
               if (level === 1)
@@ -72,12 +73,11 @@ const Sidebar = () => {
             Continuação do Cadastro
           </MenuItem>
 
-          <SubMenu label={<span><i className="pi pi-list mr-2"></i>Temas</span>}>
+          <SubMenu label={<span><i className="pi pi-list mr-2"></i>Temas</span>} onClick={() => setSelectedSubMenu("temas")}>
             {selectedSubMenu === "temas" && (
               <div className="selected-menu-line">
                 <div className="selected-menu-line_turn_I"></div>
                 <div className="selected-menu-line_turn_II"></div>
-                <div className="selected-menu-line_turn_III"></div>
               </div>
             )}
             <MenuItem
@@ -95,11 +95,19 @@ const Sidebar = () => {
             </MenuItem>
           </SubMenu>
 
-          <SubMenu label={<span><i className="pi pi-file-word mr-2"></i>Trabalhos</span>}>
+          <SubMenu label={<span><i className="pi pi-file-word mr-2"></i>Trabalhos</span>} 
+          onClick={() => setSelectedSubMenuW("trabalhos")}>
             <MenuItem
               component={<Link to="/sgb/trabalhos_listar" />}
               active={location.pathname === "/sgb/trabalhos_listar"}
             >
+              {selectedSubMenuW === "trabalhos" && (
+              <div className="selected-menu-line-w">
+                <div className="selected-menu-line_turn_I-w"></div>
+                <div className="selected-menu-line_turn_II-w"></div>
+                <div className="selected-menu-line_turn_III-w"></div>
+              </div>
+            )}
               Ver todos
 
             </MenuItem>
@@ -119,11 +127,18 @@ const Sidebar = () => {
             </MenuItem>
           </SubMenu>
 
-          <SubMenu label={<span><i className="pi pi-calendar mr-2"></i>Bancas</span>}>
+          <SubMenu label={<span><i className="pi pi-calendar mr-2"></i>Bancas</span>}  
+          onClick={() => setSelectedSubMenuB("bancas")}>
             <MenuItem
               component={<Link to="/sgb/bancas_listar" />}
               active={location.pathname === "/sgb/bancas_listar"}
             >
+              {selectedSubMenuB === "bancas" && (
+              <div className="selected-menu-line-b">
+                <div className="selected-menu-line_turn_I-b"></div>
+                <div className="selected-menu-line_turn_II-b"></div>
+              </div>
+            )}
               Ver todas
             </MenuItem>
             <MenuItem

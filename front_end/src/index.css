@@ -159,13 +159,79 @@ code {
   width: auto !important;
 }
 
+.selected-menu-line-w {
+  position: absolute;
+  z-index: 1;
+  background-color: #b3b3b3;
+  top: 0;
+  left: 10px;
+  width: 1px;
+  height: 70px;
+}
+
+.selected-menu-line_turn_I-w, 
+.selected-menu-line_turn_II-w, 
+.selected-menu-line_turn_III-w{
+  position: absolute;
+  width: 15px;
+  height: 10px;
+  border-radius: 0px 0px 0px 8px;
+  border-bottom: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+}
+
+.selected-menu-line_turn_I-w{
+  top: 7px;
+}
+
+.selected-menu-line_turn_II-w{
+  top: 39px;
+}
+
+.selected-menu-line_turn_III-w{
+  top: 69px;
+}
+
+.selected-menu-line-b {
+  position: absolute;
+  z-index: 1;
+  background-color: #b3b3b3;
+  top: 0;
+  left: 10px;
+  width: 1px;
+  height: 40px;
+}
+
+.selected-menu-line_turn_I-b, 
+.selected-menu-line_turn_II-b, 
+.selected-menu-line_turn_III-b{
+  position: absolute;
+  width: 15px;
+  height: 10px;
+  border-radius: 0px 0px 0px 8px;
+  border-bottom: 1px solid #b3b3b3;
+  border-left: 1px solid #b3b3b3;
+}
+
+.selected-menu-line_turn_I-b{
+  top: 5px;
+}
+
+.selected-menu-line_turn_II-b{
+  top: 37px;
+}
+
+.selected-menu-line_turn_III-b{
+  top: 67px;
+}
+
 .selected-menu-line {
   position: absolute;
   z-index: 1;
   background-color: #b3b3b3;
   left: 10px;
   width: 1px;
-  height: 72px;
+  height: 43px;
 }
 
 .selected-menu-line_turn_I, 
@@ -198,8 +264,11 @@ code {
 
 }
 
-
 .css-z5rm24 ul, .css-z5rm24 li {
+  background-color: #345059!important;
+}
+
+.ps-menuitem-root .css-1e4pcoh li{
   background-color: #345059!important;
 }
 
