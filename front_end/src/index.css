@@ -131,8 +131,10 @@ code {
   border-bottom: 1px solid #666666;
 }
 
-.Painel_Container {
+.Painel_Container, .Trabalhos_Container,
+.Temas_Container, .Bancas_Container {
   display: flex;
+  flex-direction: column;
   /* background-color: blueviolet; */
   width: 100%;
   flex: 1;
@@ -141,11 +143,11 @@ code {
   /* margin-left: 50px; */
 }
 
-.Trabalhos_Container {
-  /* background-color: cornflowerblue; */
+/* .Trabalho_Container {
+  background-color: cornflowerblue; 
   padding-left: 1rem;
   flex: 1;
-}
+}  */
 
 .Trabalhos_Listar_Container {
   /* background-color: cornflowerblue; */
@@ -500,3 +502,69 @@ code {
 .ps-menu-button{
   padding: 5px !important;
 }
+
+/* INICIO - TELA CADASTRAR TRABALHO*/
+.Trabalhos_Container, 
+.Temas_Container,
+.Bancas_Container {
+  color: #345059;
+}
+
+.Trabalhos_Container .titulo-cad-trab, 
+.Temas_Container .titulo-cad-tem,
+.Bancas_Container .titulo-cad-ban {
+  display: flex;
+  justify-content: center;
+  text-align: center;
+  margin-top: 19px;
+}
+
+.container-fluid {
+  padding: 0!important;
+}
+
+.row{
+  margin-right: 0!important;
+}
+
+.col-md-7 {
+ 
+}
+
+/*Input professor covidados*/
+.MuiButtonBase-root{
+  background-color: #ffffff!important;
+  color: #345059!important;
+}
+/*icone excluir do Input professor covidados*/
+.MuiSvgIcon-root{
+  color: #82230F!important;
+}
+/*icone SETA do Input professor covidados*/
+.MuiAutocomplete-popupIndicator, 
+.css-qzbt6i-MuiButtonBase-root-MuiIconButton-root-MuiAutocomplete-popupIndicator path{
+  color: #000000!important;
+  background-color: #EAEAEA!important;
+}
+
+.MuiTableCell-body {
+  color: #345059!important;
+}
+
+.MuiTableCell-root, .MuiTableCell-sizeMedium, .css-1ex1afd-MuiTableCell-root td{
+  padding: 13px !important;
+}
+
+.table-professor-ul{
+  list-style: none!important;
+  padding: 0!important;
+  border: 1px solid #EAEAEA!important;
+}
+
+.table-professor-ul ul{
+  list-style: none!important;
+  align-items: center!important;
+}
+
+
+/* FIM - TELA CADASTRAR TRABALHO*/

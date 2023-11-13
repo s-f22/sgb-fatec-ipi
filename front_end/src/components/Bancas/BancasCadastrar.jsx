@@ -266,27 +266,28 @@ const BancasCadastrar = () => {
   };
 
   return (
-    <Container className="Temas_Container" fluid>
+    <Container className="Bancas_Container px-3" fluid>
       <Row>
-        <Col md={6}>
+        <Col md={5}>
           <Form onSubmit={handleFormSubmit}>
-            <Form.Group controlId="formIdTema">
-              <h1>Cadastrar Banca</h1>
-              <Form.Label>Trabalho</Form.Label>
+            <Form.Group controlId="formIdTema"> 
+              <h6 className="titulo-cad-ban">Cadastrar Banca</h6>
+              <Form.Label style={{marginTop: '18px'}}>Trabalho</Form.Label>
               <Form.Control
                 as="select"
                 value={idTema}
+                
                 onChange={(e) => {
                   setIdTema(e.target.value);
                   buscarOrientadorPeloTema(e.target.value);
                 }}
                 required
-              >
-                <option key={0} value={0}>
+                style={{color:'#345059'}}>
+                <option key={0} value={0} style={{color:'#345059'}}>
                   Selecione o tema
                 </option>
                 {trabalhos.map((trabalho) => (
-                  <option key={trabalho.id_trabalho} value={trabalho.id_tema}>
+                  <option key={trabalho.id_trabalho} value={trabalho.id_tema} style={{color:'#345059'}}>
                     {
                       temas.find((tema) => tema.id_tema === trabalho.id_tema)
                         ?.titulo
@@ -297,20 +298,19 @@ const BancasCadastrar = () => {
             </Form.Group>
 
             <Form.Group controlId="formDataHora">
-              <Form.Label>Data e Hora</Form.Label>
+              <Form.Label  style={{marginTop: '18px'}}>Data e Hora</Form.Label>
               <Form.Control
                 type="datetime-local"
                 value={dataHora}
                 onChange={(e) => setDataHora(e.target.value)}
                 required
+                style={{color:'#345059'}}
               />
             </Form.Group>
             {idTema !== 0 && (
               <>
-                <h2>Professores Convidados:</h2>
-
                 <Form.Group controlId="formProfessoresConvidados">
-                  <Form.Label>Professores Convidados</Form.Label>
+                  <Form.Label  style={{marginTop: '18px'}}>Professores Convidados:</Form.Label>
                   <Autocomplete
                     multiple
                     id="professores-convidados"
@@ -322,38 +322,38 @@ const BancasCadastrar = () => {
                     }}
                     renderInput={(params) => (
                       <TextField {...params} variant="outlined" fullWidth />
-                    )}
+                    )}                   
                   />
                 </Form.Group>
               </>
             )}
 
-            <Button variant="primary" type="submit">
+            <Button style={{ marginTop: 10, width: '100%', height:45, marginTop: 50, backgroundColor: '#345059' }} type="submit">
               Cadastrar Banca
             </Button>
           </Form>
         </Col>
 
-        <Col md={6}>
+        <Col md={7}>
           {idTema !== 0 && (
-            <>
-              <h2 style={{ marginTop: "1rem" }}>
-                Professor Orientador: {orientador.nome}
-              </h2>
+            <> 
+              <h6 style={{ marginTop: "1rem", color:'#345059' }}>
+                Professor Orientador: <span  style={{color:'#FFA500' }}>{orientador.nome}</span>
+              </h6>
               {diasAulaOrientador.length > 0 && (
                 <div>
-                  <h2>Horários na FATEC Ipiranga:</h2>
-                  <TableContainer component={Paper}>
+                  <h6>Horários na FATEC Ipiranga:</h6>
+                  <TableContainer component={Paper} className="mb-5">
                     <Table>
                       <TableHead>
-                        <TableRow style={{ backgroundColor: "darkgray" }}>
-                          <TableCell>Dia</TableCell>
-                          <TableCell>Manhã - Entrada</TableCell>
-                          <TableCell>Manhã - Saída</TableCell>
-                          <TableCell>Tarde - Entrada</TableCell>
-                          <TableCell>Tarde - Saída</TableCell>
-                          <TableCell>Noite - Entrada</TableCell>
-                          <TableCell>Noite - Saída</TableCell>
+                        <TableRow style={{ backgroundColor: "#345059"}}>
+                          <TableCell style={{color: '#fff'}}>Dia</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Manhã - Entrada</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Manhã - Saída</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Tarde - Entrada</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Tarde - Saída</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Noite - Entrada</TableCell>
+                          <TableCell style={{color: '#fff', borderLeft:'1px solid white'}}>Noite - Saída</TableCell>
                         </TableRow>
                       </TableHead>
                       <TableBody>
@@ -410,7 +410,7 @@ const BancasCadastrar = () => {
                                   }
                                 })()}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosManha.length > 0 && (
                                   <ul>
                                     {horariosManha.map((horario) => (
@@ -421,55 +421,55 @@ const BancasCadastrar = () => {
                                   </ul>
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosManha.length > 0 && (
                                   <ul>
                                     {horariosManha.map((horario) => (
-                                      <li key={horario.id_horario_aula}>
+                                      <li key={horario.id_horario_aula}  className="mt-3">
                                         {horario.saida}
                                       </li>
                                     ))}
                                   </ul>
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosTarde.length > 0 && (
                                   <ul>
                                     {horariosTarde.map((horario) => (
-                                      <li key={horario.id_horario_aula}>
+                                      <li key={horario.id_horario_aula}  className="mt-3">
                                         {horario.entrada}
                                       </li>
                                     ))}
                                   </ul>
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosTarde.length > 0 && (
                                   <ul>
                                     {horariosTarde.map((horario) => (
-                                      <li key={horario.id_horario_aula}>
+                                      <li key={horario.id_horario_aula}  className="mt-3">
                                         {horario.saida}
                                       </li>
                                     ))}
                                   </ul>
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosNoite.length > 0 && (
                                   <ul>
                                     {horariosNoite.map((horario) => (
-                                      <li key={horario.id_horario_aula}>
+                                      <li key={horario.id_horario_aula}  className="mt-3">
                                         {horario.entrada}
                                       </li>
                                     ))}
                                   </ul>
                                 )}
                               </TableCell>
-                              <TableCell>
+                              <TableCell className="table-professor-ul">
                                 {horariosNoite.length > 0 && (
                                   <ul>
                                     {horariosNoite.map((horario) => (
-                                      <li key={horario.id_horario_aula}>
+                                      <li key={horario.id_horario_aula}  className="mt-3">
                                         {horario.saida}
                                       </li>
                                     ))}

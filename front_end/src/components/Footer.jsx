@@ -15,14 +15,15 @@ const Footer = () => {
         </div>
         <div style={{ marginBottom: '20px' }}>
           <div>Telefone: (11) 5061-5462</div>
-          <div>E-mail: <a href="mailto:contato@fatecipiranga.edu.br">contato@fatecipiranga.edu.br</a></div>
+          <div>E-mail: <a href="mailto:contato@fatecipiranga.edu.br" style={{textDecoration: 'none', color: '#FFA500'}}>contato@fatecipiranga.edu.br</a></div>
         </div>
       </div>
       <div style={{ flex: 1 }}>
         <div style={{ marginBottom: '20px' }}>
-          <a href="#" style={{ marginRight: '10px' }}>Twitter</a>
-          <a href="#" style={{ marginRight: '10px' }}>Facebook</a>
-          <a href="#">Instagram</a>
+          <a href="https://twitter.com/IpirangaFatec" style={{ marginRight: '20px', textDecoration: 'none', color: '#EAEAEA'}}><i className='pi pi-twitter'></i></a>
+          <a href="https://web.facebook.com/fatecIpiranga204/?locale=pt_BR&_rdc=1&_rdr" style={{ marginRight: '20px', textDecoration: 'none',  color: '#EAEAEA' }}>
+            <i className='pi pi-facebook'></i></a>
+          <a href="https://fatecipiranga.edu.br/" style={{ marginRight: '20px', textDecoration: 'none',  color: '#EAEAEA' }}><i className='pi pi-instagram'></i></a>
         </div>
         <div style={{ backgroundColor: '#444', padding: '10px' }}>
           <p style={{ margin: '0' }}>© 2023 SGB Fatec Ipiranga</p>

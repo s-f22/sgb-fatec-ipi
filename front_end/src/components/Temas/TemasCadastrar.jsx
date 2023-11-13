@@ -65,10 +65,10 @@ const TemasCadastrar = () => {
   };
 
   return (
-    <Form className='Temas_Container' onSubmit={handleSubmit}>
+    <Form className='Temas_Container mb-8 pr-3' onSubmit={handleSubmit}>
       <Form.Group controlId="formTitulo">
-        <h1>Cadastrar Tema</h1>
-        <Form.Label>Título</Form.Label>
+        <h6 className="titulo-cad-tem">Cadastrar Tema</h6>
+        <Form.Label style={{marginTop: '18px'}}>Título</Form.Label>
         <Form.Control
           type="text"
           placeholder="Digite o título"
@@ -76,7 +76,7 @@ const TemasCadastrar = () => {
           onChange={(e) => setTitulo(e.target.value)}
         />
       </Form.Group>
-      <Form.Group controlId="formDescricao">
+      <Form.Group controlId="formDescricao" style={{marginTop: '18px'}}>
         <Form.Label>Descrição</Form.Label>
         <Form.Control
           as="textarea"
@@ -86,7 +86,7 @@ const TemasCadastrar = () => {
           onChange={(e) => setDescricao(e.target.value)}
         />
       </Form.Group>
-      <Button variant="primary" type="submit">
+      <Button style={{ marginTop: 10, width: '100%', height:45, marginTop: 26, backgroundColor: '#345059' }} type="submit" >
         Cadastrar
       </Button>
     </Form>
