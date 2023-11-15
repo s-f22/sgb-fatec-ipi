@@ -1,54 +1,64 @@
-// import Container from 'react-bootstrap/Container';
 import Nav from 'react-bootstrap/Nav';
 import Navbar from 'react-bootstrap/Navbar';
-// import NavDropdown from 'react-bootstrap/NavDropdown';
 import Profile from './Profile';  // Importa o componente Profile
-import LogOut from './LogOut';    // Importa o componente LogOut
 import { Link } from 'react-router-dom';
+import React, { useRef, useState } from 'react';
+import { Menu } from 'primereact/menu';
+import { Toast } from 'primereact/toast';
+import { useAuth0 } from '@auth0/auth0-react';
 
 function Header() {
+
+  const menuLeft = useRef(null);
+  const toast = useRef(null);
+  const [logoutClicked, setLogoutClicked] = useState(false);
+  const { logout, isAuthenticated } = useAuth0();
+
+  const handleLogout = () => {
+   if (isAuthenticated) {
+      logout();
+    }
+    console.log('logout clicked');
+    setLogoutClicked(true);
+  };
+   const items = [
+    {
+      label: 'Options',
+      items: [
+        {
+          label: 'Log out',
+          icon: 'pi pi-arrow-circle-left',
+          command: () => handleLogout(),
+        },
+      ]
+    }
+  ];
+  
   return (
     <div className='Header_Container'>
       <Navbar expand="lg">
         <div >
           <Navbar.Brand href="#home">
-            {/* <img
-              // src={"https://i.ibb.co/Y3mM4wk/fatec-logo.png"}
-              alt="Logo Fatec"
-              style={{ width: '100px', borderRadius: '5px' }}
-            /> */}
-          <Navbar.Toggle style={{marginLeft: 20}} aria-controls="basic-navbar-nav" />
+            <Navbar.Toggle style={{ marginLeft: 20 }} aria-controls="basic-navbar-nav" />
           </Navbar.Brand>
         </div>
         <Navbar.Collapse id="basic-navbar-nav">
-          {/* <Nav className="me-auto">
-            <Nav.Link href="#home">Home</Nav.Link>
-            <Nav.Link href="#link">Link</Nav.Link>
-            <NavDropdown title="Dropdown" id="basic-nav-dropdown">
-              <NavDropdown.Item href="#action/3.1">Action</NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.2">
-                Another action
-              </NavDropdown.Item>
-              <NavDropdown.Item href="#action/3.3">Something</NavDropdown.Item>
-              <NavDropdown.Divider />
-              <NavDropdown.Item href="#action/3.4">
-                Separated link
-              </NavDropdown.Item>
-            </NavDropdown>
-          </Nav> */}
-          <Nav style={{backgroundColor: 'blue'}} class="d-lg-none">
+          <Nav style={{ backgroundColor: 'blue' }} class="d-lg-none">
             <Link to={'/'}>Bem vindo!</Link>
             <Link to={'/signupinfo'}>Continuação do cadastro</Link>
             <Link to={'/sgb/trabalhos'}>trabalhos</Link>
           </Nav>
         </Navbar.Collapse>
       </Navbar>
-      <div className="d-flex align-items-center">
+      <div className="d-flex align-items-center" onClick={(event) => menuLeft.current.toggle(event)} aria-controls="popup_menu_left" aria-haspopup>
+        <Toast ref={toast}></Toast>
+          <Menu model={items} popup ref={menuLeft} id="popup_menu_left" />
         <Profile />
-        <LogOut />
       </div>
     </div>
   );
 }
+
+
 
 export default Header;

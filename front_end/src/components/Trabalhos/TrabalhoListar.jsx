@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Container, Row, Col } from "react-bootstrap";
+import { Container} from "react-bootstrap";
 import { Button, TableContainer,  Table,  TableHead,  TableBody,  TableRow,  TableCell,  Paper,  TablePagination,} from "@mui/material";
-import TrabalhoEditar from "./TrabalhoEditar";
 import { Link } from "react-router-dom";
 
 const TrabalhoListar = () => {
@@ -94,17 +93,18 @@ const TrabalhoListar = () => {
   }
 
   return (
-    <Container className="Temas_Container" fluid>
-      <h1>Lista de Trabalhos</h1>
+    <Container className="Temas_Container px-3" fluid>
+      <h6 className="titulo-lis-trab mb-4">Lista de Trabalhos</h6>
       <TableContainer component={Paper}>
         <Table>
           <TableHead>
             <TableRow>
-              <TableCell>Tema</TableCell>
-              <TableCell>Orientador</TableCell>
-              <TableCell>Alunos</TableCell>
-              <TableCell>Previsão de Defesa</TableCell>
-              <TableCell>Nota Final</TableCell>
+              <TableCell style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Tema</TableCell>
+              <TableCell  style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Orientador</TableCell> 
+              <TableCell  style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Alunos</TableCell>
+              <TableCell  style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Previsão de Defesa</TableCell>
+              <TableCell  style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Nota Final</TableCell>
+              <TableCell  style={{backgroundColor:'#345059', color:'#FFFFFF', borderRight:'1px solid white'}}>Editar</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -127,7 +127,7 @@ const TrabalhoListar = () => {
                   </TableCell>
                   <TableCell>
                     <Link to={`/sgb/trabalho_editar/${trabalho.id_trabalho}`}>
-                      <Button>Editar</Button>
+                      <Button><i className="pi pi-file-edit"></i></Button>
                     </Link>
                   </TableCell>
                 </TableRow>

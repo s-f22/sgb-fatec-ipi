@@ -508,15 +508,23 @@ code {
 .Temas_Container,
 .Bancas_Container {
   color: #345059;
+  overflow-y: auto;
 }
 
 .Trabalhos_Container .titulo-cad-trab, 
 .Temas_Container .titulo-cad-tem,
-.Bancas_Container .titulo-cad-ban {
+.Bancas_Container .titulo-cad-ban,
+.Trabalhos_Container .titulo-edi-trab,
+.Temas_Container .titulo-lis-trab,
+.Trabalhos_Listar_Container .titulo-lis-temas {
   display: flex;
   justify-content: center;
   text-align: center;
   margin-top: 19px;
+}
+
+.pi-file-edit:hover{
+ color: #FFA500;
 }
 
 .container-fluid {
@@ -527,8 +535,8 @@ code {
   margin-right: 0!important;
 }
 
-.col-md-7 {
- 
+.form-control option:hover{
+  background-color: #345059!important;
 }
 
 /*Input professor covidados*/
@@ -565,6 +573,31 @@ code {
   list-style: none!important;
   align-items: center!important;
 }
+
+.p-menu{
+ position: absolute;
+ top: 77px !important;
+ width: 10% !important;
+ right: -10px !important;
+ border-radius: 7px !important;
+}
+
+.p-menu ul{
+  list-style: none!important;
+  padding: 0!important;
+}
+
+.p-menu li{
+  margin: 0 10px!important;
+}
+
+.p-menuitem-link{
+  display: flex!important;
+  align-items: center!important;
+  justify-content: start!important;
+  text-decoration: none!important;
+}
+
 
 
 /* FIM - TELA CADASTRAR TRABALHO*/

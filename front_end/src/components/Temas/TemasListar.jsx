@@ -1,16 +1,19 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Card from "react-bootstrap/Card";
 import Container from "react-bootstrap/Container";
-import Row from "react-bootstrap/Row";
-import Col from "react-bootstrap/Col";
+import { Button, TableContainer, Table, TableHead, TableBody, TableRow, TableCell, Paper, TablePagination, } from "@mui/material";
+import { Link } from "react-router-dom";
 import "moment/locale/pt-br";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
 
 function TemasListar() {
-  const [trabalhos, setTrabalhos] = useState([]);
   const [alunos, setAlunos] = useState([]);
+  const [temas, setTemas] = useState([]);
+  const [dadosCarregados, setDadosCarregados] = useState(false);
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(5);
+
 
   const { loginWithRedirect, isAuthenticated } = useAuth0();
 
@@ -25,14 +28,37 @@ function TemasListar() {
     }
   }, [isAuthenticated]);
 
+  const handleChangePage = (event, newPage) => {
+    setPage(newPage);
+  };
+
+  const handleChangeRowsPerPage = (event) => {
+    // const { value } = event.target;
+    // const newRowsPerPage = +value;
+    // const newPage = Math.floor(page * (rowsPerPage / newRowsPerPage));
+
+    // setRowsPerPage(newRowsPerPage);
+    // setPage(newPage);
+    const { value } = event.target;
+    const newRowsPerPage = +value;
+
+    // Calcular a nova página com base na proporção atual
+    const newPage = Math.floor(page * (rowsPerPage / newRowsPerPage));
+
+    // Definir os novos valores de linhas por página e página
+    setRowsPerPage(newRowsPerPage);
+    setPage(newPage);
+  };
+
   useEffect(() => {
     axios
       .get("http://localhost:4004/temas")
       .then((response) => {
-        setTrabalhos(response.data);
+        setTemas(response.data);
+        setDadosCarregados(true);
       })
       .catch((error) => {
-        console.error("Erro ao buscar os trabalhos:", error);
+        console.error("Erro ao buscar os temas:", error);
       });
 
     axios
@@ -45,26 +71,58 @@ function TemasListar() {
       });
   }, []);
 
+  if (!dadosCarregados) {
+    return <div>Carregando dados...</div>;
+  }
+
   return (
-    <Container fluid className="Trabalhos_Listar_Container">
-      <h1>Listagem</h1>
-      <div style={{ maxHeight: "500px", overflowY: "scroll" }}>
-        <Row>
-          <Col xs={12} sm={6} md={4} lg={3}>
-            {trabalhos.map((tema) => (
-              <Card key={tema.id_tema}>
-                <Card.Body>
-                  <Card.Title>{tema.titulo}</Card.Title>
-                  <Card.Text>{tema.descricao}</Card.Text>
-                  <Card.Text>
-                    Cadastrado em: {moment(tema.data_cadastro).format("LLL")}
-                  </Card.Text>
-                  <Card.Text>Autor: {procurarAluno(tema.id_autor)}</Card.Text>
-                </Card.Body>
-              </Card>
-            ))}
-          </Col>
-        </Row>
+    <Container fluid className="Trabalhos_Listar_Container px-4">
+      <h6 className="titulo-lis-temas mb-4">Lista de Temas</h6>
+      <div style={{maxHeight: "500px", overflowY: "scroll"}}>
+        <TableContainer component={Paper}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell style={{ backgroundColor: '#345059', color: '#FFFFFF', borderRight: '1px solid white' }}>Título</TableCell>
+                <TableCell style={{ backgroundColor: '#345059', color: '#FFFFFF', borderRight: '1px solid white' }}>Descrição</TableCell>
+                <TableCell style={{ backgroundColor: '#345059', color: '#FFFFFF', borderRight: '1px solid white' }}>Autor</TableCell>
+                <TableCell style={{ backgroundColor: '#345059', color: '#FFFFFF', borderRight: '1px solid white' }}>Data</TableCell>
+                <TableCell style={{ backgroundColor: '#345059', color: '#FFFFFF', borderRight: '1px solid white' }}>Editar</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {temas
+                .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                .map((tema) => (
+                  <TableRow key={tema.id_tema}>
+                    <TableCell>{tema.titulo}</TableCell>
+                    <TableCell>
+                      {tema.descricao}
+                    </TableCell>
+                    <TableCell>
+                      {procurarAluno(tema.id_autor)}
+                    </TableCell>
+                    <TableCell>{moment(tema.data_cadastro).format("LLL")}</TableCell>
+                    <TableCell>
+                      <Link to={`/sgb/temas_editar/${tema.id_tema}`}>
+                        <Button><i className="pi pi-file-edit"></i></Button>
+                      </Link>
+                    </TableCell>
+                  </TableRow>
+                ))}
+            </TableBody>
+
+          </Table>
+        </TableContainer>
+        <TablePagination
+          rowsPerPageOptions={[5, 10, 25]}
+          component="div"
+          count={temas.length}
+          rowsPerPage={rowsPerPage}
+          page={page}
+          onPageChange={handleChangePage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+        />
       </div>
     </Container>
   );

@@ -140,7 +140,7 @@ const TrabalhoEditar = () => {
         await axios.post("http://localhost:4006/grupos", dadosCadastroGrupo);
       }
 
-      toast.success("Trabalho cadastrado com sucesso!", {
+      toast.success("Trabalho atualizado com sucesso!", {
         position: "top-center",
         autoClose: 3000,
         hideProgressBar: true,
@@ -167,14 +167,14 @@ const TrabalhoEditar = () => {
   };
 
   return (
-    <Form className="Temas_Container" onSubmit={handleSubmit}>
+    <Form className="Trabalhos_Container pr-3 mb-8" onSubmit={handleSubmit}>
       <Form.Group controlId="formOrientador">
-        <h1>Cadastrar Trabalho</h1>
+        <h6 className="titulo-edi-trab">Editar Trabalho</h6>
         <Container style={{ padding: 0 }} fluid>
           <Row>
-            <h3>Previsão de entrega e apresentação:</h3>
+            <h6>Previsão de entrega e apresentação:</h6>
             <Col md={2}>
-              <Form.Group controlId="formSemestre">
+              <Form.Group controlId="formSemestre" style={{marginTop: '18px'}}>
                 <Form.Label>Semestre</Form.Label>
                 <Form.Control
                   as="select"
@@ -189,7 +189,7 @@ const TrabalhoEditar = () => {
               </Form.Group>
             </Col>
             <Col md={2}>
-              <Form.Group controlId="formAno">
+              <Form.Group controlId="formAno" style={{marginTop: '18px'}}>
                 <Form.Label>Ano</Form.Label>
                 <Form.Control
                   type="number"
@@ -201,7 +201,7 @@ const TrabalhoEditar = () => {
             </Col>
           </Row>
         </Container>
-        <Form.Group controlId="formTema">
+        <Form.Group controlId="formTema" style={{marginTop: '18px'}}>
           <Form.Label>Tema</Form.Label>
           <Form.Control
             as="select"
@@ -218,7 +218,7 @@ const TrabalhoEditar = () => {
           </Form.Control>
         </Form.Group>
 
-        <Form.Label>Orientador</Form.Label>
+        <Form.Label style={{marginTop: '18px'}}>Orientador</Form.Label>
         <Form.Control
           as="select"
           name="id_orientador"
@@ -237,8 +237,8 @@ const TrabalhoEditar = () => {
         </Form.Control>
       </Form.Group>
 
-      <Form.Group controlId="formAlunos">
-        <h3 style={{ marginTop: 10 }}>Grupo:</h3>
+      <Form.Group controlId="formAlunos" style={{marginTop: '18px'}}>
+        <h6 style={{ marginTop: 10 }}>Grupo:</h6>
         <Form.Label>Insira abaixo os alunos que formam a equipe:</Form.Label>
         <Autocomplete
           options={alunos}
@@ -262,8 +262,8 @@ const TrabalhoEditar = () => {
         />
       </Form.Group>
 
-      <Button style={{ marginTop: 10 }} variant="primary" type="submit">
-        Cadastrar
+      <Button style={{  marginTop: 10, width: '100%', height:45, marginTop: 26, backgroundColor: '#345059' }} type="submit">
+        Atualizar
       </Button>
     </Form>
   );

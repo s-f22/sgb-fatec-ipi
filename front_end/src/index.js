@@ -30,6 +30,7 @@ import TrabalhoListar from './components/Trabalhos/TrabalhoListar';
 import BancasCadastrar from './components/Bancas/BancasCadastrar';
 import BancasListar from './components/Bancas/BancasListar';
 import TrabalhoEditar from './components/Trabalhos/TrabalhoEditar';
+import TemasEditar from './components/Temas/TemasEditar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -84,6 +85,10 @@ const AppRoutes = () => {
         {
           path: '/sgb/trabalho_editar/:id_trabalho',
           element: <TrabalhoEditar />
+        },
+        {
+          path: '/sgb/temas_editar/:id',
+          element: <TemasEditar />
         },
         {
           path: '/sgb/bancas_cadastrar',
