@@ -22,7 +22,7 @@ const Painel = () => {
     numBancasAgendadas: 10,
     notaMediaTrabalhos: 8.2,
     periodoTrabalhos: "2023",
-    trabalhosPorSemestre: "15, 20, 30, 10"
+    trabalhosPorSemestre: "15"
   };
 
   useEffect(() => {
@@ -75,7 +75,7 @@ const Painel = () => {
       ) : professor.email_inst_verif === true ? (
         <>
           <Container maxWidth>
-            <Typography variant="h4" gutterBottom>
+            <Typography variant="h4" gutterBottom className="painel-controle">
               Painel de Controle
             </Typography>
             <Grid container spacing={3}>
@@ -89,8 +89,8 @@ const Painel = () => {
                       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
                     }}
                   >
-                    <Typography variant="h6">{key}</Typography>
-                    <Typography variant="h4">{data[key]}</Typography>
+                    <Typography variant="h6" style={{fontSize:'15px', color:'#333'}}>{key}</Typography>
+                    <Typography variant="h4" style={{fontSize:'35px',color:'#FFA500'}}>{data[key]}</Typography>
                   </Paper>
                 </Grid>
               ))}

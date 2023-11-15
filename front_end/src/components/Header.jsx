@@ -4,7 +4,7 @@ import Profile from './Profile';  // Importa o componente Profile
 import { Link } from 'react-router-dom';
 import React, { useRef, useState } from 'react';
 import { Menu } from 'primereact/menu';
-import { Toast } from 'primereact/toast';
+// import { Toast } from 'primereact/toast';
 import { useAuth0 } from '@auth0/auth0-react';
 
 function Header() {
@@ -15,13 +15,13 @@ function Header() {
   const { logout, isAuthenticated } = useAuth0();
 
   const handleLogout = () => {
-   if (isAuthenticated) {
+    if (isAuthenticated) {
       logout();
     }
     console.log('logout clicked');
     setLogoutClicked(true);
   };
-   const items = [
+  const items = [
     {
       label: 'Options',
       items: [
@@ -33,7 +33,7 @@ function Header() {
       ]
     }
   ];
-  
+
   return (
     <div className='Header_Container'>
       <Navbar expand="lg">
@@ -51,8 +51,11 @@ function Header() {
         </Navbar.Collapse>
       </Navbar>
       <div className="d-flex align-items-center" onClick={(event) => menuLeft.current.toggle(event)} aria-controls="popup_menu_left" aria-haspopup>
-        <Toast ref={toast}></Toast>
-          <Menu model={items} popup ref={menuLeft} id="popup_menu_left" />
+        {/* <Toast ref={toast}></Toast> */}
+        <marquee behavior="scroll" direction="left" className="letreiro">
+          Bem-vindo ao Sistema de gerenciamento de Bancas da Fatec Ipiranga!
+        </marquee>
+        <Menu model={items} popup ref={menuLeft} id="popup_menu_left" />
         <Profile />
       </div>
     </div>
