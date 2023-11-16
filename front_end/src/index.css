@@ -521,7 +521,7 @@ code {
 .Trabalhos_Container .titulo-edi-trab,
 .Temas_Container .titulo-lis-trab,
 .painel-controle,
-.Trabalhos_Listar_Container .titulo-lis-temas{
+.agenda-bancas .Trabalhos_Listar_Container .titulo-lis-temas {
   display: flex;
   justify-content: center;
   text-align: center;
@@ -529,10 +529,10 @@ code {
 }
 
 .painel-controle {
- padding: 15px;
- color: #345059;
- font-size: 16px!important;
- font-weight: 700!important;
+  padding: 15px;
+  color: #345059;
+  font-size: 16px !important;
+  font-weight: 700 !important;
 }
 
 .pi-file-edit:hover {
@@ -590,6 +590,7 @@ code {
   align-items: center !important;
 }
 
+/*Inicio - menu suspenso fazer logout*/
 .p-menu {
   position: absolute;
   top: 77px !important;
@@ -619,15 +620,69 @@ code {
   text-decoration: none !important;
 }
 
+
+/*FIm - menu suspenso fazer logout*/
+
+/*inicio - Letriero*/
 .letreiro {
   position: absolute;
   left: 30%;
   right: 25%;
 }
 
-/*classe  cards painel de controle*/
-.MuiPaper-root {
+/*Fim - Letriero*/
 
+/*classe  cards painel de controle*/
+.MuiPaper-root {}
+
+/*Início - Seleção da sidebar*/
+/* .active{
+  background-color: #EAEAEA !important;
+  color: #345059 !important;
+
+} */
+/*Fim - Seleção da sidebar*/
+/*Inicio - Classe plano de fundo da banca agendada */
+.rbc-event{
+  background-color: #FFA500 !important;
+  color: #345059 !important;
+  font-weight: 600 !important;
+}
+
+.rbc-active{
+  background-color: #345059 !important;
+  color: white !important;
+  font-weight: 600 !important;
+}
+/*Fim - Classe plano de fundo da banca agendada */
+
+
+@media screen and (max-width: 1000px) {
+  .p-menu {
+    width: 18% !important;
+  }
+
+  .letreiro {
+    display: none;
+  }
+
+  /*Inicio - Menu-hamburgue*/
+  .d-lg-none a{
+    margin-bottom: 5px!important;
+  }
+
+  /*Fim- Menu-hamburgue*/
+}
+
+@media screen and (max-width: 755px) {
+  .background {
+    display: none;
+  }
+
+  .p-menu {
+    width: 40% !important;
+    margin-right: -20px !important;
+  }
 }
 
 /* FIM - TELA CADASTRAR TRABALHO*/

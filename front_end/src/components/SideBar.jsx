@@ -6,17 +6,29 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
-import { Link } from "react-router-dom";
-import teste from '../assets/img/Logo_I.png'
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
-
+import { Link, useLocation } from "react-router-dom";
+import teste from '../assets/img/Logo_I.png';
+import { useState, useEffect } from "react";
 
 const Sidebar = () => {
   const location = useLocation();
   const [selectedSubMenu, setSelectedSubMenu] = useState(null);
   const [selectedSubMenuW, setSelectedSubMenuW] = useState(null);
   const [selectedSubMenuB, setSelectedSubMenuB] = useState(null);
+
+  // const [activeItem, setActiveItem] = useState('home');
+
+  // const handleItemClick = (itemName) => {
+  //   setActiveItem(itemName);
+  // };
+
+  // useEffect(() => {
+  //   // Atualiza o item ativo quando a rota muda
+  //   const pathname = location.pathname;
+  //   const rotaPadrao = pathname.split('/')[2]; // Assume uma estrutura "/sgb/..."
+  //   setActiveItem(rotaPadrao || 'home');
+  // }, [location.pathname]);
+
   return (
     <div className="background">
       <ReactSidebar
@@ -60,20 +72,23 @@ const Sidebar = () => {
           }}
         >
           <MenuItem
+            // className={activeItem === 'home' ? 'active' : ''}
+            // onClick={() => handleItemClick('home')}
             component={<Link to="/sgb" />}
             active={location.pathname === "/sgb"}
           >
             <i className="pi pi-home mr-2"></i>Home
           </MenuItem>
 
-          <MenuItem
+          {/* <MenuItem
             component={<Link to="/signupinfo" />}
             active={location.pathname === "/signupinfo"}
           >
             Continuação do Cadastro
-          </MenuItem>
+          </MenuItem> */}
 
-          <SubMenu label={<span><i className="pi pi-list mr-2"></i>Temas</span>} onClick={() => setSelectedSubMenu("temas")}>
+          <SubMenu label={<span><i className="pi pi-list mr-2"></i>Temas</span>}
+            onClick={() => setSelectedSubMenu("temas")}>
             {selectedSubMenu === "temas" && (
               <div className="selected-menu-line">
                 <div className="selected-menu-line_turn_I"></div>
@@ -95,19 +110,19 @@ const Sidebar = () => {
             </MenuItem>
           </SubMenu>
 
-          <SubMenu label={<span><i className="pi pi-file-word mr-2"></i>Trabalhos</span>} 
-          onClick={() => setSelectedSubMenuW("trabalhos")}>
+          <SubMenu label={<span><i className="pi pi-file-word mr-2"></i>Trabalhos</span>}
+            onClick={() => setSelectedSubMenuW("trabalhos")}>
             <MenuItem
               component={<Link to="/sgb/trabalhos_listar" />}
               active={location.pathname === "/sgb/trabalhos_listar"}
             >
               {selectedSubMenuW === "trabalhos" && (
-              <div className="selected-menu-line-w">
-                <div className="selected-menu-line_turn_I-w"></div>
-                <div className="selected-menu-line_turn_II-w"></div>
-                <div className="selected-menu-line_turn_III-w"></div>
-              </div>
-            )}
+                <div className="selected-menu-line-w">
+                  <div className="selected-menu-line_turn_I-w"></div>
+                  <div className="selected-menu-line_turn_II-w"></div>
+                  <div className="selected-menu-line_turn_III-w"></div>
+                </div>
+              )}
               Ver todos
 
             </MenuItem>
@@ -127,18 +142,18 @@ const Sidebar = () => {
             </MenuItem>
           </SubMenu>
 
-          <SubMenu label={<span><i className="pi pi-calendar mr-2"></i>Bancas</span>}  
-          onClick={() => setSelectedSubMenuB("bancas")}>
+          <SubMenu label={<span><i className="pi pi-calendar mr-2"></i>Bancas</span>}
+            onClick={() => setSelectedSubMenuB("bancas")}>
             <MenuItem
               component={<Link to="/sgb/bancas_listar" />}
               active={location.pathname === "/sgb/bancas_listar"}
             >
               {selectedSubMenuB === "bancas" && (
-              <div className="selected-menu-line-b">
-                <div className="selected-menu-line_turn_I-b"></div>
-                <div className="selected-menu-line_turn_II-b"></div>
-              </div>
-            )}
+                <div className="selected-menu-line-b">
+                  <div className="selected-menu-line_turn_I-b"></div>
+                  <div className="selected-menu-line_turn_II-b"></div>
+                </div>
+              )}
               Ver todas
             </MenuItem>
             <MenuItem
