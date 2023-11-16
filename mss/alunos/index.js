@@ -1,39 +1,38 @@
 const express = require('express');
 const bodyParser = require('body-parser');
-var { Client } = require('pg');
-const app = express();
-require('dotenv').config({ path: '../../.env' });
-app.use(bodyParser.json());
 const { Pool } = require('pg');
-
-const jwt = require('jsonwebtoken');
+require('dotenv').config({ path: '../../.env' });
+const app = express();
+app.use(bodyParser.json());
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid')
 const cors = require('cors');
 app.use(cors());
 
 
-const VerificarToken = require('../middlewares/VerificarToken.js');
+// const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
 
 
 
-const db = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_SERVER,
-  database: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  port: process.env.DB_PORT,
-});
-
+const config = {
+  user: process.env.DB_config_user,
+  host: process.env.DB_config_host,
+  database: process.env.DB_config_database,
+  password: process.env.DB_config_password,
+  port: process.env.DB_config_port,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: process.env.DB_config_ca,
+  },
+};
+const db = new Pool(config);
 
 
 app.post('/alunos', async (req, res) => {
-
   try {
 
     const codigo = uuidv4();
-
     const { user_id, ra, nome, email, curso, periodo } = req.body;
 
     const query = 'INSERT INTO aluno (user_id, ra, nome, email, curso, periodo, codigo) VALUES ($1, $2, $3, $4, $5, $6, $7) RETURNING id_aluno, user_id, ra, nome, email, curso, periodo';
@@ -49,9 +48,9 @@ app.post('/alunos', async (req, res) => {
     };
 
     // VERIFICAR COM PROF se seria necessario ou interssante gerar um token próprio do nosso serviço, ou se seria melhor utilizar o do auth0
-    const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
+    // const token = jwt.sign({ aluno }, process.env.JWT_TOKEN_SECRET, { expiresIn: '1h' });
 
-    res.status(201).json({ message: 'aluno cadastrado com sucesso!', token });
+    res.status(201).json({ message: 'aluno cadastrado com sucesso!' });
 
     if (res.status(201)) {
 
