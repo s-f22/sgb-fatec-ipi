@@ -9,7 +9,7 @@ const TemasCadastrar = () => {
   
   const [titulo, setTitulo] = useState('');
   const [descricao, setDescricao] = useState('');
-  const [id_autor, setId_autor] = useState(12)
+  const [id_autor, setId_autor] = useState(42)
   const navigate = useNavigate();
   const { loginWithRedirect, isAuthenticated } = useAuth0();
   

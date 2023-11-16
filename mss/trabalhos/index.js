@@ -5,20 +5,25 @@ require("dotenv").config({ path: "../../.env" });
 app.use(bodyParser.json());
 const { Pool } = require("pg");
 
-const jwt = require("jsonwebtoken");
+// const jwt = require("jsonwebtoken");
 const cors = require("cors");
 app.use(cors());
 
-const VerificarToken = require("../middlewares/VerificarToken.js");
+// const VerificarToken = require("../middlewares/VerificarToken.js");
 //const AuthCheck = require('../middlewares/AuthCheck.js');
 
-const db = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_SERVER,
-  database: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  port: process.env.DB_PORT,
-});
+const config = {
+  user: process.env.DB_config_user,
+  host: process.env.DB_config_host,
+  database: process.env.DB_config_database,
+  password: process.env.DB_config_password,
+  port: process.env.DB_config_port,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: process.env.DB_config_ca,
+  },
+};
+const db = new Pool(config);
 
 // CADASTRAR
 app.post("/trabalhos", (req, res) => {
@@ -148,7 +153,7 @@ app.patch("/trabalhos/:id", async (req, res) => {
 });
 
 // DELETE
-app.delete("/trabalhos/:id", VerificarToken, (req, res) => {
+app.delete("/trabalhos/:id", (req, res) => {
   const id_trabalho = req.params.id;
 
   db.query(

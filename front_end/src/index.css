@@ -42,7 +42,7 @@ code {
   display: flex;
   flex-direction: column;
   height: 100vh;
-  padding: 30px 30px 30px 60px;
+  padding: 2rem;
   color: #345059;
   overflow-y: auto;
 }

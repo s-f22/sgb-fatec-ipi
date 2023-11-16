@@ -4,7 +4,7 @@ const { Pool } = require('pg');
 require('dotenv').config({ path: '../../.env' });
 const app = express();
 app.use(bodyParser.json());
-const jwt = require('jsonwebtoken');
+// const jwt = require('jsonwebtoken');
 const nodemailer = require('nodemailer');
 const { v4: uuidv4 } = require('uuid')
 const cors = require('cors');
@@ -12,17 +12,22 @@ app.use(cors());
 
 const port = process.env.MSS_PORTA_PROFESSORES;
 
-const VerificarToken = require('../middlewares/VerificarToken.js');
+// const VerificarToken = require('../middlewares/VerificarToken.js');
 //const AuthCheck = require('../middlewares/AuthCheck.js');
 
-// Configuração do banco de dados
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_SERVER,
-  database: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  port: process.env.DB_PORT,
-});
+const config = {
+  user: process.env.DB_config_user,
+  host: process.env.DB_config_host,
+  database: process.env.DB_config_database,
+  password: process.env.DB_config_password,
+  port: process.env.DB_config_port,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: process.env.DB_config_ca,
+  },
+};
+const db = new Pool(config);
+
 
 
 
@@ -36,7 +41,7 @@ app.post('/professores', async (req, res) => {
     const query = 'INSERT INTO professor (user_id, nome, email, coordenador, codigo) VALUES ($1, $2, $3, $4, $5) RETURNING id_professor, user_id, nome, email, coordenador';
     const values = [user_id, nome, email, coordenador, codigo];
 
-    const result = await pool.query(query, values);
+    const result = await db.query(query, values);
     console.log("RESULT:", result.rows)
 
     const professor = {
@@ -97,7 +102,7 @@ app.post('/professores', async (req, res) => {
 
 app.get('/professores', async (req, res) => {
   try {
-    const result = await pool.query('SELECT * FROM professor');
+    const result = await db.query('SELECT * FROM professor');
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: 'Erro interno do servidor' });
@@ -110,7 +115,7 @@ app.get('/professores', async (req, res) => {
 //   const id_professor = req.params.id_professor;
 
 //   try {
-//     const result = await pool.query('SELECT * FROM professor WHERE id_professor = $1', [id_professor]);
+//     const result = await db.query('SELECT * FROM professor WHERE id_professor = $1', [id_professor]);
 //     console.log(result.rows[0])
 //     if (result.rows.length === 0) {
 //       res.status(404).json({ error: `Professor com ID ${id_professor} não encontrado.` });
@@ -137,7 +142,7 @@ app.get('/professores/:user_id', async (req, res) => {
   const user_id = req.params.user_id;
 
   try {
-    const result = await pool.query('SELECT * FROM professor WHERE user_id = $1', [user_id]);
+    const result = await db.query('SELECT * FROM professor WHERE user_id = $1', [user_id]);
     if (result.rows.length === 0) {
       res.status(404).json({ error: `professor com user_id ${user_id} não encontrado.` });
     } else {
@@ -156,7 +161,7 @@ app.put('/professores/:id', async (req, res) => {
   try {
     const id = req.params.id;
     const { user_id, nome, email, email_inst_verif } = req.body;
-    const result = await pool.query(
+    const result = await db.query(
       'UPDATE professor SET user_id=$1, nome=$2, email=$3, email_inst_verif=$4 WHERE id_professor=$5 RETURNING *',
       [user_id, nome, email, email_inst_verif, id]
     );
@@ -176,7 +181,7 @@ app.patch('/professores/:id_professor/:codigo', async (req, res) => {
 
     const queryCheckCode = 'SELECT id_professor FROM professor WHERE id_professor = $1 AND codigo = $2';
     const checkCodeValues = [id_professor, codigo];
-    const codeCheckResult = await pool.query(queryCheckCode, checkCodeValues);
+    const codeCheckResult = await db.query(queryCheckCode, checkCodeValues);
 
     if (codeCheckResult.rows.length === 0) {
       return res.status(400).json({ error: 'Código inválido' });
@@ -185,7 +190,7 @@ app.patch('/professores/:id_professor/:codigo', async (req, res) => {
     const query = 'UPDATE professor SET email_inst_verif = $1 WHERE id_professor = $2 RETURNING *';
     const values = [email_inst_verif, id_professor];
 
-    const result = await pool.query(query, values);
+    const result = await db.query(query, values);
 
     if (result.rows.length === 0) {
       return res.status(404).json({ error: 'Professor não encontrado' });
@@ -212,7 +217,7 @@ app.patch('/professores/:id_professor/:codigo', async (req, res) => {
 app.delete('/professores/:id', async (req, res) => {
   try {
     const id = req.params.id;
-    const result = await pool.query('DELETE FROM professor WHERE id_professor=$1 RETURNING *', [id]);
+    const result = await db.query('DELETE FROM professor WHERE id_professor=$1 RETURNING *', [id]);
     if (result.rowCount === 0) {
       return res.status(404).json({ error: 'Professor não encontrado' });
     }

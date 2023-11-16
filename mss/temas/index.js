@@ -9,19 +9,23 @@ app.use(cors());
 
 const port = process.env.MSS_PORTA_TEMAS; // Alterado para a porta correta
 
-const jwt = require("jsonwebtoken");
-const nodemailer = require("nodemailer");
+// const jwt = require("jsonwebtoken");
+// const nodemailer = require("nodemailer");
 
-const VerificarToken = require("../middlewares/VerificarToken.js");
+// const VerificarToken = require("../middlewares/VerificarToken.js");
 
-// Configuração do banco de dados
-const pool = new Pool({
-  user: process.env.DB_USER,
-  host: process.env.DB_SERVER,
-  database: process.env.DB_USER,
-  password: process.env.DB_PWD,
-  port: process.env.DB_PORT,
-});
+const config = {
+  user: process.env.DB_config_user,
+  host: process.env.DB_config_host,
+  database: process.env.DB_config_database,
+  password: process.env.DB_config_password,
+  port: process.env.DB_config_port,
+  ssl: {
+    rejectUnauthorized: true,
+    ca: process.env.DB_config_ca,
+  },
+};
+const db = new Pool(config);
 
 app.post("/temas", async (req, res) => {
   // Alterado para '/tema'
@@ -33,7 +37,7 @@ app.post("/temas", async (req, res) => {
       "INSERT INTO tema (id_autor, titulo, descricao, data_cadastro) VALUES ($1, $2, $3, $4) RETURNING id_tema, id_autor, titulo, descricao, data_cadastro"; // Alterado para inserir na tabela "tema"
     const values = [id_autor, titulo, descricao, data_cadastro]; // Alterado para os campos corretos
 
-    const result = await pool.query(query, values);
+    const result = await db.query(query, values);
 
     const tema = {
       id_tema: result.rows[0].id_tema,
@@ -53,7 +57,7 @@ app.post("/temas", async (req, res) => {
 app.get("/temas", async (req, res) => {
   // Alterado para '/tema'
   try {
-    const result = await pool.query("SELECT * FROM tema"); // Alterado para selecionar da tabela "tema"
+    const result = await db.query("SELECT * FROM tema"); // Alterado para selecionar da tabela "tema"
     res.json(result.rows);
   } catch (error) {
     res.status(500).json({ error: "Erro interno do servidor" });
@@ -65,7 +69,7 @@ app.get("/tema/:id_tema", async (req, res) => {
   const id_tema = req.params.id_tema;
 
   try {
-    const result = await pool.query("SELECT * FROM tema WHERE id_tema = $1", [
+    const result = await db.query("SELECT * FROM tema WHERE id_tema = $1", [
       id_tema,
     ]); // Alterado para buscar na tabela "tema"
     if (result.rows.length === 0) {
@@ -91,7 +95,7 @@ app.put("/tema/:id_tema", async (req, res) => {
   try {
     const id_tema = req.params.id_tema;
     const { id_autor, titulo, descricao, data_cadastro } = req.body; // Alterado para os campos corretos
-    const result = await pool.query(
+    const result = await db.query(
       "UPDATE tema SET id_autor=$1, titulo=$2, descricao=$3, data_cadastro=$4 WHERE id_tema=$5 RETURNING *",
       [id_autor, titulo, descricao, data_cadastro, id_tema] // Alterado para os campos corretos
     );
@@ -105,7 +109,7 @@ app.delete("/tema/:id_tema", async (req, res) => {
   // Alterado para '/tema'
   try {
     const id_tema = req.params.id_tema;
-    const result = await pool.query("DELETE FROM tema WHERE id_tema = $1", [
+    const result = await db.query("DELETE FROM tema WHERE id_tema = $1", [
       id_tema,
     ]); // Alterado para deletar da tabela "tema"
 
@@ -127,7 +131,7 @@ app.patch('/tema/:id', async (req, res) => {
   try {
     // Consulta para obter o tema atual
     const querySelect = 'SELECT * FROM tema WHERE id_tema = $1';
-    const resultSelect = await pool.query(querySelect, [id]);
+    const resultSelect = await db.query(querySelect, [id]);
 
     if (resultSelect.rowCount !== 1) {
       res.status(404).json({ message: 'Tema não encontrado.' });
@@ -154,7 +158,7 @@ app.patch('/tema/:id', async (req, res) => {
         id_tema = $4
     `;
 
-    const resultUpdate = await pool.query(queryUpdate, [
+    const resultUpdate = await db.query(queryUpdate, [
       novoTema.titulo,
       novoTema.descricao,
       novoTema.disponivel,
@@ -178,7 +182,7 @@ app.get("/tema_navigation/:id", async (req, res) => {
 
     // Consultar o tema com base no ID do tema
     const temaQuery = "SELECT * FROM tema WHERE id_tema = $1";
-    const temaResult = await pool.query(temaQuery, [temaId]);
+    const temaResult = await db.query(temaQuery, [temaId]);
 
     if (temaResult.rows.length === 0) {
       return res.status(404).json({ error: "Tema não encontrado" });
@@ -188,7 +192,7 @@ app.get("/tema_navigation/:id", async (req, res) => {
 
     // Consultar o aluno associado ao tema com base no ID do autor
     const alunoQuery = "SELECT * FROM aluno WHERE id_aluno = $1";
-    const alunoResult = await pool.query(alunoQuery, [tema.id_autor]);
+    const alunoResult = await db.query(alunoQuery, [tema.id_autor]);
 
     if (alunoResult.rows.length === 0) {
       return res.status(404).json({ error: "Aluno não encontrado" });

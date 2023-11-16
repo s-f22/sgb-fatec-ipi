@@ -22,4 +22,6 @@ front-end/.env
 front_end/node_modules/
 front_end/.env
 
+docs/sql/pgConnect.json
+
 .env
