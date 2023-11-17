@@ -4,7 +4,6 @@ import { Button } from 'react-bootstrap';
 
 const LogOut = () => {
   const { logout, isAuthenticated } = useAuth0();
-  
   return (
     isAuthenticated && (
       <div style={{ textAlign: 'right', marginRight: '10px', marginTop: '10px' }}>
@@ -13,7 +12,8 @@ const LogOut = () => {
         </Button>
       </div>
     )
-  )
-}
+  );
 
-export default LogOut;
+};
+
+export default { LogOut };

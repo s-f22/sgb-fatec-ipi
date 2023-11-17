@@ -30,6 +30,7 @@ import TrabalhoListar from './components/Trabalhos/TrabalhoListar';
 import BancasCadastrar from './components/Bancas/BancasCadastrar';
 import BancasListar from './components/Bancas/BancasListar';
 import TrabalhoEditar from './components/Trabalhos/TrabalhoEditar';
+import TemasEditar from './components/Temas/TemasEditar';
 
 // require('dotenv').config({ path: '../../.env' });
 
@@ -86,7 +87,15 @@ const AppRoutes = () => {
           element: <TrabalhoEditar />
         },
         {
+<<<<<<< HEAD
           path: '/sgb-fatec-ipi/sgb/bancas_cadastrar',
+=======
+          path: '/sgb/temas_editar/:id',
+          element: <TemasEditar />
+        },
+        {
+          path: '/sgb/bancas_cadastrar',
+>>>>>>> 8de93d47edd2def9f3422fbd08d90baeb3b74170
           element: <BancasCadastrar />
         },
         {

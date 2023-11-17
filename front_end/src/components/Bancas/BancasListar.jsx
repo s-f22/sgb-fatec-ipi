@@ -74,7 +74,11 @@ function BancasListar() {
   return (
     <Box className="Temas_Container" p={2}>
       <Paper elevation={3}>
-        <Typography variant="h5" component="div" align="center" p={2}>
+        <Typography 
+        component="div" 
+        align="center" 
+        p={2}
+        style={{color:'#345059', fontWeight:'700'}}>
           Calendário de Bancas
         </Typography>
         <Calendar
@@ -82,7 +86,7 @@ function BancasListar() {
           events={events}
           startAccessor="start"
           endAccessor="end"
-          style={{ height: 500 }}
+          style={{ height: 500, color: '#345059' }}
           onSelectEvent={handleEventClick}
         />
       </Paper>

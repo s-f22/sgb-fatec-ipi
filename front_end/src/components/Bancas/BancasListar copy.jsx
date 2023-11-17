@@ -152,12 +152,13 @@ const BancasListar = () => {
     setSelectedBanca(event);
     setShowModal(true);
   };
+  
 
   return (
-    <Container className="Temas_Container" fluid>
+    <Container className="Bancas_Listar_Container  px-8" fluid>
       {bancas.length > 0 ? (
         <>
-          <Typography variant="h4" gutterBottom>
+          <Typography variant="h4" gutterBottom className="agenda-bancas">
             Lista de Bancas
           </Typography>
           <Paper elevation={3}>

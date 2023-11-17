@@ -148,14 +148,14 @@ const TrabalhoCadastrar = () => {
   };
 
   return (
-    <Form className="Temas_Container" onSubmit={handleSubmit}>
+    <Form className="Trabalhos_Container pr-3 mb-8" onSubmit={handleSubmit}>
       <Form.Group controlId="formOrientador">
-        <h1>Cadastrar Trabalho</h1>
+        <h6 className="titulo-cad-trab">Cadastrar Trabalho</h6>
         <Container style={{ padding: 0 }} fluid>
           <Row>
-            <h3>Previsão de entrega e apresentação:</h3>
+            <h6 className="subtitulo-cad-trab">Previsão de entrega e apresentação:</h6>
             <Col md={2}>
-              <Form.Group controlId="formSemestre">
+              <Form.Group controlId="formSemestre" style={{marginTop: '18px'}}>
                 <Form.Label>Semestre</Form.Label>
                 <Form.Control
                   as="select"
@@ -170,7 +170,7 @@ const TrabalhoCadastrar = () => {
               </Form.Group>
             </Col>
             <Col md={2}>
-              <Form.Group controlId="formAno">
+              <Form.Group controlId="formAno" style={{marginTop: '18px'}}>
                 <Form.Label>Ano</Form.Label>
                 <Form.Control
                   type="number"
@@ -182,7 +182,7 @@ const TrabalhoCadastrar = () => {
             </Col>
           </Row>
         </Container>
-        <Form.Group controlId="formTema">
+        <Form.Group controlId="formTema" style={{marginTop: '18px'}}>
           <Form.Label>Tema</Form.Label>
           <Form.Control
             as="select"
@@ -199,7 +199,7 @@ const TrabalhoCadastrar = () => {
           </Form.Control>
         </Form.Group>
 
-        <Form.Label>Orientador</Form.Label>
+        <Form.Label style={{marginTop: '18px'}}>Orientador</Form.Label>
         <Form.Control
           as="select"
           name="id_orientador"
@@ -217,9 +217,8 @@ const TrabalhoCadastrar = () => {
           ))}
         </Form.Control>
       </Form.Group>
-
       <Form.Group controlId="formAlunos">
-        <h3 style={{ marginTop: 10 }}>Grupo:</h3>
+        <h6 style={{ marginTop: 10, marginTop: 18 }} className="grupo-cad-trab">Grupo:</h6>
         <Form.Label>Insira abaixo os alunos que formam a equipe:</Form.Label>
         <Autocomplete
           options={alunos}
@@ -243,7 +242,7 @@ const TrabalhoCadastrar = () => {
         />
       </Form.Group>
 
-      <Button style={{ marginTop: 10 }} variant="primary" type="submit">
+      <Button style={{ marginTop: 10, width: '100%', height:45, marginTop: 26, backgroundColor: '#345059' }} type="submit">
         Cadastrar
       </Button>
     </Form>

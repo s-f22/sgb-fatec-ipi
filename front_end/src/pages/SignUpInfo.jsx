@@ -396,13 +396,13 @@ const SignUpInfo = () => {
         onChange={() => handleSelectProfile('professor')}
       />
 
-      <img src={img_fundo} alt="Imagem de fundo" />
+      {/* <img src={img_fundo} alt="Imagem de fundo" /> */}
 
       {selectedProfile === 'aluno' && (
         <Form onSubmit={handleSubmitAluno}>
           <Form.Group>
             <Form.Label htmlFor="email"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '47.25rem' }} className="mb-3">
+            <InputGroup style={{ width: '97%' }} className="mb-3">
               <Form.Control
                 id="email"
                 type="text"
@@ -424,7 +424,7 @@ const SignUpInfo = () => {
                 id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
 
-            <InputGroup style={{ width: '47.25rem' }} className="mb-3">
+            <InputGroup style={{ width: '97%' }} className="mb-3">
               <InputGroup className="mb-3">
                 <InputGroup.Text style={{backgroundColor: '#345059', color: 'white'}} id="basic-addon1">RA:</InputGroup.Text>
                 <Form.Control
@@ -448,7 +448,7 @@ const SignUpInfo = () => {
                 onChange={(e) => setNome(e.target.value)}
               />
             </InputGroup>
-            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: '1rem', width: '47.25rem'}} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: '1rem', width: '97%'}} id="basic-addon1">
               Curso:<Form.Select id="curso" aria-label="Selecione o curso" value={curso} onChange={(e) => setCurso(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="ads">Análise e Desenvolvimento de Sistemas</option>
@@ -458,7 +458,7 @@ const SignUpInfo = () => {
               </Form.Select>
             </InputGroup.Text>
 
-            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: 10, padding: 10, width: '47.25rem' }} id="basic-addon1">
+            <InputGroup.Text style={{ gap: 10, color: '#345059', fontWeight: 'bold',marginBottom: 10, padding: 10, width: '97%' }} id="basic-addon1">
               Período:<Form.Select id="periodo" aria-label="Selecione o curso" value={periodo} onChange={(e) => setPeriodo(e.target.value)}>
                 <option value="">Selecione uma opção</option> {/* Adicionada a opção default */}
                 <option value="manha">Manhã</option>
@@ -469,7 +469,7 @@ const SignUpInfo = () => {
           </Form.Group>
 
           <Button
-            style={{ marginTop: '53px', width: '47.25rem', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px' }}
+            style={{ marginTop: '53px', width: '97%', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px' }}
             type="submit">
             ENVIAR
           </Button>
@@ -480,7 +480,7 @@ const SignUpInfo = () => {
         <Form onSubmit={handleSubmitProfessor}>
           <Form.Group>
             <Form.Label htmlFor="basic-url"><b>E-mail Institucional:</b></Form.Label>
-            <InputGroup style={{ width: '46.5rem'}} className="mb-3">
+            <InputGroup style={{ width: '95%'}} className="mb-3">
               <Form.Control
                 placeholder="seu email"
                 aria-label="digite"
@@ -498,7 +498,7 @@ const SignUpInfo = () => {
                 backgroundColor: '#345059'
               }} id="basic-addon2">@fatec.sp.gov.br</InputGroup.Text>
             </InputGroup>
-            <InputGroup style={{ width: '46.5rem' }} className="mb-3">
+            <InputGroup style={{ width: '95%' }} className="mb-3">
               <InputGroup.Text style={{backgroundColor: '#345059', color: 'white'}}  id="basic-addon1">Nome completo:</InputGroup.Text>
               <Form.Control
                 placeholder=""
@@ -519,7 +519,7 @@ const SignUpInfo = () => {
             </Form.Group>
             <HorarioSelecaoProfs />
             <Button
-              style={{ marginTop: '53px', width: '47.25rem', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px'}}
+              style={{ marginTop: '53px', width: '97%', fontWeight: 'bold', fontSize: '12px', backgroundColor: '#345059', height: '45px'}}
               variant="primary"
               type="submit"
             >
