@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import dashboard from "../assets/img/dashboard.png";
+import dashboard from "../Assets/img/dashboard.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";

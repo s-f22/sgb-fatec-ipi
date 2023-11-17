@@ -4,8 +4,8 @@ import { toast } from 'react-toastify';
 import { useAuth0 } from '@auth0/auth0-react';
 import axios from 'axios'
 import { useNavigate } from 'react-router-dom';
-import banca_cad from '../assets/img/Logo_I.png'
-import img_fundo  from '../assets/img/img_fundo.jpg'
+import banca_cad from '../Assets/img/Logo_I.png'
+import img_fundo  from '../Assets/img/img_fundo.jpg'
 
 
 const SignUpInfo = () => {

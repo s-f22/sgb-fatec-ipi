@@ -2,7 +2,7 @@
   "name": "front_end",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://s-f22.github.io/",
+  "homepage": "https://s-f22.github.io",
   "dependencies": {
     "@auth0/auth0-react": "^2.2.1",
     "@emotion/react": "^11.11.1",
