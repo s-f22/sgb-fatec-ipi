@@ -41,56 +41,56 @@ const AppRoutes = () => {
 
   const router = createBrowserRouter([
     {
-      path: '/',
+      path: '/sgb-fatec-ipi/',
       element: <Welcome />,
       errorElement: <ErrorPage />
     },
     {
-      path: '/SignUpInfo',
+      path: '/sgb-fatec-ipi/SignUpInfo',
       element: <SignUpInfo />,
     },
     {
-      path: '/VerifyEmailAluno/:id_aluno/:codigo',
+      path: '/sgb-fatec-ipi/VerifyEmailAluno/:id_aluno/:codigo',
       element: <VerifyEmailAluno />,
     },
     {
-      path: '/VerifyEmailProfessor/:id_professor/:codigo',
+      path: '/sgb-fatec-ipi/VerifyEmailProfessor/:id_professor/:codigo',
       element: <VerifyEmailProfessor />,
     },
     {
-      path: '/sgb',
+      path: '/sgb-fatec-ipi/sgb',
       element: <App />,
       children: [
         {
-          path: '/sgb',
+          path: '/sgb-fatec-ipi/sgb',
           element: <Painel />
         },
         {
-          path: '/sgb/temas_cadastrar',
+          path: '/sgb-fatec-ipi/sgb/temas_cadastrar',
           element: <TemasCadastrar />
         },
         {
-          path: '/sgb/temas_listar',
+          path: '/sgb-fatec-ipi/sgb/temas_listar',
           element: <TemasListar />
         },
         {
-          path: '/sgb/trabalhos_cadastrar',
+          path: '/sgb-fatec-ipi/sgb/trabalhos_cadastrar',
           element: <TrabalhoCadastrar />
         },
         {
-          path: '/sgb/trabalhos_listar',
+          path: '/sgb-fatec-ipi/sgb/trabalhos_listar',
           element: <TrabalhoListar />
         },
         {
-          path: '/sgb/trabalho_editar/:id_trabalho',
+          path: '/sgb-fatec-ipi/sgb/trabalho_editar/:id_trabalho',
           element: <TrabalhoEditar />
         },
         {
-          path: '/sgb/bancas_cadastrar',
+          path: '/sgb-fatec-ipi/sgb/bancas_cadastrar',
           element: <BancasCadastrar />
         },
         {
-          path: '/sgb/bancas_listar',
+          path: '/sgb-fatec-ipi/sgb/bancas_listar',
           element: <BancasListar />
         }
       ]
