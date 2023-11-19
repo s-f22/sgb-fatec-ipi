@@ -13,7 +13,8 @@ const SignUp = () => {
       onClick={() => loginWithRedirect({
         authorizationParams: {
           screen_hint: "signup",
-          redirect_uri: 'http://localhost:3000/SignUpInfo'
+          // redirect_uri: 'http://localhost:3000/SignUpInfo'
+          redirect_uri: 'https://s-f22.github.io/sgb-fatec-ipi/#/SignUpInfo'
         }
       })}>
         Cadastre-se!

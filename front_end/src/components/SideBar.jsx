@@ -6,17 +6,9 @@ import {
   SubMenu,
   sidebarClasses,
 } from "react-pro-sidebar";
-<<<<<<< HEAD
-import { Link } from "react-router-dom";
-import teste from '../Assets/img/Logo_I.png'
-import { useLocation } from "react-router-dom";
-import { useState } from "react";
-
-=======
 import { Link, useLocation } from "react-router-dom";
-import teste from '../assets/img/Logo_I.png';
+import teste from '../Assets/img/Logo_I.png';
 import { useState, useEffect } from "react";
->>>>>>> 8de93d47edd2def9f3422fbd08d90baeb3b74170
 
 const Sidebar = () => {
   const location = useLocation();

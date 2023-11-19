@@ -17,7 +17,7 @@ const services = [
 
 services.forEach(service => {
     console.log(`Iniciando o serviço ${service}...`);
-    exec(`cd "C:/Projeto-TCC/Clone_tcc_atual/sgb-fatec-ipi/mss/${service}" && npm start`, (error, stdout, stderr) => {
+    exec(`cd "D:/FATEC/TCC/sgb-fatec-ipi/mss/${service}" && npm start`, (error, stdout, stderr) => {
         if (error) {
             console.error(`Erro ao iniciar o serviço ${service}: ${stderr}`);
         } else {
