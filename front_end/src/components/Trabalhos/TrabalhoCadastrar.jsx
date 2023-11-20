@@ -26,19 +26,19 @@ const TrabalhoCadastrar = () => {
   useEffect(() => {
     // Carregar orientadores
     axios
-      .get("http://localhost:4001/professores")
+      .get("https://140.238.186.186:4001/professores")
       .then((response) => setOrientadores(response.data))
       .catch((error) => console.error(error));
 
     // Carregar temas
     axios
-      .get("http://localhost:4004/temas")
+      .get("https://140.238.186.186:4004/temas")
       .then((response) => setTemas(response.data))
       .catch((error) => console.error(error));
 
     // Carregar alunos
     axios
-      .get("http://localhost:4000/alunos")
+      .get("https://140.238.186.186:4000/alunos")
       .then((response) => setAlunos(response.data))
       .catch((error) => console.error(error));
   }, []);
@@ -95,7 +95,7 @@ const TrabalhoCadastrar = () => {
     try {
       // Cadastrar o trabalho
       const responseTrabalho = await axios.post(
-        "http://localhost:4005/trabalhos",
+        "https://140.238.186.186:4005/trabalhos",
         dadosCadastroTrabalho
       );
 
@@ -105,7 +105,7 @@ const TrabalhoCadastrar = () => {
 
       // Atualizar o tema do trabalho cadastrado
       const idTema = formData.id_tema;
-      await axios.patch(`http://localhost:4004/tema/${idTema}`, {
+      await axios.patch(`https://140.238.186.186:4004/tema/${idTema}`, {
         disponivel: false,
       });
 
@@ -118,7 +118,7 @@ const TrabalhoCadastrar = () => {
           id_trabalho: idTrabalho,
         };
 
-        await axios.post("http://localhost:4006/grupos", dadosCadastroGrupo);
+        await axios.post("https://140.238.186.186:4006/grupos", dadosCadastroGrupo);
       }
 
       toast.success("Trabalho cadastrado com sucesso!", {

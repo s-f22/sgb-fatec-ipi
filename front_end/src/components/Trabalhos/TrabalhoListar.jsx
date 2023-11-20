@@ -23,11 +23,11 @@ const TrabalhoListar = () => {
         gruposResponse,
         alunosResponse,
       ] = await Promise.all([
-        axios.get("http://localhost:4005/trabalhos"),
-        axios.get("http://localhost:4001/professores"),
-        axios.get("http://localhost:4004/temas"),
-        axios.get("http://localhost:4006/grupos"),
-        axios.get("http://localhost:4000/alunos"),
+        axios.get("https://140.238.186.186:4005/trabalhos"),
+        axios.get("https://140.238.186.186:4001/professores"),
+        axios.get("https://140.238.186.186:4004/temas"),
+        axios.get("https://140.238.186.186:4006/grupos"),
+        axios.get("https://140.238.186.186:4000/alunos"),
       ]);
 
       setTrabalhos(trabalhosResponse.data);
