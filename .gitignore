@@ -15,6 +15,7 @@ mss/avaliacao/node_modules
 mss/certificado/node_modules
 mss/ata/node_modules
 mss/api/
+mss/certs
 
 front-end/node_modules/
 front-end/.env

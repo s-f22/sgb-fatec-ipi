@@ -17,8 +17,8 @@ const VerifyEmailAluno = () => {
   }
 
   useEffect(() => {
-    console.log(`http://localhost:4000/alunos/${id_aluno}/${codigo}`)
-    axios.patch(`http://localhost:4000/alunos/${id_aluno}/${codigo}`, { email_inst_verif: true })
+    console.log(`https://140.238.186.186:4000/alunos/${id_aluno}/${codigo}`)
+    axios.patch(`https://140.238.186.186:4000/alunos/${id_aluno}/${codigo}`, { email_inst_verif: true })
       .then(response => {
         console.log('Resposta do servidor:', response.data);
         setValidationSuccess(true);

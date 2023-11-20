@@ -73,7 +73,7 @@ const SignUpInfo = () => {
     setShowConfirmationModalAluno(false);
 
     try {
-      const response = await axios.post('http://localhost:4000/alunos', {
+      const response = await axios.post('https://140.238.186.186:4000/alunos', {
         user_id,
         ra,
         nome,
@@ -116,7 +116,7 @@ const SignUpInfo = () => {
 
   const CadastrarProfessor = async (dadosProfessor) => {
     try {
-      const response = await axios.post('http://localhost:4001/professores', dadosProfessor);
+      const response = await axios.post('https://140.238.186.186:4001/professores', dadosProfessor);
       console.log('Resposta do servidor:', response.data);
       const idProfessor = response.data.professor.id_professor;
       console.log('PROFESSOR:', idProfessor);
@@ -151,7 +151,7 @@ const SignUpInfo = () => {
       for (const diaSemana of diasSemana) {
         const diaSemanaInt = diaSemanaToInt(diaSemana);
 
-        const responseDiaAula = await axios.post('http://localhost:4002/dia_aula', {
+        const responseDiaAula = await axios.post('https://140.238.186.186:4002/dia_aula', {
           id_professor: idProfessor,
           dia_semana: diaSemanaInt
         });
@@ -166,7 +166,7 @@ const SignUpInfo = () => {
             const entrada = horarioInfo.entrada;
             const saida = horarioInfo.saida;
 
-            const horarioPromise = axios.post('http://localhost:4003/horario_aula', {
+            const horarioPromise = axios.post('https://140.238.186.186:4003/horario_aula', {
               id_professor: idProfessor,
               id_dia_aula: idDiaAula,
               entrada: entrada,

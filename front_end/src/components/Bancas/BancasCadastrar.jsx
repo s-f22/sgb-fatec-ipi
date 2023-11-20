@@ -41,11 +41,11 @@ const BancasCadastrar = () => {
           diaAulaResponse,
           horarioAulaResponse,
         ] = await Promise.all([
-          axios.get("http://localhost:4005/trabalhos"),
-          axios.get("http://localhost:4004/temas"),
-          axios.get("http://localhost:4001/professores"),
-          axios.get("http://localhost:4002/dia_aula"),
-          axios.get("http://localhost:4003/horario_aula"),
+          axios.get("https://140.238.186.186:4005/trabalhos"),
+          axios.get("https://140.238.186.186:4004/temas"),
+          axios.get("https://140.238.186.186:4001/professores"),
+          axios.get("https://140.238.186.186:4002/dia_aula"),
+          axios.get("https://140.238.186.186:4003/horario_aula"),
         ]);
         setTrabalhos(trabalhosResponse.data);
         setTemas(temasResponse.data);
@@ -167,7 +167,7 @@ const BancasCadastrar = () => {
         const dataHoraStringToDate = new Date(dataHora);
 
         // Cadastrar a banca
-        const response = await axios.post("http://localhost:4007/bancas", {
+        const response = await axios.post("https://140.238.186.186:4007/bancas", {
           id_trabalho: idTrabalho,
           data_hora: dataHoraStringToDate.toISOString(),
         });
@@ -178,7 +178,7 @@ const BancasCadastrar = () => {
 
           // Atualizar o atributo "banca_agendada" do trabalho relacionado
           const responseAtualizacaoTrabalho = await axios.patch(
-            `http://localhost:4005/trabalhos/${idTrabalho}`,
+            `https://140.238.186.186:4005/trabalhos/${idTrabalho}`,
             {
               banca_agendada: true,
             }
@@ -188,7 +188,7 @@ const BancasCadastrar = () => {
             // Enviar os professores convidados para o endpoint de convidados
             await Promise.all(
               convidados.map((professor) =>
-                axios.post("http://localhost:4008/convidados", {
+                axios.post("https://140.238.186.186:4008/convidados", {
                   id_professor: professor.id_professor,
                   id_banca: bancaId,
                 })

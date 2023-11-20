@@ -32,7 +32,7 @@ function BancasListar() {
   
 
   useEffect(() => {
-    axios.get('http://localhost:4007/bancas_navigation')
+    axios.get('https://140.238.186.186:4007/bancas_navigation')
       .then((response) => {
         const calendarEvents = response.data.map((banca) => {
           const convidados = banca.convidados_navigation.map((c) => c.professor_navigation.nome).join(", ");

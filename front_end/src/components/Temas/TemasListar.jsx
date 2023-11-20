@@ -52,7 +52,7 @@ function TemasListar() {
 
   useEffect(() => {
     axios
-      .get("http://localhost:4004/temas")
+      .get("https://140.238.186.186:4004/temas",  { timeout: 5000 })
       .then((response) => {
         setTemas(response.data);
         setDadosCarregados(true);
@@ -62,7 +62,7 @@ function TemasListar() {
       });
 
     axios
-      .get("http://localhost:4000/alunos")
+      .get("https://140.238.186.186:4000/alunos")
       .then((response) => {
         setAlunos(response.data);
       })

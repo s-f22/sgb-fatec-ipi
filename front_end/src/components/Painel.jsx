@@ -39,7 +39,7 @@ const Painel = () => {
   const buscarProfessor = async (idDoProfessor) => {
     try {
       const response = await axios.get(
-        `http://localhost:4001/professores/${idDoProfessor}`
+        `https://140.238.186.186:4001/professores/${idDoProfessor}`
       );
       const resultado = response.data;
       setProfessor(resultado);

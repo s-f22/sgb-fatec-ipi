@@ -28,7 +28,7 @@ const TemasCadastrar = () => {
     
 
     try {
-      const response = await axios.post(`http://localhost:4004/temas`, {
+      const response = await axios.post(`https://140.238.186.186:4004/temas`, {
         id_autor,
         titulo,
         descricao
