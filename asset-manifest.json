@@ -1,7 +1,7 @@
 {
   "files": {
     "main.css": "/sgb-fatec-ipi/static/css/main.080e2117.css",
-    "main.js": "/sgb-fatec-ipi/static/js/main.8406f526.js",
+    "main.js": "/sgb-fatec-ipi/static/js/main.d7572247.js",
     "static/media/primeicons.svg": "/sgb-fatec-ipi/static/media/primeicons.e1441b135b3ca9ad643c.svg",
     "static/media/dashboard.png": "/sgb-fatec-ipi/static/media/dashboard.6886e6ba410978b4a9a5.png",
     "static/media/primeicons.eot": "/sgb-fatec-ipi/static/media/primeicons.d44157bdfa026dc877af.eot",
@@ -69,10 +69,10 @@
     "static/media/roboto-greek-ext-700-normal.woff": "/sgb-fatec-ipi/static/media/roboto-greek-ext-700-normal.249853776d22a271b2b5.woff",
     "index.html": "/sgb-fatec-ipi/index.html",
     "main.080e2117.css.map": "/sgb-fatec-ipi/static/css/main.080e2117.css.map",
-    "main.8406f526.js.map": "/sgb-fatec-ipi/static/js/main.8406f526.js.map"
+    "main.d7572247.js.map": "/sgb-fatec-ipi/static/js/main.d7572247.js.map"
   },
   "entrypoints": [
     "static/css/main.080e2117.css",
-    "static/js/main.8406f526.js"
+    "static/js/main.d7572247.js"
   ]
 }
