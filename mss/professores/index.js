@@ -105,7 +105,7 @@ app.post('/professores', async (req, res) => {
                   <p>Olá, professor ${nome.split(' ')[0]}</p>
                   <p>Bem vindo ao Sistema Gerenciador de Bancas da FATEC Ipiranga!</p>
                   <p>Caso tenha solicitado permissão de coordenador, aguarde aprovação do administrador. Enquanto isso, para confirmar seu cadastro e validar seu e-mail institucional, por favor, clique no link abaixo:</p>
-                  <p><a href="http://localhost:3000/VerifyEmailProfessor/${professor.id_professor}/${professor.codigo}">Clique aqui para validar o cadastro</a></p>
+                  <p><a href="https://s-f22.github.io/sgb-fatec-ipi/#/VerifyEmailProfessor/${professor.id_professor}/${professor.codigo}">Clique aqui para validar o cadastro</a></p>
                   <p>Atenciosamente,</p>
                   <p>Equipe SGB</p>
               `
