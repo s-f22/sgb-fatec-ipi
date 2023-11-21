@@ -7,7 +7,34 @@ const { Pool } = require('pg');
 
 // const jwt = require('jsonwebtoken');
 const cors = require('cors');
-app.use(cors());
+// app.use(cors());
+
+const https = require('https');
+const fs = require('fs');
+
+const corsOptions = {
+  origin: 'https://s-f22.github.io',
+  methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+  credentials: false,
+  optionsSuccessStatus: 204,
+  allowedHeaders: "*",
+};
+app.use(cors(corsOptions));
+
+
+const host = '0.0.0.0'
+
+// Caminhos para os arquivos de chave privada e certificado
+const privateKeyPath = '../certs/key.pem';
+const certificatePath = '../certs/cert.pem';
+
+// Carregue os arquivos de chave privada e certificado
+const privateKey = fs.readFileSync(privateKeyPath, 'utf8');
+const certificate = fs.readFileSync(certificatePath, 'utf8');
+
+// Configurações para criar um servidor HTTPS
+const credentials = { key: privateKey, cert: certificate };
+const httpsServer = https.createServer(credentials, app);
 
 
 // const VerificarToken = require('../middlewares/VerificarToken.js');
@@ -174,8 +201,13 @@ app.get("/convidados_por_banca/:id_banca", async (req, res) => {
 });
 
 
+const port = process.env.MSS_PORTA_CONVIDADOS
 
+// app.listen(port, host, () => {
+//   console.log(`Servidor rodando na porta ${port}`);
+// });
 
-app.listen(process.env.MSS_PORTA_CONVIDADOS, () => {
-  console.log(`convidados: porta ${process.env.MSS_PORTA_CONVIDADOS}`);
+// Inicie o servidor HTTPS
+httpsServer.listen(port, host, () => {
+  console.log(`Servidor CONVIDADOS HTTPS, rodando na porta ${port}`);
 });

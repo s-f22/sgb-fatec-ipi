@@ -10,7 +10,7 @@ app.use(bodyParser.json());
 const corsOptions = {
   origin: 'https://s-f22.github.io',
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-  credentials: true,
+  credentials: false,
   optionsSuccessStatus: 204,
   allowedHeaders: "*",
 };
