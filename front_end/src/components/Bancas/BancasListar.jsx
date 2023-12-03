@@ -88,6 +88,17 @@ function BancasListar() {
           endAccessor="end"
           style={{ height: 500, color: '#345059' }}
           onSelectEvent={handleEventClick}
+          messages={{
+            next: "Próximo",
+            previous: "Anterior",
+            today: "Hoje",
+            month: "Mês",
+            week: "Semana",
+            day: "Dia",
+            date: "Data",
+            time: "Período",
+            event: "Trabalho de Conclusão de Curso",
+          }}
         />
       </Paper>
       <Dialog open={open} onClose={handleClose}>

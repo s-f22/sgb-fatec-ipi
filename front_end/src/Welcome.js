@@ -17,7 +17,7 @@ function Welcome() {
 
   return (
     <div
-      className="justify-content-center align-items-center"
+      className="justify-content-center align-items-center welcome-mobile"
       style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}
     >
       <img
@@ -40,7 +40,7 @@ function Welcome() {
         Bem vinda ao Sistema de Gerenciamento de Bancas da Fatec Ipiranga!
       </p>
 
-      <div style={{ gap: 10 }} className="d-flex justify-content-center mb-4">
+      <div style={{ gap: 10 }} className="d-flex justify-content-center mb-4" >
         <Login />
         <SignUp />
       </div>

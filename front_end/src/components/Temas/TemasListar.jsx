@@ -6,6 +6,7 @@ import { Link } from "react-router-dom";
 import "moment/locale/pt-br";
 import moment from "moment";
 import { useAuth0 } from "@auth0/auth0-react";
+import Spinner from "react-bootstrap/Spinner";
 
 function TemasListar() {
   const [alunos, setAlunos] = useState([]);
@@ -72,7 +73,22 @@ function TemasListar() {
   }, []);
 
   if (!dadosCarregados) {
-    return <div>Carregando dados...</div>;
+    return <div
+    style={{
+      display: "flex",
+      flex: 1,
+      height: "100vh",
+      flexDirection: "column",
+      alignContent: "center",
+      justifyContent: "center",
+    }}
+  >
+    <p style={{ alignSelf: "center" }}>Carregando...</p>
+    <Spinner
+      style={{ alignSelf: "center", marginBottom: "50px" }}
+      animation="grow"
+    />
+  </div>
   }
 
   return (

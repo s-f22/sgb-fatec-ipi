@@ -1,10 +1,20 @@
 import React, { useEffect, useState } from "react";
-import dashboard from "../Assets/img/dashboard.png";
 import { useAuth0 } from "@auth0/auth0-react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import Spinner from "react-bootstrap/Spinner";
 import { Typography, Grid, Paper, Container } from "@mui/material";
+import CardProfessor from "./PainelComponentes/CardProfessor";
+import CardAluno from "./PainelComponentes/CardAluno";
+import CardTema from "./PainelComponentes/CardTema";
+import CardTemaDisponivel from "./PainelComponentes/CardTemaDisponivel";
+import CardTrabAtivos from "./PainelComponentes/CardTrabAtivos";
+import CardTrabConcluidos from "./PainelComponentes/CardTrabConcluidos";
+import CardBancas from "./PainelComponentes/CardBancas";
+import CardNotaMedia from "./PainelComponentes/CardNotaMedia";
+import CardGraphBar from "./PainelComponentes/CardGraphBar";
+import CardGraphPie from "./PainelComponentes/CardGraphPie";
+import CardGraphLine from "./PainelComponentes/CardGraphLine";
 
 const Painel = () => {
   const { user, isAuthenticated, isLoading } = useAuth0();
@@ -12,17 +22,27 @@ const Painel = () => {
   const [loading, setLoading] = useState(true);
   const navigate = useNavigate();
 
-  const data = {
-    numProfessores: 35,
-    numAlunos: 750,
-    numTemasCadastrados: 120,
-    numTemasDisponiveis: 80,
-    numTrabalhosAndamento: 25,
-    numTrabalhosConcluidos: 50,
-    numBancasAgendadas: 10,
-    notaMediaTrabalhos: 8.2,
-    periodoTrabalhos: "2023",
-    trabalhosPorSemestre: "15"
+
+  const dados = {
+    numProfessores: <CardProfessor />,
+    numAlunos: <CardAluno />,
+    numTemasCadastrados: <CardTema />,
+    numTemasDisponiveis: <CardTemaDisponivel />,
+    numTrabalhosAtivos: <CardTrabAtivos />,
+    numTrabalhosConcluidos: <CardTrabConcluidos />,
+    numBancasAgendadas: <CardBancas />,
+    notaMediaTrabalhos: <CardNotaMedia />,
+
+    /*Gráfico Maior e Menor Nota no período*/
+    maiorEMenorNotaPeriodo: <CardGraphBar />,
+     /*Gráfico Bancas por Curso*/
+     graficoLinhas: <CardGraphLine />,
+     
+    /*Gráfico percentual*/
+    percentualSemestre: <CardGraphPie />,
+
+   
+  //   
   };
 
   useEffect(() => {
@@ -39,9 +59,10 @@ const Painel = () => {
   const buscarProfessor = async (idDoProfessor) => {
     try {
       const response = await axios.get(
-        `https://140.238.186.186:4001/professores/${idDoProfessor}`
+        `http://localhost:4001/professores/${idDoProfessor}`
       );
       const resultado = response.data;
+      console.log(process.env.REACT_APP_AUTH0_CLIENT_ID);
       setProfessor(resultado);
       setLoading(false);
     } catch (error) {
@@ -76,21 +97,38 @@ const Painel = () => {
         <>
           <Container maxWidth>
             <Typography variant="h4" gutterBottom className="painel-controle">
-              Painel de Controle
+              Painel de Indicadores
             </Typography>
-            <Grid container spacing={3}>
-              {Object.keys(data).map((key) => (
-                <Grid item xs={12} sm={6} md={3} key={key}>
+            <Grid container spacing={3} className="mb-5 justify-content-between">
+              {Object.keys(dados).map((key) => (
+                <Grid item xs={12} sm={6} md={key === 'graficoLinhas' ? 6 : 3} key={key}>
                   <Paper
                     style={{
-                      padding: "16px",
+                      display: "flex",
+                      flexDirection: "column",
+                      border: "1px solid #ccc",
+                      // padding: "10px",
                       textAlign: "center",
                       color: "text.primary",
                       boxShadow: "0 2px 4px rgba(0,0,0,0.1)",
+                      width: '100%',
                     }}
                   >
-                    <Typography variant="h6" style={{fontSize:'15px', color:'#333'}}>{key}</Typography>
-                    <Typography variant="h4" style={{fontSize:'35px',color:'#FFA500'}}>{data[key]}</Typography>
+                    <Typography style={{ fontSize: '15px', color: '#333'}}></Typography>
+                    {key === 'maiorEMenorNotaPeriodo' ? ' ' : null}
+                    {key === 'notaMediaTrabalhos' ? ' ' : null}
+                    {key === 'percentualSemestre' ? ' ' : null}
+                    {key === 'numTemasDisponiveis' ? ' ' : null}
+                    {key === 'numTemasCadastrados' ? ' ' : null}
+                    {key === 'numTrabalhosAndamento' ? ' ' : null}
+                    {key === 'numTrabalhosConcluidos' ? ' ' : null}
+                    {key === 'numBancasAgendadas' ? ' ' : null}
+                    {key === 'bancasPorCurso' ? ' ' : null}
+                    {key === 'numAlunos' ? ' ' : null}
+                    {key === 'numProfessores' ? ' ' : null}
+                    {key === 'graficoLinhas' ? ' ' : null}
+
+                    <Typography variant="h4" style={{ fontSize: '35px', color: '#FFA500' }}>{dados[key]}</Typography>
                   </Paper>
                 </Grid>
               ))}

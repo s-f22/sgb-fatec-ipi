@@ -1,4 +1,5 @@
 import { React } from "react";
+import "../index.css";
 import {
   Sidebar as ReactSidebar,
   Menu,
@@ -8,27 +9,15 @@ import {
 } from "react-pro-sidebar";
 import { Link, useLocation } from "react-router-dom";
 import teste from '../Assets/img/Logo_I.png';
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
 const Sidebar = () => {
   const location = useLocation();
-  const [selectedSubMenu, setSelectedSubMenu] = useState(null);
-  const [selectedSubMenuW, setSelectedSubMenuW] = useState(null);
-  const [selectedSubMenuB, setSelectedSubMenuB] = useState(null);
-
-  // const [activeItem, setActiveItem] = useState('home');
-
-  // const handleItemClick = (itemName) => {
-  //   setActiveItem(itemName);
-  // };
-
-  // useEffect(() => {
-  //   // Atualiza o item ativo quando a rota muda
-  //   const pathname = location.pathname;
-  //   const rotaPadrao = pathname.split('/')[2]; // Assume uma estrutura "/sgb/..."
-  //   setActiveItem(rotaPadrao || 'home');
-  // }, [location.pathname]);
-
+  const [selectedSubMenu, setSelectedSubMenu] = useState('Temas');
+  const [selectedSubMenuW, setSelectedSubMenuW] = useState('Trabalhos');
+  const [selectedSubMenuB, setSelectedSubMenuB] = useState('Bancas');
+  
+  
   return (
     <div className="background">
       <ReactSidebar
@@ -36,7 +25,6 @@ const Sidebar = () => {
         rootStyles={{
           [`.${sidebarClasses.container}`]: {
             backgroundColor: "#345059",
-            // width: "256px",
             height: "100%",
             display: "flex",
             alignItems: "center",
@@ -57,14 +45,20 @@ const Sidebar = () => {
                 return {
                   width: 208, height: 40,
                   color: disabled ? '#FFFFFF' : '#EAEAEA',
-                  backgroundColor: active ? '#345059' : '#345059',
+                  backgroundColor: active ? '#EAEAEA' : '#345059',
+                  color: active ? '#345059' : '#EAEAEA',
+                  borderRadius: active ? '8px' : '8px',
+                  fontWeight: active ? 600 : 600,
                   '&:hover': { borderRadius: 8, backgroundColor: '#EAEAEA', color: '#345059', fontWeight: 600 }
                 };
               if (level === 1)
                 return {
                   width: 172, height: 32,
                   color: disabled ? '#EAEAEA' : '#EAEAEA',
-                  backgroundColor: active ? '#345059' : '#345059',
+                  backgroundColor: active ? '#EAEAEA' : '#345059',
+                  color: active ? '#345059' : '#EAEAEA',
+                  borderRadius: active ? '8px' : '8px',
+                  fontWeight: active ? 600 : 600,
                   marginLeft: 24, paddingLeft: 24,
                   '&:hover': { borderRadius: 8, backgroundColor: '#EAEAEA', color: '#345059', fontWeight: 600, }
                 };
@@ -72,24 +66,18 @@ const Sidebar = () => {
           }}
         >
           <MenuItem
-            // className={activeItem === 'home' ? 'active' : ''}
-            // onClick={() => handleItemClick('home')}
             component={<Link to="/sgb" />}
             active={location.pathname === "/sgb"}
+            className="pb-2"
           >
-            <i className="pi pi-home mr-2"></i>Home
+            <i className="pi pi-th-large mr-2"></i>Painel
           </MenuItem>
-
-          {/* <MenuItem
-            component={<Link to="/signupinfo" />}
-            active={location.pathname === "/signupinfo"}
-          >
-            Continuação do Cadastro
-          </MenuItem> */}
-
           <SubMenu label={<span><i className="pi pi-list mr-2"></i>Temas</span>}
-            onClick={() => setSelectedSubMenu("temas")}>
-            {selectedSubMenu === "temas" && (
+            opened={selectedSubMenu === "Temas"}
+            active={location.pathname === "/sgb/temas_listar" || location.pathname === "/sgb/temas_cadastrar"}
+            className="pb-2"
+            >
+            {selectedSubMenu === "Temas" && (
               <div className="selected-menu-line">
                 <div className="selected-menu-line_turn_I"></div>
                 <div className="selected-menu-line_turn_II"></div>
@@ -111,12 +99,15 @@ const Sidebar = () => {
           </SubMenu>
 
           <SubMenu label={<span><i className="pi pi-file-word mr-2"></i>Trabalhos</span>}
-            onClick={() => setSelectedSubMenuW("trabalhos")}>
+            opened={selectedSubMenuW === "Trabalhos"}
+            active={location.pathname === "/sgb/trabalhos_listar" || location.pathname === "/sgb/trabalhos_cadastrar"}
+            className="pb-2"
+            >
             <MenuItem
               component={<Link to="/sgb/trabalhos_listar" />}
               active={location.pathname === "/sgb/trabalhos_listar"}
             >
-              {selectedSubMenuW === "trabalhos" && (
+              {selectedSubMenuW === "Trabalhos" && (
                 <div className="selected-menu-line-w">
                   <div className="selected-menu-line_turn_I-w"></div>
                   <div className="selected-menu-line_turn_II-w"></div>
@@ -124,7 +115,6 @@ const Sidebar = () => {
                 </div>
               )}
               Ver todos
-
             </MenuItem>
 
             <MenuItem
@@ -133,22 +123,17 @@ const Sidebar = () => {
             >
               Cadastrar Trabalho
             </MenuItem>
-
-            <MenuItem
-              component={<Link to="/sgb/trabalhos_avaliar" />}
-              active={location.pathname === "/sgb/trabalhos_avaliar"}
-            >
-              Avaliar
-            </MenuItem>
           </SubMenu>
 
           <SubMenu label={<span><i className="pi pi-calendar mr-2"></i>Bancas</span>}
-            onClick={() => setSelectedSubMenuB("bancas")}>
+            opened={selectedSubMenuB === "Bancas"}
+            active={location.pathname === "/sgb/bancas_listar" || location.pathname === "/sgb/bancas_cadastrar"}
+            >
             <MenuItem
               component={<Link to="/sgb/bancas_listar" />}
               active={location.pathname === "/sgb/bancas_listar"}
             >
-              {selectedSubMenuB === "bancas" && (
+              {selectedSubMenuB === "Bancas" && (
                 <div className="selected-menu-line-b">
                   <div className="selected-menu-line_turn_I-b"></div>
                   <div className="selected-menu-line_turn_II-b"></div>

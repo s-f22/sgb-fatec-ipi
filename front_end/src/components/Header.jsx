@@ -37,7 +37,7 @@ function Header() {
     <div className='Header_Container'>
       <Navbar expand='lg'>
         <div >
-          <Navbar.Brand href="#home">
+          <Navbar.Brand>
             <Navbar.Toggle style={{ marginLeft: 20 }} aria-controls="basic-navbar-nav" />
           </Navbar.Brand>
         </div>

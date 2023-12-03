@@ -3,6 +3,8 @@ import axios from "axios";
 import { Container} from "react-bootstrap";
 import { Button, TableContainer,  Table,  TableHead,  TableBody,  TableRow,  TableCell,  Paper,  TablePagination,} from "@mui/material";
 import { Link } from "react-router-dom";
+import { Spinner } from "react-bootstrap";
+
 
 const TrabalhoListar = () => {
   const [trabalhos, setTrabalhos] = useState([]);
@@ -89,7 +91,24 @@ const TrabalhoListar = () => {
   };
 
   if (!dadosCarregados) {
-    return <div>Carregando dados...</div>;
+    return (
+      <div
+          style={{
+            display: "flex",
+            flex: 1,
+            height: "100vh",
+            flexDirection: "column",
+            alignContent: "center",
+            justifyContent: "center",
+          }}
+        >
+          <p style={{ alignSelf: "center" }}>Carregando...</p>
+          <Spinner
+            style={{ alignSelf: "center", marginBottom: "50px" }}
+            animation="grow"
+          />
+        </div>
+    );
   }
 
   return (

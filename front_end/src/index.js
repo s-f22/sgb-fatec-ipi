@@ -53,19 +53,20 @@ const AppRoutes = () => (
       />
       <Route path="/sgb/bancas_cadastrar" element={<BancasCadastrar />} />
       <Route path="/sgb/bancas_listar" element={<BancasListar />} />
+      <Route path="*" element={<ErrorPage />} />
     </Route>
   </Routes>
 );
 
-const root = ReactDOM.createRoot(document.getElementById("root"));
+const root = ReactDOM.createRoot(document.getElementById('root'));
 
 root.render(
   <Auth0Provider
     domain={domain}
     clientId={clientId}
     authorizationParams={{
-      // redirect_uri: "http://localhost:3000/sgb#/sgb",
-      redirect_uri: "https://s-f22.github.io/sgb-fatec-ipi/#/sgb"
+      redirect_uri: "http://localhost:3000/sgb#/sgb",
+      // redirect_uri: "https://s-f22.github.io/sgb-fatec-ipi/#/sgb"
     }}
   >
     <Router>
@@ -74,5 +75,6 @@ root.render(
     </Router>
   </Auth0Provider>
 );
+
 
 export default AppRoutes;
